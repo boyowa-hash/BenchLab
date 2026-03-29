@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BenchLab — Platform Prototype</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚗</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>body { margin: 0; padding: 0; }</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const PAGES = ["home", "logbook", "search", "post", "consultant"];
+
+// Subtle grain overlay as CSS
+const grainCSS = `
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest: #2C3E2D;
+  --forest-light: #3A5240;
+  --gold: #C9A84C;
+  --gold-soft: #D4B86A;
+  --cream: #FAF6EE;
+  --cream-dark: #F0EADB;
+  --warm-white: #FDFCF8;
+  --bark: #5C4A3A;
+  --bark-light: #8B7355;
+  --charcoal: #2A2A28;
+  --sage: #8FA68B;
+  --sage-light: #B5CBAE;
+  --blush: #E8D5C4;
+  --amber: #D4956B;
+  --shadow: rgba(44,62,45,0.08);
+}
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  -webkit-font-smoothing: antialiased;
+}
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-up {
+  animation: fadeUp 0.6s ease-out both;
+}
+
+.animate-fade {
+  animation: fadeIn 0.5s ease-out both;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+`;
+
+// ─── Skill tags data ───
+const SKILL_TAGS = {
+  processes: ["Cold-Pour Candle Production", "Hot-Pour Candle Production", "Fragrance Compounding", "Emulsion Manufacturing", "Soap Saponification (Cold Process)", "Reed Diffuser Assembly", "Filling Line Operation", "Wax Melt Production", "SPF Formulation", "Stability Testing"],
+  materials: ["Soy Wax", "Coconut Wax", "Paraffin Wax", "Rapeseed Wax", "Essential Oils", "Synthetic Fragrance Oils", "Surfactants", "Emulsifiers", "Botanical Extracts", "Preservatives"],
+  equipment: ["Jacketed Mixing Vessels", "Planetary Mixers", "6-Head Filling Line", "Wicking Machines", "Labelling Machines", "Homogenisers", "pH Meters", "Viscometers"],
+  standards: ["GMP (ISO 22716)", "EN 15493", "EN 15426", "IFRA Standards", "EU Cosmetics Regulation", "REACH", "CLP Labelling", "ISO 9001"],
+};
+
+const VERIFICATION_LEVELS = {
+  "employer": { label: "Employer Confirmed", color: "#2C3E2D", bg: "#E8F0E8" },
+  "peer": { label: "Peer Verified", color: "#C9A84C", bg: "#FDF6E3" },
+  "cert": { label: "Certification Backed", color: "#5C4A3A", bg: "#F0E8DC" },
+  "self": { label: "Self-Declared", color: "#8B7355", bg: "#F5F0E8" },
+};
+
+// ─── Icons (inline SVGs) ───
+function IconFlask({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3h6M10 3v6.5L4 20h16L14 9.5V3"/><path d="M7.5 16h9" opacity="0.4"/></svg>;
+}
+function IconSearch({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>;
+}
+function IconUser({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>;
+}
+function IconBriefcase({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>;
+}
+function IconCheck({ size = 16 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"/></svg>;
+}
+function IconStar({ size = 16 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>;
+}
+function IconBook({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5z"/></svg>;
+}
+function IconCompass({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" opacity="0.15" stroke="currentColor"/></svg>;
+}
+function IconHammer({ size = 20 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12l-8.5 8.5a2.12 2.12 0 01-3-3L12 9"/><path d="M17.64 15L22 10.64a1 1 0 000-1.41l-7.23-7.23a1 1 0 00-1.41 0L9 6.36"/></svg>;
+}
+
+// ─── Verification Badge ───
+function VerifBadge({ level }) {
+  const v = VERIFICATION_LEVELS[level];
+  if (!v) return null;
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center", gap: 4,
+      padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+      color: v.color, background: v.bg, letterSpacing: 0.3,
+    }}>
+      <IconCheck size={12} />{v.label}
+    </span>
+  );
+}
+
+// ─── Nav ───
+function Nav({ page, setPage }) {
+  return (
+    <nav style={{
+      position: "sticky", top: 0, zIndex: 100,
+      background: "rgba(250,246,238,0.92)", backdropFilter: "blur(16px)",
+      borderBottom: "1px solid rgba(44,62,45,0.08)",
+    }}>
+      <div style={{
+        maxWidth: 1200, margin: "0 auto", padding: "0 24px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        height: 64,
+      }}>
+        <button onClick={() => setPage("home")} style={{
+          background: "none", border: "none", cursor: "pointer",
+          display: "flex", alignItems: "center", gap: 8,
+        }}>
+          <IconFlask size={24} />
+          <span style={{
+            fontFamily: "'Playfair Display', serif", fontSize: 22,
+            fontWeight: 700, color: "var(--forest)", letterSpacing: -0.5,
+          }}>BenchLab</span>
+        </button>
+        <div style={{ display: "flex", gap: 4 }}>
+          {[
+            { id: "home", label: "Home", icon: <IconCompass size={16} /> },
+            { id: "logbook", label: "Logbook", icon: <IconBook size={16} /> },
+            { id: "search", label: "Find Talent", icon: <IconSearch size={16} /> },
+            { id: "post", label: "Post a Role", icon: <IconBriefcase size={16} /> },
+            { id: "consultant", label: "Consultants", icon: <IconHammer size={16} /> },
+          ].map(item => (
+            <button key={item.id} onClick={() => setPage(item.id)} style={{
+              background: page === item.id ? "var(--forest)" : "transparent",
+              color: page === item.id ? "var(--cream)" : "var(--bark)",
+              border: "none", borderRadius: 8, padding: "8px 14px",
+              fontSize: 13, fontWeight: 500, cursor: "pointer",
+              display: "flex", alignItems: "center", gap: 6,
+              transition: "all 0.25s ease",
+              fontFamily: "'Source Sans 3', sans-serif",
+            }}>
+              {item.icon}{item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+// ─── HOME PAGE ───
+function HomePage({ setPage }) {
+  return (
+    <div>
+      {/* Hero */}
+      <section style={{
+        position: "relative", overflow: "hidden",
+        background: "linear-gradient(160deg, var(--forest) 0%, #1E2E20 60%, var(--bark) 100%)",
+        padding: "100px 24px 80px", textAlign: "center",
+      }}>
+        {/* Decorative circles */}
+        <div style={{ position: "absolute", top: -120, right: -80, width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(201,168,76,0.12)" }} />
+        <div style={{ position: "absolute", bottom: -60, left: -40, width: 250, height: 250, borderRadius: "50%", border: "1px solid rgba(201,168,76,0.08)" }} />
+
+        <div className="animate-up" style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <div style={{
+            display: "inline-block", padding: "6px 18px", borderRadius: 24,
+            border: "1px solid rgba(201,168,76,0.3)", marginBottom: 28,
+            fontSize: 13, color: "var(--gold-soft)", letterSpacing: 1.5,
+            fontWeight: 500, textTransform: "uppercase",
+          }}>
+            For the craft &amp; formulation industries
+          </div>
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif", fontSize: 56,
+            color: "var(--cream)", fontWeight: 700, lineHeight: 1.15,
+            marginBottom: 20, letterSpacing: -1,
+          }}>
+            What you can do<br />
+            <span style={{ color: "var(--gold)" }}>matters more</span><br />
+            than what you say.
+          </h1>
+          <p className="animate-up stagger-2" style={{
+            fontSize: 18, color: "var(--sage-light)", lineHeight: 1.7,
+            maxWidth: 540, margin: "0 auto 40px", fontWeight: 300,
+          }}>
+            BenchLab connects verified craftspeople, formulators, and production specialists
+            with employers who value proven expertise over polished CVs.
+          </p>
+          <div className="animate-up stagger-3" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <button onClick={() => setPage("logbook")} style={{
+              background: "var(--gold)", color: "var(--forest)", border: "none",
+              padding: "14px 32px", borderRadius: 8, fontSize: 15, fontWeight: 600,
+              cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+              transition: "transform 0.2s ease",
+            }} onMouseEnter={e => e.target.style.transform = "translateY(-2px)"}
+               onMouseLeave={e => e.target.style.transform = "translateY(0)"}>
+              Build Your Logbook
+            </button>
+            <button onClick={() => setPage("search")} style={{
+              background: "transparent", color: "var(--cream)",
+              border: "1px solid rgba(250,246,238,0.25)",
+              padding: "14px 32px", borderRadius: 8, fontSize: 15, fontWeight: 500,
+              cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+              transition: "all 0.2s ease",
+            }} onMouseEnter={e => { e.target.style.borderColor = "var(--gold)"; e.target.style.color = "var(--gold)"; }}
+               onMouseLeave={e => { e.target.style.borderColor = "rgba(250,246,238,0.25)"; e.target.style.color = "var(--cream)"; }}>
+              Find Talent
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section style={{ maxWidth: 1000, margin: "0 auto", padding: "80px 24px" }}>
+        <h2 className="animate-up" style={{
+          fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
+          textAlign: "center", marginBottom: 12,
+        }}>Not a CV. A Craftsperson's Logbook.</h2>
+        <p className="animate-up stagger-1" style={{
+          textAlign: "center", color: "var(--bark-light)", fontSize: 16,
+          maxWidth: 560, margin: "0 auto 56px", lineHeight: 1.6,
+        }}>
+          Your BenchLab profile captures what generic platforms miss — the processes you've mastered,
+          the materials you know, and the standards you work to.
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {[
+            {
+              icon: <IconBook size={28} />, title: "Build Your Logbook",
+              desc: "Select from industry-specific processes, materials, equipment, and standards. No keyword guessing — a taxonomy built by people who've worked the bench.",
+              color: "var(--forest)",
+            },
+            {
+              icon: <IconCheck size={28} />, title: "Get Verified",
+              desc: "Peers and former employers confirm your skills. Verification that means something — not a stranger clicking 'endorse' on a skill they've never seen you use.",
+              color: "var(--gold)",
+            },
+            {
+              icon: <IconSearch size={28} />, title: "Get Found",
+              desc: "Employers search by capability, not keywords. When a manufacturer needs someone who can run a six-head filler and understands GMP, they find you.",
+              color: "var(--amber)",
+            },
+          ].map((item, i) => (
+            <div key={i} className={`animate-up stagger-${i + 2}`} style={{
+              background: "var(--warm-white)", borderRadius: 16, padding: 36,
+              border: "1px solid rgba(44,62,45,0.06)",
+              boxShadow: "0 2px 20px var(--shadow)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              cursor: "default",
+            }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(44,62,45,0.12)"; }}
+               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 20px var(--shadow)"; }}>
+              <div style={{ color: item.color, marginBottom: 16 }}>{item.icon}</div>
+              <h3 style={{
+                fontFamily: "'Playfair Display', serif", fontSize: 20,
+                color: "var(--forest)", marginBottom: 12,
+              }}>{item.title}</h3>
+              <p style={{ color: "var(--bark-light)", fontSize: 14, lineHeight: 1.7 }}>{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Industries */}
+      <section style={{ background: "var(--forest)", padding: "72px 24px" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif", fontSize: 28, color: "var(--cream)",
+            textAlign: "center", marginBottom: 48,
+          }}>Built for your industry</h2>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 16 }}>
+            {["Home Fragrance", "Fine & Functional Fragrance", "Skincare", "Personal Care & Toiletries", "Regulatory & Compliance"].map((ind, i) => (
+              <div key={i} style={{
+                padding: "14px 28px", borderRadius: 40,
+                border: "1px solid rgba(201,168,76,0.25)",
+                color: "var(--gold-soft)", fontSize: 14, fontWeight: 500,
+                letterSpacing: 0.5, transition: "all 0.3s ease", cursor: "default",
+              }} onMouseEnter={e => { e.target.style.background = "rgba(201,168,76,0.12)"; e.target.style.borderColor = "var(--gold)"; }}
+                 onMouseLeave={e => { e.target.style.background = "transparent"; e.target.style.borderColor = "rgba(201,168,76,0.25)"; }}>
+                {ind}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section style={{ padding: "64px 24px", background: "var(--cream-dark)" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, textAlign: "center" }}>
+          {[
+            { num: "142", label: "Verified Practitioners" },
+            { num: "38", label: "Registered Employers" },
+            { num: "24", label: "Active Consultants" },
+          ].map((s, i) => (
+            <div key={i}>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 44, color: "var(--forest)", fontWeight: 700 }}>{s.num}</div>
+              <div style={{ color: "var(--bark-light)", fontSize: 14, marginTop: 4, letterSpacing: 0.5 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ─── LOGBOOK PROFILE PAGE ───
+function LogbookPage() {
+  const [activeTab, setActiveTab] = useState("processes");
+
+  const profile = {
+    name: "Sarah Mitchell",
+    title: "Senior Production Specialist",
+    location: "West Midlands, UK",
+    years: 12,
+    sectors: ["Home Fragrance", "Personal Care"],
+    bio: "Twelve years in candle and fragrance manufacturing. Experienced across hand-pour artisan production and high-volume automated lines. GMP-trained with deep knowledge of wax behaviour, fragrance loading, and burn performance testing.",
+    skills: {
+      processes: [
+        { name: "Cold-Pour Candle Production", level: "employer", years: 10 },
+        { name: "Hot-Pour Candle Production", level: "employer", years: 8 },
+        { name: "Fragrance Compounding", level: "peer", years: 6 },
+        { name: "Reed Diffuser Assembly", level: "employer", years: 5 },
+        { name: "Filling Line Operation", level: "peer", years: 7 },
+        { name: "Wax Melt Production", level: "self", years: 4 },
+      ],
+      materials: [
+        { name: "Soy Wax", level: "employer", years: 10 },
+        { name: "Coconut Wax", level: "peer", years: 6 },
+        { name: "Paraffin Wax", level: "employer", years: 8 },
+        { name: "Essential Oils", level: "peer", years: 9 },
+        { name: "Synthetic Fragrance Oils", level: "employer", years: 10 },
+      ],
+      equipment: [
+        { name: "Jacketed Mixing Vessels", level: "employer", years: 8 },
+        { name: "6-Head Filling Line", level: "employer", years: 7 },
+        { name: "Wicking Machines", level: "peer", years: 9 },
+        { name: "Labelling Machines", level: "self", years: 5 },
+      ],
+      standards: [
+        { name: "EN 15493 (Fire Safety)", level: "cert", years: 10 },
+        { name: "GMP (ISO 22716)", level: "employer", years: 6 },
+        { name: "IFRA Standards", level: "peer", years: 5 },
+        { name: "CLP Labelling", level: "self", years: 4 },
+      ],
+    },
+    endorsements: [
+      { from: "Mark Thompson", role: "Production Director", company: "Wicks & Wax Ltd", text: "Sarah ran our production floor for three years. Her understanding of wax behaviour across different blends is exceptional." },
+      { from: "Priya Kapoor", role: "QC Manager", company: "Essence Contract Manufacturing", text: "Meticulous with quality control. She can spot a wick defect or fragrance imbalance before it reaches testing." },
+    ],
+  };
+
+  const tabs = [
+    { id: "processes", label: "Processes" },
+    { id: "materials", label: "Materials" },
+    { id: "equipment", label: "Equipment" },
+    { id: "standards", label: "Standards" },
+  ];
+
+  return (
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 80px" }}>
+      {/* Profile header */}
+      <div className="animate-up" style={{
+        background: "var(--warm-white)", borderRadius: 20, padding: 40,
+        border: "1px solid rgba(44,62,45,0.06)",
+        boxShadow: "0 2px 24px var(--shadow)",
+        marginBottom: 32,
+      }}>
+        <div style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
+          <div style={{
+            width: 88, height: 88, borderRadius: 16,
+            background: "linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            color: "var(--gold)", fontSize: 32, fontFamily: "'Playfair Display', serif",
+            fontWeight: 700, flexShrink: 0,
+          }}>SM</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4, flexWrap: "wrap" }}>
+              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "var(--forest)" }}>
+                {profile.name}
+              </h1>
+              <span style={{
+                padding: "4px 12px", borderRadius: 20, fontSize: 11,
+                background: "var(--forest)", color: "var(--gold)",
+                fontWeight: 600, letterSpacing: 0.5, textTransform: "uppercase",
+              }}>Verified Profile</span>
+            </div>
+            <p style={{ color: "var(--bark)", fontSize: 16, marginBottom: 4 }}>{profile.title}</p>
+            <p style={{ color: "var(--bark-light)", fontSize: 14, marginBottom: 16 }}>
+              {profile.location} · {profile.years} years bench experience
+            </p>
+            <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+              {profile.sectors.map(s => (
+                <span key={s} style={{
+                  padding: "5px 14px", borderRadius: 20, fontSize: 12,
+                  background: "var(--cream)", color: "var(--forest)",
+                  fontWeight: 500, border: "1px solid rgba(44,62,45,0.1)",
+                }}>{s}</span>
+              ))}
+            </div>
+            <p style={{ color: "var(--bark)", fontSize: 14, lineHeight: 1.7 }}>{profile.bio}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Skills tabs */}
+      <div className="animate-up stagger-1" style={{
+        background: "var(--warm-white)", borderRadius: 20, overflow: "hidden",
+        border: "1px solid rgba(44,62,45,0.06)",
+        boxShadow: "0 2px 24px var(--shadow)", marginBottom: 32,
+      }}>
+        <div style={{
+          display: "flex", borderBottom: "1px solid rgba(44,62,45,0.08)",
+          background: "var(--cream)",
+        }}>
+          <div style={{
+            padding: "16px 24px",
+            fontFamily: "'Playfair Display', serif", fontSize: 16, color: "var(--forest)",
+            fontWeight: 600, borderRight: "1px solid rgba(44,62,45,0.08)",
+            display: "flex", alignItems: "center", gap: 8,
+          }}>
+            <IconBook size={18} /> Logbook
+          </div>
+          {tabs.map(tab => (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
+              background: activeTab === tab.id ? "var(--warm-white)" : "transparent",
+              border: "none",
+              borderBottom: activeTab === tab.id ? "2px solid var(--gold)" : "2px solid transparent",
+              padding: "16px 20px", fontSize: 13, fontWeight: 500, cursor: "pointer",
+              color: activeTab === tab.id ? "var(--forest)" : "var(--bark-light)",
+              fontFamily: "'Source Sans 3', sans-serif",
+              transition: "all 0.2s ease",
+            }}>{tab.label}</button>
+          ))}
+        </div>
+
+        <div style={{ padding: 28 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {profile.skills[activeTab].map((skill, i) => (
+              <div key={i} style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "14px 20px", borderRadius: 12,
+                background: i % 2 === 0 ? "var(--cream)" : "transparent",
+                transition: "background 0.2s ease",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, flex: 1 }}>
+                  <span style={{ fontSize: 14, fontWeight: 500, color: "var(--charcoal)", minWidth: 220 }}>
+                    {skill.name}
+                  </span>
+                  <VerifBadge level={skill.level} />
+                </div>
+                <span style={{
+                  fontSize: 13, color: "var(--bark-light)",
+                  fontWeight: 500,
+                }}>
+                  {skill.years} {skill.years === 1 ? "year" : "years"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Peer endorsements */}
+      <div className="animate-up stagger-2">
+        <h3 style={{
+          fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)",
+          marginBottom: 16,
+        }}>Peer Endorsements</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          {profile.endorsements.map((e, i) => (
+            <div key={i} style={{
+              background: "var(--warm-white)", borderRadius: 16, padding: 28,
+              border: "1px solid rgba(44,62,45,0.06)",
+              boxShadow: "0 2px 16px var(--shadow)",
+              position: "relative",
+            }}>
+              <div style={{
+                position: "absolute", top: 16, right: 20,
+                fontFamily: "'Playfair Display', serif", fontSize: 48,
+                color: "var(--gold)", opacity: 0.2, lineHeight: 1,
+              }}>"</div>
+              <p style={{ fontSize: 14, color: "var(--bark)", lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
+                "{e.text}"
+              </p>
+              <div>
+                <p style={{ fontSize: 14, fontWeight: 600, color: "var(--forest)" }}>{e.from}</p>
+                <p style={{ fontSize: 13, color: "var(--bark-light)" }}>{e.role}, {e.company}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SEARCH / FIND TALENT PAGE ───
+function SearchPage() {
+  const [selectedSkills, setSelectedSkills] = useState(["GMP (ISO 22716)", "Fragrance Compounding"]);
+  const [results, setResults] = useState(true);
+
+  const toggleSkill = (skill) => {
+    setSelectedSkills(prev =>
+      prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
+    );
+  };
+
+  const candidates = [
+    { name: "Sarah Mitchell", title: "Senior Production Specialist", location: "West Midlands", years: 12, match: 96, skills: ["GMP (ISO 22716)", "Fragrance Compounding", "Cold-Pour Candle Production"], verif: "employer" },
+    { name: "James Whitfield", title: "Cosmetic Chemist", location: "London", years: 30, match: 88, skills: ["GMP (ISO 22716)", "Fragrance Compounding", "Emulsion Manufacturing"], verif: "cert" },
+    { name: "Adama Diallo", title: "QC Technician", location: "Manchester", years: 7, match: 82, skills: ["GMP (ISO 22716)", "EN 15493", "Stability Testing"], verif: "peer" },
+    { name: "Rebecca Chen", title: "Fragrance Evaluator", location: "Surrey", years: 15, match: 78, skills: ["Fragrance Compounding", "IFRA Standards", "Essential Oils"], verif: "employer" },
+  ];
+
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px 80px" }}>
+      <h1 className="animate-up" style={{
+        fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
+        marginBottom: 8,
+      }}>Find Talent</h1>
+      <p className="animate-up stagger-1" style={{ color: "var(--bark-light)", fontSize: 15, marginBottom: 32 }}>
+        Search by capability, not keywords. Select the skills you need and we'll match you with verified practitioners.
+      </p>
+
+      <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 32 }}>
+        {/* Filters */}
+        <div className="animate-up stagger-2">
+          <div style={{
+            background: "var(--warm-white)", borderRadius: 16, padding: 24,
+            border: "1px solid rgba(44,62,45,0.06)",
+            boxShadow: "0 2px 20px var(--shadow)",
+          }}>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "var(--forest)", marginBottom: 16 }}>
+              Required Skills
+            </h3>
+            {["Processes", "Standards", "Materials"].map((cat, ci) => (
+              <div key={cat} style={{ marginBottom: 20 }}>
+                <p style={{ fontSize: 11, color: "var(--bark-light)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>{cat}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {(cat === "Processes" ? SKILL_TAGS.processes.slice(0, 5) : cat === "Standards" ? SKILL_TAGS.standards.slice(0, 4) : SKILL_TAGS.materials.slice(0, 4)).map(skill => {
+                    const selected = selectedSkills.includes(skill);
+                    return (
+                      <button key={skill} onClick={() => toggleSkill(skill)} style={{
+                        padding: "6px 12px", borderRadius: 20, fontSize: 12,
+                        border: selected ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
+                        background: selected ? "var(--forest)" : "transparent",
+                        color: selected ? "var(--cream)" : "var(--bark)",
+                        cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+                        fontWeight: 500, transition: "all 0.2s ease",
+                      }}>{skill}</button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+
+            <div style={{ borderTop: "1px solid rgba(44,62,45,0.08)", paddingTop: 16, marginTop: 8 }}>
+              <p style={{ fontSize: 11, color: "var(--bark-light)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
+                Verification Level
+              </p>
+              {Object.entries(VERIFICATION_LEVELS).map(([key, val]) => (
+                <label key={key} style={{
+                  display: "flex", alignItems: "center", gap: 8, marginBottom: 8,
+                  fontSize: 13, color: "var(--bark)", cursor: "pointer",
+                }}>
+                  <input type="checkbox" defaultChecked={key !== "self"} style={{ accentColor: "var(--forest)" }} />
+                  {val.label}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div>
+          <div className="animate-up stagger-2" style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            marginBottom: 20,
+          }}>
+            <p style={{ fontSize: 14, color: "var(--bark-light)" }}>
+              <span style={{ fontWeight: 600, color: "var(--forest)" }}>4 practitioners</span> match your requirements
+            </p>
+            <span style={{ fontSize: 13, color: "var(--bark-light)" }}>Sorted by match strength</span>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {candidates.map((c, i) => (
+              <div key={i} className={`animate-up stagger-${i + 2}`} style={{
+                background: "var(--warm-white)", borderRadius: 16, padding: 24,
+                border: "1px solid rgba(44,62,45,0.06)",
+                boxShadow: "0 2px 16px var(--shadow)",
+                display: "flex", alignItems: "center", gap: 20,
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                cursor: "pointer",
+              }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 28px rgba(44,62,45,0.12)"; }}
+                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 16px var(--shadow)"; }}>
+                <div style={{
+                  width: 56, height: 56, borderRadius: 12,
+                  background: `linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "var(--gold)", fontFamily: "'Playfair Display', serif",
+                  fontSize: 18, fontWeight: 700, flexShrink: 0,
+                }}>{c.name.split(" ").map(n => n[0]).join("")}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+                    <span style={{ fontSize: 16, fontWeight: 600, color: "var(--forest)" }}>{c.name}</span>
+                    <VerifBadge level={c.verif} />
+                  </div>
+                  <p style={{ fontSize: 13, color: "var(--bark-light)", marginBottom: 8 }}>
+                    {c.title} · {c.location} · {c.years} years
+                  </p>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {c.skills.map(s => (
+                      <span key={s} style={{
+                        padding: "3px 10px", borderRadius: 16, fontSize: 11,
+                        background: selectedSkills.includes(s) ? "rgba(44,62,45,0.08)" : "var(--cream)",
+                        color: selectedSkills.includes(s) ? "var(--forest)" : "var(--bark-light)",
+                        fontWeight: selectedSkills.includes(s) ? 600 : 400,
+                        border: selectedSkills.includes(s) ? "1px solid rgba(44,62,45,0.15)" : "1px solid transparent",
+                      }}>{s}</span>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ textAlign: "center", flexShrink: 0 }}>
+                  <div style={{
+                    width: 52, height: 52, borderRadius: "50%",
+                    border: `3px solid ${c.match > 90 ? "var(--forest)" : c.match > 80 ? "var(--gold)" : "var(--sage)"}`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontWeight: 700, fontSize: 16,
+                    color: c.match > 90 ? "var(--forest)" : c.match > 80 ? "var(--gold)" : "var(--sage)",
+                  }}>{c.match}%</div>
+                  <span style={{ fontSize: 10, color: "var(--bark-light)", display: "block", marginTop: 4 }}>Match</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── POST A ROLE PAGE ───
+function PostRolePage() {
+  const [step, setStep] = useState(1);
+  const [selected, setSelected] = useState(["GMP (ISO 22716)", "EN 15493"]);
+
+  const toggleReq = (s) => setSelected(prev =>
+    prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]
+  );
+
+  return (
+    <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px 80px" }}>
+      <h1 className="animate-up" style={{
+        fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
+        marginBottom: 8,
+      }}>Post a Role</h1>
+      <p className="animate-up stagger-1" style={{ color: "var(--bark-light)", fontSize: 15, marginBottom: 36 }}>
+        Describe what you need by selecting capabilities. We'll match you with the right people.
+      </p>
+
+      {/* Progress */}
+      <div className="animate-up stagger-1" style={{ display: "flex", gap: 4, marginBottom: 40 }}>
+        {["Role Details", "Required Skills", "Preferences", "Review"].map((s, i) => (
+          <div key={i} style={{ flex: 1 }}>
+            <div style={{
+              height: 3, borderRadius: 2,
+              background: i + 1 <= step ? "var(--gold)" : "rgba(44,62,45,0.1)",
+              transition: "background 0.3s ease",
+            }} />
+            <p style={{
+              fontSize: 11, marginTop: 6, textTransform: "uppercase", letterSpacing: 0.8,
+              color: i + 1 <= step ? "var(--forest)" : "var(--bark-light)",
+              fontWeight: i + 1 === step ? 600 : 400,
+            }}>{s}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="animate-up stagger-2" style={{
+        background: "var(--warm-white)", borderRadius: 20, padding: 36,
+        border: "1px solid rgba(44,62,45,0.06)",
+        boxShadow: "0 2px 24px var(--shadow)",
+      }}>
+        {step === 1 && (
+          <>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)", marginBottom: 24 }}>
+              Tell us about the role
+            </h3>
+            {[
+              { label: "Role Title", placeholder: "e.g. QC Technician, Production Supervisor" },
+              { label: "Company", placeholder: "Your company name" },
+              { label: "Location", placeholder: "e.g. West Midlands, UK" },
+            ].map((field, i) => (
+              <div key={i} style={{ marginBottom: 20 }}>
+                <label style={{ fontSize: 13, fontWeight: 600, color: "var(--forest)", display: "block", marginBottom: 6 }}>{field.label}</label>
+                <input type="text" placeholder={field.placeholder} style={{
+                  width: "100%", padding: "12px 16px", borderRadius: 10,
+                  border: "1px solid rgba(44,62,45,0.15)", fontSize: 14,
+                  fontFamily: "'Source Sans 3', sans-serif", color: "var(--charcoal)",
+                  background: "var(--cream)", outline: "none",
+                  transition: "border-color 0.2s ease",
+                }} onFocus={e => e.target.style.borderColor = "var(--gold)"}
+                   onBlur={e => e.target.style.borderColor = "rgba(44,62,45,0.15)"} />
+              </div>
+            ))}
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "var(--forest)", display: "block", marginBottom: 6 }}>Role Type</label>
+              <div style={{ display: "flex", gap: 10 }}>
+                {["Permanent", "Contract", "Freelance / Project"].map(t => (
+                  <button key={t} style={{
+                    padding: "10px 20px", borderRadius: 10,
+                    border: t === "Permanent" ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
+                    background: t === "Permanent" ? "var(--forest)" : "transparent",
+                    color: t === "Permanent" ? "var(--cream)" : "var(--bark)",
+                    fontSize: 13, fontWeight: 500, cursor: "pointer",
+                    fontFamily: "'Source Sans 3', sans-serif",
+                  }}>{t}</button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)", marginBottom: 8 }}>
+              What skills does this role need?
+            </h3>
+            <p style={{ color: "var(--bark-light)", fontSize: 14, marginBottom: 24 }}>
+              Select from the taxonomy below. Required skills are matched against verified practitioner profiles.
+            </p>
+
+            {[
+              { cat: "Standards & Compliance", items: SKILL_TAGS.standards },
+              { cat: "Processes", items: SKILL_TAGS.processes.slice(0, 6) },
+              { cat: "Equipment", items: SKILL_TAGS.equipment.slice(0, 5) },
+            ].map(({ cat, items }) => (
+              <div key={cat} style={{ marginBottom: 24 }}>
+                <p style={{ fontSize: 12, color: "var(--bark-light)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>{cat}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {items.map(skill => {
+                    const sel = selected.includes(skill);
+                    return (
+                      <button key={skill} onClick={() => toggleReq(skill)} style={{
+                        padding: "8px 16px", borderRadius: 24, fontSize: 13,
+                        border: sel ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
+                        background: sel ? "var(--forest)" : "transparent",
+                        color: sel ? "var(--cream)" : "var(--bark)",
+                        cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+                        fontWeight: 500, transition: "all 0.2s ease",
+                        display: "flex", alignItems: "center", gap: 6,
+                      }}>
+                        {sel && <IconCheck size={14} />}{skill}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+
+            {selected.length > 0 && (
+              <div style={{
+                marginTop: 12, padding: 16, borderRadius: 12,
+                background: "var(--cream)", border: "1px solid rgba(44,62,45,0.08)",
+              }}>
+                <p style={{ fontSize: 12, fontWeight: 600, color: "var(--forest)", marginBottom: 8 }}>
+                  Selected Requirements ({selected.length})
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {selected.map(s => (
+                    <span key={s} onClick={() => toggleReq(s)} style={{
+                      padding: "5px 12px", borderRadius: 16, fontSize: 12,
+                      background: "var(--forest)", color: "var(--gold)",
+                      fontWeight: 500, cursor: "pointer",
+                      display: "flex", alignItems: "center", gap: 4,
+                    }}>{s} ×</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
+          {step > 1 && (
+            <button onClick={() => setStep(step - 1)} style={{
+              padding: "12px 24px", borderRadius: 8, border: "1px solid rgba(44,62,45,0.15)",
+              background: "transparent", color: "var(--bark)", fontSize: 14,
+              cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+            }}>Back</button>
+          )}
+          <button onClick={() => setStep(Math.min(step + 1, 4))} style={{
+            padding: "12px 28px", borderRadius: 8, border: "none",
+            background: "var(--gold)", color: "var(--forest)", fontSize: 14,
+            fontWeight: 600, cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+            marginLeft: "auto",
+          }}>
+            {step < 4 ? "Continue" : "Post Role"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── CONSULTANT DIRECTORY ───
+function ConsultantPage() {
+  const consultants = [
+    { name: "James Whitfield", specialty: "Skincare Formulation", location: "London", rate: "£650/day", avail: "3 days/week", years: 30, skills: ["Emulsion Formulation", "SPF Development", "Stability Testing", "ISO 22716"], bio: "Semi-retired cosmetic chemist. Thirty years formulating for leading skincare brands. Available for product development, stability programmes, and regulatory support." },
+    { name: "Helen Okafor", specialty: "GMP & Regulatory", location: "Birmingham", rate: "£550/day", avail: "Full time", years: 18, skills: ["GMP (ISO 22716)", "EU Cosmetics Regulation", "REACH", "Audit Preparation"], bio: "Former Head of Quality at two contract manufacturers. Specialises in GMP audit preparation, regulatory compliance reviews, and quality system implementation." },
+    { name: "Tom Ashworth", specialty: "Fragrance & Home", location: "Yorkshire", rate: "£480/day", avail: "Project basis", years: 22, skills: ["Fragrance Compounding", "IFRA Standards", "Candle Production", "Burn Testing"], bio: "Twenty-two years in fragrance and home products. Expert in fragrance loading optimisation, burn performance, and product development for retail brands." },
+  ];
+
+  return (
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 80px" }}>
+      <h1 className="animate-up" style={{
+        fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
+        marginBottom: 8,
+      }}>Consultant Directory</h1>
+      <p className="animate-up stagger-1" style={{ color: "var(--bark-light)", fontSize: 15, marginBottom: 36 }}>
+        Experienced specialists available for project work, audits, training, and advisory roles.
+      </p>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        {consultants.map((c, i) => (
+          <div key={i} className={`animate-up stagger-${i + 2}`} style={{
+            background: "var(--warm-white)", borderRadius: 20, padding: 32,
+            border: "1px solid rgba(44,62,45,0.06)",
+            boxShadow: "0 2px 20px var(--shadow)",
+            transition: "transform 0.2s ease",
+          }} onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
+             onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
+            <div style={{ display: "flex", gap: 20 }}>
+              <div style={{
+                width: 64, height: 64, borderRadius: 14,
+                background: "linear-gradient(135deg, var(--bark) 0%, var(--bark-light) 100%)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "var(--cream)", fontFamily: "'Playfair Display', serif",
+                fontSize: 20, fontWeight: 700, flexShrink: 0,
+              }}>{c.name.split(" ").map(n => n[0]).join("")}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4, flexWrap: "wrap", gap: 8 }}>
+                  <div>
+                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)" }}>{c.name}</h3>
+                    <p style={{ fontSize: 14, color: "var(--bark)", marginTop: 2 }}>{c.specialty} · {c.location} · {c.years} years</p>
+                  </div>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    <div style={{ textAlign: "right" }}>
+                      <p style={{ fontSize: 18, fontWeight: 700, color: "var(--forest)" }}>{c.rate}</p>
+                      <p style={{ fontSize: 12, color: "var(--bark-light)" }}>{c.avail}</p>
+                    </div>
+                  </div>
+                </div>
+                <p style={{ fontSize: 14, color: "var(--bark)", lineHeight: 1.7, margin: "12px 0 16px" }}>{c.bio}</p>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {c.skills.map(s => (
+                    <span key={s} style={{
+                      padding: "5px 14px", borderRadius: 20, fontSize: 12,
+                      background: "var(--cream)", color: "var(--forest)",
+                      fontWeight: 500, border: "1px solid rgba(44,62,45,0.1)",
+                    }}>{s}</span>
+                  ))}
+                </div>
+                <button style={{
+                  marginTop: 20, padding: "10px 24px", borderRadius: 8,
+                  background: "var(--forest)", color: "var(--cream)",
+                  border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer",
+                  fontFamily: "'Source Sans 3', sans-serif",
+                  transition: "background 0.2s ease",
+                }} onMouseEnter={e => e.target.style.background = "var(--forest-light)"}
+                   onMouseLeave={e => e.target.style.background = "var(--forest)"}>
+                  Send Enquiry
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN APP ───
+function BenchLabApp() {
+  const [page, setPage] = useState("home");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
+
+  return (
+    <>
+      <style>{grainCSS}</style>
+      <div className="grain-overlay" />
+      <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
+        <Nav page={page} setPage={setPage} />
+        {page === "home" && <HomePage setPage={setPage} />}
+        {page === "logbook" && <LogbookPage />}
+        {page === "search" && <SearchPage />}
+        {page === "post" && <PostRolePage />}
+        {page === "consultant" && <ConsultantPage />}
+
+        {/* Footer */}
+        <footer style={{
+          background: "var(--forest)", padding: "48px 24px",
+          textAlign: "center",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 16 }}>
+            <IconFlask size={20} />
+            <span style={{
+              fontFamily: "'Playfair Display', serif", fontSize: 18,
+              fontWeight: 700, color: "var(--cream)",
+            }}>BenchLab</span>
+          </div>
+          <p style={{ color: "var(--sage)", fontSize: 13, marginBottom: 4 }}>
+            The verified skills platform for craft &amp; formulation industries
+          </p>
+          <p style={{ color: "rgba(143,166,139,0.5)", fontSize: 12 }}>
+            What you can do matters more than what you say you can do.
+          </p>
+        </footer>
+      </div>
+    </>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<BenchLabApp />);
+</script>
+</body>
+</html>

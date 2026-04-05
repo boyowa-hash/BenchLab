@@ -15,7 +15,7 @@
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
 
-const PAGES = ["home", "logbook", "search", "post", "consultant"];
+const PAGES = ["home", "logbook", "search", "post", "consultant", "pricing", "stories"];
 
 // Subtle grain overlay as CSS
 const grainCSS = `
@@ -182,6 +182,8 @@ function Nav({ page, setPage }) {
             { id: "search", label: "Find Talent", icon: <IconSearch size={16} /> },
             { id: "post", label: "Post a Role", icon: <IconBriefcase size={16} /> },
             { id: "consultant", label: "Consultants", icon: <IconHammer size={16} /> },
+            { id: "pricing", label: "Pricing", icon: <IconStar size={16} /> },
+            { id: "stories", label: "Stories", icon: <IconUser size={16} /> },
           ].map(item => (
             <button key={item.id} onClick={() => setPage(item.id)} style={{
               background: page === item.id ? "var(--forest)" : "transparent",
@@ -452,6 +454,51 @@ function LogbookPage() {
               ))}
             </div>
             <p style={{ color: "var(--bark)", fontSize: 14, lineHeight: 1.7 }}>{profile.bio}</p>
+            <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+              <button onClick={() => {
+                const printWin = window.open('', '_blank');
+                const allSkills = Object.entries(profile.skills).map(([cat, skills]) =>
+                  `<h3 style="color:#263318;font-family:Georgia;margin:18px 0 8px;text-transform:capitalize;">${cat}</h3>
+                  <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">
+                  <tr style="background:#263318;color:white;"><th style="padding:6px 10px;text-align:left;font-size:12px;">Skill</th><th style="padding:6px 10px;text-align:left;font-size:12px;">Verification</th><th style="padding:6px 10px;text-align:left;font-size:12px;">Years</th></tr>
+                  ${skills.map((s, i) => `<tr style="background:${i % 2 === 0 ? '#F5F0E8' : 'white'}"><td style="padding:5px 10px;font-size:12px;">${s.name}</td><td style="padding:5px 10px;font-size:12px;">${s.level === 'employer' ? 'Employer Confirmed' : s.level === 'peer' ? 'Peer Verified' : s.level === 'cert' ? 'Certification Backed' : 'Self-Declared'}</td><td style="padding:5px 10px;font-size:12px;">${s.years} years</td></tr>`).join('')}
+                  </table>`
+                ).join('');
+                printWin.document.write(`<!DOCTYPE html><html><head><title>BenchLab Logbook - ${profile.name}</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:40px;color:#1A1A1A;}h1{font-family:Georgia;color:#263318;}h2{font-family:Georgia;color:#263318;font-size:18px;border-bottom:2px solid #C9A84C;padding-bottom:8px;}@media print{body{padding:20px;}}</style></head><body>
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #C9A84C;padding-bottom:16px;margin-bottom:24px;">
+                <div><h1 style="margin:0;font-size:28px;">BenchLab</h1><p style="color:#8B7355;font-size:12px;letter-spacing:2px;margin:4px 0 0;">CRAFTSPERSON'S LOGBOOK</p></div>
+                <div style="text-align:right;font-size:12px;color:#666;">Generated ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div></div>
+                <h2>Profile</h2>
+                <p><strong style="font-size:20px;color:#263318;">${profile.name}</strong></p>
+                <p>${profile.title} &middot; ${profile.location} &middot; ${profile.years} years bench experience</p>
+                <p style="line-height:1.6;margin:12px 0;">${profile.bio}</p>
+                <h2>Verified Skills</h2>
+                ${allSkills}
+                <h2>Peer Endorsements</h2>
+                ${profile.endorsements.map(e => `<div style="background:#F5F0E8;border-radius:8px;padding:16px;margin-bottom:12px;"><p style="font-style:italic;font-size:13px;line-height:1.6;">"${e.text}"</p><p style="font-size:12px;margin-top:8px;"><strong>${e.from}</strong> &middot; ${e.role}, ${e.company}</p></div>`).join('')}
+                <div style="margin-top:32px;padding-top:16px;border-top:1px solid #C9A84C;font-size:11px;color:#888;text-align:center;">BenchLab &middot; The Verified Skills Platform for Craft & Formulation Industries &middot; benchlab.co.uk</div>
+                </body></html>`);
+                printWin.document.close();
+                setTimeout(() => printWin.print(), 500);
+              }} style={{
+                background: "var(--forest)", color: "var(--cream)", border: "none",
+                padding: "10px 20px", borderRadius: 8, fontSize: 13, fontWeight: 600,
+                cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+                display: "flex", alignItems: "center", gap: 6,
+                transition: "background 0.2s ease",
+              }} onMouseEnter={e => e.target.style.background = "var(--forest-light)"}
+                 onMouseLeave={e => e.target.style.background = "var(--forest)"}>
+                <IconBook size={16} /> Download Logbook PDF
+              </button>
+              <button style={{
+                background: "transparent", color: "var(--forest)", 
+                border: "1px solid rgba(44,62,45,0.2)",
+                padding: "10px 20px", borderRadius: 8, fontSize: 13, fontWeight: 500,
+                cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
+              }}>
+                Share Profile Link
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -935,6 +982,354 @@ function ConsultantPage() {
   );
 }
 
+// ─── PRICING PAGE ───
+function PricingPage() {
+  const [annual, setAnnual] = useState(false);
+
+  const tiers = [
+    {
+      name: "Starter", price: annual ? 63 : 79, period: annual ? "/month (billed annually)" : "/month",
+      annualTotal: annual ? "£759/year — save £189" : "or £759/year (save 20%)",
+      desc: "For small manufacturers and artisan makers hiring occasionally.",
+      color: "var(--sage)", features: [
+        { text: "Basic taxonomy search with filters", included: true },
+        { text: "15 messages per month", included: true },
+        { text: "1 active job post", included: true },
+        { text: "3 saved searches", included: true },
+        { text: "1 shortlist", included: true },
+        { text: "Consultant directory (browse only)", included: true },
+        { text: "1 team seat", included: true },
+        { text: "Basic company profile", included: true },
+        { text: "Advanced match ranking", included: false },
+        { text: "Project briefs to consultants", included: false },
+        { text: "Priority support", included: false },
+      ],
+    },
+    {
+      name: "Professional", price: annual ? 159 : 199, period: annual ? "/month (billed annually)" : "/month",
+      annualTotal: annual ? "£1,910/year — save £478" : "or £1,910/year (save 20%)",
+      desc: "For mid-size manufacturers and contract houses hiring regularly.",
+      color: "var(--gold)", featured: true, features: [
+        { text: "Advanced search with match ranking", included: true },
+        { text: "50 messages per month", included: true },
+        { text: "5 active job posts", included: true },
+        { text: "Unlimited saved searches", included: true },
+        { text: "Unlimited shortlists", included: true },
+        { text: "Full consultant access + project briefs", included: true },
+        { text: "3 team seats", included: true },
+        { text: "Enhanced profile with verification badge", included: true },
+        { text: "Verification-level filtering", included: true },
+        { text: "Priority email support", included: true },
+        { text: "Dedicated account support", included: false },
+      ],
+    },
+    {
+      name: "Enterprise", price: annual ? 359 : 449, period: annual ? "/month (billed annually)" : "/month",
+      annualTotal: annual ? "£4,310/year — save £1,078" : "or £4,310/year (save 20%)",
+      desc: "For large manufacturers and multi-site operations.",
+      color: "var(--forest)", features: [
+        { text: "Everything in Professional", included: true },
+        { text: "Unlimited messages", included: true },
+        { text: "Unlimited job posts", included: true },
+        { text: "Priority access to new profiles", included: true },
+        { text: "Priority consultant matching", included: true },
+        { text: "10 team seats", included: true },
+        { text: "Premium featured company profile", included: true },
+        { text: "Dedicated account support", included: true },
+        { text: "Quarterly skills market report", included: true },
+        { text: "Custom onboarding", included: true },
+        { text: "Volume engagement discounts", included: true },
+      ],
+    },
+  ];
+
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px 80px" }}>
+      <div className="animate-up" style={{ textAlign: "center", marginBottom: 40 }}>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: "var(--forest)", marginBottom: 12 }}>
+          Simple, Transparent Pricing
+        </h1>
+        <p style={{ color: "var(--bark-light)", fontSize: 16, maxWidth: 560, margin: "0 auto 24px" }}>
+          Practitioners are always free. Employers pay for access to verified talent.
+          Less than the cost of one agency placement.
+        </p>
+
+        {/* Annual toggle */}
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 12, background: "var(--warm-white)", borderRadius: 30, padding: "4px 6px", border: "1px solid rgba(44,62,45,0.08)" }}>
+          <button onClick={() => setAnnual(false)} style={{
+            padding: "8px 20px", borderRadius: 24, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer",
+            background: !annual ? "var(--forest)" : "transparent",
+            color: !annual ? "var(--cream)" : "var(--bark-light)",
+            fontFamily: "'Source Sans 3', sans-serif",
+          }}>Monthly</button>
+          <button onClick={() => setAnnual(true)} style={{
+            padding: "8px 20px", borderRadius: 24, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer",
+            background: annual ? "var(--forest)" : "transparent",
+            color: annual ? "var(--cream)" : "var(--bark-light)",
+            fontFamily: "'Source Sans 3', sans-serif",
+          }}>Annual <span style={{ color: annual ? "var(--gold)" : "var(--sage)", fontSize: 11 }}>save 20%</span></button>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "start" }}>
+        {tiers.map((tier, i) => (
+          <div key={i} className={`animate-up stagger-${i + 2}`} style={{
+            background: "var(--warm-white)", borderRadius: 20, padding: 32,
+            border: tier.featured ? "2px solid var(--gold)" : "1px solid rgba(44,62,45,0.06)",
+            boxShadow: tier.featured ? "0 8px 40px rgba(201,168,76,0.15)" : "0 2px 20px var(--shadow)",
+            position: "relative",
+            transform: tier.featured ? "scale(1.03)" : "none",
+          }}>
+            {tier.featured && (
+              <div style={{
+                position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
+                background: "var(--gold)", color: "var(--forest)", padding: "4px 16px",
+                borderRadius: 20, fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
+                textTransform: "uppercase",
+              }}>Most Popular</div>
+            )}
+            <div style={{ color: tier.color, fontSize: 13, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>
+              {tier.name}
+            </div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 44, fontWeight: 700, color: "var(--forest)" }}>£{tier.price}</span>
+              <span style={{ fontSize: 14, color: "var(--bark-light)" }}>{tier.period}</span>
+            </div>
+            <p style={{ fontSize: 12, color: "var(--sage)", marginBottom: 16 }}>{tier.annualTotal}</p>
+            <p style={{ fontSize: 13, color: "var(--bark)", lineHeight: 1.6, marginBottom: 24, minHeight: 40 }}>{tier.desc}</p>
+            <button style={{
+              width: "100%", padding: "12px 24px", borderRadius: 8, border: "none",
+              background: tier.featured ? "var(--gold)" : "var(--forest)",
+              color: tier.featured ? "var(--forest)" : "var(--cream)",
+              fontSize: 14, fontWeight: 600, cursor: "pointer",
+              fontFamily: "'Source Sans 3', sans-serif", marginBottom: 24,
+            }}>Get Started</button>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {tier.features.map((f, fi) => (
+                <div key={fi} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <span style={{ color: f.included ? "var(--forest)" : "var(--cream-dark)", fontSize: 14, marginTop: 1, flexShrink: 0 }}>
+                    {f.included ? "✓" : "—"}
+                  </span>
+                  <span style={{ fontSize: 13, color: f.included ? "var(--bark)" : "var(--cream-dark)", lineHeight: 1.4 }}>{f.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Comparison to alternatives */}
+      <div className="animate-up stagger-5" style={{
+        marginTop: 56, background: "var(--forest)", borderRadius: 20, padding: "40px 36px",
+      }}>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: "var(--cream)", marginBottom: 8, textAlign: "center" }}>
+          How does this compare?
+        </h2>
+        <p style={{ color: "var(--sage)", fontSize: 14, textAlign: "center", marginBottom: 32 }}>
+          BenchLab costs less than one agency placement and gives you year-round access.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+          {[
+            { method: "Recruitment Agency", cost: "£4,000–£10,000", per: "per placement", note: "15–20% of salary" },
+            { method: "LinkedIn Recruiter", cost: "£8,000–£12,000", per: "per year per seat", note: "Not industry-specific" },
+            { method: "Indeed / Reed", cost: "£200–£500", per: "per listing + time", note: "Keyword-based, no verification" },
+            { method: "BenchLab Professional", cost: "£2,388", per: "per year (all-inclusive)", note: "Verified, capability-matched", highlight: true },
+          ].map((item, i) => (
+            <div key={i} style={{
+              background: item.highlight ? "rgba(201,168,76,0.15)" : "rgba(250,246,238,0.06)",
+              borderRadius: 12, padding: 20, textAlign: "center",
+              border: item.highlight ? "1px solid rgba(201,168,76,0.3)" : "1px solid rgba(250,246,238,0.08)",
+            }}>
+              <p style={{ fontSize: 12, color: item.highlight ? "var(--gold)" : "var(--sage)", fontWeight: 600, marginBottom: 8 }}>{item.method}</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "var(--cream)", fontWeight: 700, marginBottom: 4 }}>{item.cost}</p>
+              <p style={{ fontSize: 11, color: "var(--sage-light)", marginBottom: 8 }}>{item.per}</p>
+              <p style={{ fontSize: 11, color: item.highlight ? "var(--gold)" : "rgba(143,166,139,0.6)" }}>{item.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Consultant marketplace callout */}
+      <div className="animate-up stagger-6" style={{
+        marginTop: 32, background: "var(--warm-white)", borderRadius: 20, padding: "32px 36px",
+        border: "1px solid rgba(44,62,45,0.06)", boxShadow: "0 2px 20px var(--shadow)",
+        display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20,
+      }}>
+        <div>
+          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)", marginBottom: 8 }}>
+            Consultant Marketplace
+          </h3>
+          <p style={{ color: "var(--bark-light)", fontSize: 14, maxWidth: 500, lineHeight: 1.6 }}>
+            Access verified freelance specialists for project work, audits, training, and interim roles.
+            A 12.5% service charge applies to completed engagements, charged to the employer.
+            Consultants always receive their full quoted rate.
+          </p>
+        </div>
+        <div style={{
+          background: "var(--cream)", borderRadius: 12, padding: "16px 24px", textAlign: "center",
+          border: "1px solid rgba(44,62,45,0.08)",
+        }}>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "var(--forest)", fontWeight: 700 }}>12.5%</p>
+          <p style={{ fontSize: 12, color: "var(--bark-light)" }}>service charge on engagements</p>
+          <p style={{ fontSize: 11, color: "var(--sage)", marginTop: 4 }}>vs 25–40% agency markup</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SUCCESS STORIES PAGE ───
+function StoriesPage() {
+  const stories = [
+    {
+      type: "employer",
+      company: "Essence Contract Manufacturing",
+      person: "David Hargreaves",
+      role: "Operations Director",
+      location: "Manchester",
+      image: "DH",
+      headline: "Found a GMP-trained QC technician in four days instead of three months.",
+      quote: "We'd been trying to fill a QC role for twelve weeks through Reed and an agency. The agency sent us three candidates — one had food manufacturing GMP experience, not cosmetics. The other two had never operated our testing equipment. Within four days of posting on BenchLab, we had a shortlist of five practitioners, all with verified EN 15493 and cosmetic GMP experience. The person we hired had employer-confirmed skills from a competitor. We couldn't have found them on any other platform.",
+      stats: [
+        { label: "Time to shortlist", value: "4 days", sub: "vs 12 weeks previously" },
+        { label: "Cost saving", value: "£7,200", sub: "vs agency placement fee" },
+        { label: "Candidate quality", value: "5 of 5", sub: "verified matches" },
+      ],
+    },
+    {
+      type: "practitioner",
+      company: "",
+      person: "Sarah Mitchell",
+      role: "Senior Production Specialist",
+      location: "West Midlands",
+      image: "SM",
+      headline: "My twelve years of bench experience finally became visible.",
+      quote: "I've been making candles for twelve years — cold-pour, hot-pour, fragrance blending, filling lines, burn testing. None of that shows up on a normal CV. It just says 'Production Operative' or 'Manufacturing Technician.' On BenchLab, I built my Logbook in about eight minutes and it captures everything I actually know. Two former managers verified my skills. Within a week I had three employers reach out — all of them understood exactly what I could do before they even spoke to me. I've never had that experience on any other platform.",
+      stats: [
+        { label: "Profile build time", value: "8 min", sub: "" },
+        { label: "Skills verified", value: "14", sub: "by 2 former managers" },
+        { label: "Employer approaches", value: "3", sub: "within first week" },
+      ],
+    },
+    {
+      type: "consultant",
+      company: "Independent",
+      person: "James Whitfield",
+      role: "Cosmetic Chemist & Formulation Consultant",
+      location: "London",
+      image: "JW",
+      headline: "Went from invisible to fully booked in six weeks.",
+      quote: "After thirty years in skincare formulation, I semi-retired and wanted to do project work — formulation development, stability programmes, regulatory support. But I had no way to make myself visible to the brands that needed me. I wasn't on LinkedIn properly, and agencies don't really handle freelance chemists. I listed on BenchLab's consultant directory with my day rate and availability. Within six weeks I had three active projects — a startup skincare brand, a contract manufacturer needing stability testing support, and a regulatory compliance review. The platform essentially replaced my need to network.",
+      stats: [
+        { label: "Time to first engagement", value: "9 days", sub: "" },
+        { label: "Active projects", value: "3", sub: "within 6 weeks" },
+        { label: "Day rate achieved", value: "£650", sub: "full rate, no platform deduction" },
+      ],
+    },
+    {
+      type: "employer",
+      company: "Lumière Home Fragrances",
+      person: "Amara Osei",
+      role: "Founder & Creative Director",
+      location: "Bristol",
+      image: "AO",
+      headline: "As a small brand, I could never afford an agency. BenchLab changed that.",
+      quote: "We're a five-person candle company scaling from artisan to commercial production. We needed someone who could operate a semi-automated filling line and understood fragrance loading for soy wax. An agency wanted £6,000 to find someone — that's a quarter of our quarterly revenue. BenchLab Starter costs us £79 a month and we found exactly the right person in two weeks. She had peer-verified filling line experience and three years with coconut-soy blends. Perfect fit.",
+      stats: [
+        { label: "Monthly cost", value: "£79", sub: "vs £6,000 agency fee" },
+        { label: "Time to hire", value: "2 weeks", sub: "" },
+        { label: "Candidate match", value: "92%", sub: "skills matched" },
+      ],
+    },
+  ];
+
+  return (
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 80px" }}>
+      <div className="animate-up" style={{ textAlign: "center", marginBottom: 48 }}>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: "var(--forest)", marginBottom: 12 }}>
+          Success Stories
+        </h1>
+        <p style={{ color: "var(--bark-light)", fontSize: 16, maxWidth: 520, margin: "0 auto" }}>
+          How employers, practitioners, and consultants are using BenchLab to transform
+          how the craft and formulation industries find and hire talent.
+        </p>
+      </div>
+
+      {/* Story type filters */}
+      <div className="animate-up stagger-1" style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 40 }}>
+        {["All Stories", "Employers", "Practitioners", "Consultants"].map((label, i) => (
+          <button key={i} style={{
+            padding: "8px 18px", borderRadius: 20, border: i === 0 ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
+            background: i === 0 ? "var(--forest)" : "transparent",
+            color: i === 0 ? "var(--cream)" : "var(--bark)",
+            fontSize: 13, fontWeight: 500, cursor: "pointer",
+            fontFamily: "'Source Sans 3', sans-serif",
+          }}>{label}</button>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+        {stories.map((story, i) => (
+          <div key={i} className={`animate-up stagger-${i + 2}`} style={{
+            background: "var(--warm-white)", borderRadius: 20, overflow: "hidden",
+            border: "1px solid rgba(44,62,45,0.06)",
+            boxShadow: "0 2px 24px var(--shadow)",
+          }}>
+            {/* Header bar */}
+            <div style={{
+              background: story.type === "employer" ? "var(--forest)" : story.type === "consultant" ? "var(--bark)" : "linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)",
+              padding: "20px 28px", display: "flex", alignItems: "center", gap: 16,
+            }}>
+              <div style={{
+                width: 52, height: 52, borderRadius: 12,
+                background: "rgba(250,246,238,0.15)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "var(--gold)", fontFamily: "'Playfair Display', serif",
+                fontSize: 18, fontWeight: 700, flexShrink: 0,
+              }}>{story.image}</div>
+              <div>
+                <p style={{ fontSize: 16, fontWeight: 600, color: "var(--cream)" }}>{story.person}</p>
+                <p style={{ fontSize: 13, color: "var(--sage-light)" }}>
+                  {story.role}{story.company ? ` · ${story.company}` : ""} · {story.location}
+                </p>
+              </div>
+              <span style={{
+                marginLeft: "auto", padding: "4px 12px", borderRadius: 16,
+                fontSize: 11, fontWeight: 600, letterSpacing: 0.5, textTransform: "uppercase",
+                background: "rgba(201,168,76,0.2)", color: "var(--gold)",
+              }}>{story.type}</span>
+            </div>
+
+            <div style={{ padding: "28px 28px 24px" }}>
+              <h3 style={{
+                fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)",
+                marginBottom: 16, lineHeight: 1.4,
+              }}>"{story.headline}"</h3>
+
+              <p style={{
+                fontSize: 14, color: "var(--bark)", lineHeight: 1.75, marginBottom: 24,
+                fontStyle: "italic", position: "relative", paddingLeft: 0,
+              }}>{story.quote}</p>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+                {story.stats.map((stat, si) => (
+                  <div key={si} style={{
+                    background: "var(--cream)", borderRadius: 12, padding: "16px 20px", textAlign: "center",
+                  }}>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: "var(--forest)", fontWeight: 700 }}>{stat.value}</p>
+                    <p style={{ fontSize: 12, color: "var(--bark)", fontWeight: 500, marginTop: 2 }}>{stat.label}</p>
+                    {stat.sub && <p style={{ fontSize: 11, color: "var(--bark-light)", marginTop: 2 }}>{stat.sub}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN APP ───
 function BenchLabApp() {
   const [page, setPage] = useState("home");
@@ -954,6 +1349,8 @@ function BenchLabApp() {
         {page === "search" && <SearchPage />}
         {page === "post" && <PostRolePage />}
         {page === "consultant" && <ConsultantPage />}
+        {page === "pricing" && <PricingPage />}
+        {page === "stories" && <StoriesPage />}
 
         {/* Footer */}
         <footer style={{

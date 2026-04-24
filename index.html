@@ -3,1382 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BenchLab — Platform Prototype</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚗</text></svg>">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-<style>body { margin: 0; padding: 0; }</style>
+<title>BenchLab — The Verified Skills Platform for Craft & Formulation Industries</title>
+<meta name="description" content="A sector that employs hundreds of thousands of people, contributes £30 billion to GDP, and has zero dedicated talent infrastructure. BenchLab exists to change that.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2697;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#263318;--forest-mid:#2C3E2D;--forest-deep:#1A2610;
+  --gold:#C9A84C;--gold-soft:#D4B86A;--gold-pale:rgba(201,168,76,0.08);
+  --cream:#FAF6EE;--cream-mid:#F0EADB;--warm:#FDFCF8;
+  --bark:#5C4A3A;--bark-light:#8B7355;--charcoal:#2A2A28;
+  --sage:#8FA68B;--sage-light:#B5CBAE;--sage-muted:rgba(143,166,139,0.4);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Libre Franklin',sans-serif;background:var(--cream);color:var(--charcoal);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+.reveal-d4{transition-delay:.4s}.reveal-d5{transition-delay:.5s}
+
+nav{position:fixed;top:0;width:100%;z-index:100;transition:all 0.5s ease;padding:24px 0}
+nav.scrolled{background:rgba(250,246,238,0.94);backdrop-filter:blur(24px);padding:14px 0;
+  border-bottom:1px solid rgba(44,62,45,0.06)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);
+  text-decoration:none;display:flex;align-items:center;gap:10px;transition:color 0.4s;letter-spacing:-0.3px}
+nav.scrolled .logo{color:var(--forest)}
+.nav-link{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;
+  transition:all 0.3s;color:rgba(250,246,238,0.7);letter-spacing:0.3px}
+nav.scrolled .nav-link{color:var(--bark-light)}
+.nav-link:hover{color:var(--gold)}
+.nav-cta{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;
+  transition:all 0.3s;background:var(--gold);color:var(--forest);letter-spacing:0.3px}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;background:var(--forest);overflow:hidden}
+.hero-bg{position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(44,62,45,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(26,38,16,0.8) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 50%),
+    linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 100%)}
+.hero-line{position:absolute;background:linear-gradient(180deg,rgba(201,168,76,0.12) 0%,transparent 100%);width:1px}
+.hero-line-1{height:200px;top:80px;left:15%}
+.hero-line-2{height:300px;top:0;left:45%;opacity:0.5}
+.hero-line-3{height:150px;top:120px;right:20%;opacity:0.7}
+.hero-inner{max-width:1080px;margin:0 auto;padding:160px 40px 120px;position:relative;z-index:1}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:40px;animation:fadeDown 1s ease both 0.2s}
+.hero-eyebrow-line{width:40px;height:1px;background:var(--gold)}
+.hero-eyebrow span{font-size:11px;color:var(--gold-soft);letter-spacing:3px;text-transform:uppercase;font-weight:500}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,6vw,72px);color:var(--cream);
+  font-weight:700;line-height:1.08;margin-bottom:32px;max-width:680px;letter-spacing:-1.5px;animation:fadeDown 1s ease both 0.4s}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{font-size:clamp(16px,1.8vw,20px);color:var(--sage-light);line-height:1.7;
+  max-width:480px;margin-bottom:52px;font-weight:300;letter-spacing:0.2px;animation:fadeDown 1s ease both 0.6s}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeDown 1s ease both 0.8s}
+.btn-gold{padding:18px 40px;border-radius:10px;background:var(--gold);color:var(--forest);
+  font-size:15px;font-weight:600;text-decoration:none;transition:all 0.35s ease;
+  border:none;cursor:pointer;font-family:'Libre Franklin',sans-serif;letter-spacing:0.3px}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.35)}
+.btn-ghost{padding:18px 40px;border-radius:10px;background:transparent;color:var(--cream);
+  font-size:15px;font-weight:400;text-decoration:none;transition:all 0.35s ease;
+  border:1px solid rgba(250,246,238,0.15)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+@keyframes fadeDown{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+.stats{background:var(--forest-deep);position:relative;overflow:hidden}
+.stats::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(201,168,76,0.03) 0%,transparent 40%,transparent 60%,rgba(201,168,76,0.03) 100%)}
+.stats-inner{max-width:1080px;margin:0 auto;padding:64px 40px;display:flex;align-items:center;justify-content:center;gap:0}
+.stat{flex:1;text-align:center;padding:0 32px;position:relative}
+.stat+.stat::before{content:'';position:absolute;left:0;top:10%;height:80%;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(201,168,76,0.2),transparent)}
+.stat-number{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,56px);
+  font-weight:700;color:var(--cream);margin-bottom:6px;letter-spacing:-1px}
+.stat-number.gold{color:var(--gold)}
+.stat-label{font-size:13px;color:var(--sage);letter-spacing:0.5px;font-weight:400;line-height:1.5}
+
+.chapter{max-width:1080px;margin:0 auto;padding:120px 40px}
+.chapter-label{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.chapter-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--gold);
+  width:32px;height:32px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center}
+.chapter-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--bark-light);font-weight:600}
+.chapter h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);
+  color:var(--forest);line-height:1.2;margin-bottom:24px;max-width:620px;letter-spacing:-0.5px}
+.chapter h2 em{color:var(--gold);font-style:italic}
+.chapter-body{font-size:17px;color:var(--bark);line-height:1.8;max-width:600px;margin-bottom:56px;font-weight:300}
+
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pain-card{background:var(--warm);border-radius:16px;padding:36px 28px;
+  border:1px solid rgba(44,62,45,0.04);position:relative;overflow:hidden;
+  transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+.pain-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transition:transform 0.4s ease;transform-origin:left}
+.pain-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,62,45,0.08)}
+.pain-card:hover::before{transform:scaleX(1)}
+.pain-icon{font-size:28px;margin-bottom:20px;display:block}
+.pain-card h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--forest);margin-bottom:12px}
+.pain-card p{font-size:14px;color:var(--bark-light);line-height:1.7}
+
+.dark-section{background:var(--forest);position:relative;overflow:hidden}
+.dark-section .chapter{padding:120px 40px}
+.dark-section .chapter-title{color:var(--sage)}
+.dark-section .chapter h2{color:var(--cream)}
+.dark-section .chapter-body{color:var(--sage-light)}
+
+.logbook-preview{max-width:680px;margin:0 auto;background:var(--warm);border-radius:20px;
+  overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.3)}
+.logbook-header{background:linear-gradient(135deg,var(--forest-mid),var(--forest-deep));
+  padding:28px 32px;display:flex;align-items:center;gap:20px}
+.logbook-avatar{width:56px;height:56px;border-radius:14px;background:rgba(201,168,76,0.15);
+  display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;color:var(--gold);flex-shrink:0}
+.logbook-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);font-weight:600}
+.logbook-role{font-size:13px;color:var(--sage-light);margin-top:2px}
+.logbook-body{padding:24px 32px 28px}
+.logbook-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--bark-light);font-weight:600;margin-bottom:12px;margin-top:20px}
+.logbook-section-label:first-child{margin-top:0}
+.skill-row{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-radius:8px;margin-bottom:4px;transition:background 0.2s}
+.skill-row:nth-child(even){background:rgba(38,51,24,0.03)}
+.skill-name{font-size:14px;color:var(--charcoal);font-weight:500}
+.skill-meta{display:flex;align-items:center;gap:10px}
+.skill-years{font-size:12px;color:var(--bark-light)}
+.skill-badge{font-size:10px;padding:3px 10px;border-radius:12px;font-weight:600;letter-spacing:0.3px}
+.badge-employer{background:rgba(38,51,24,0.1);color:var(--forest)}
+.badge-peer{background:rgba(201,168,76,0.12);color:var(--gold)}
+.badge-cert{background:rgba(44,120,60,0.1);color:#2B7A3C}
+
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+.step{position:relative;padding:36px 28px;border-radius:16px;
+  background:rgba(250,246,238,0.05);border:1px solid rgba(250,246,238,0.06);transition:all 0.4s ease}
+.step:hover{background:rgba(250,246,238,0.09);border-color:rgba(201,168,76,0.15)}
+.step-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;
+  color:var(--gold);opacity:0.3;margin-bottom:16px;line-height:1}
+.step h3{font-size:17px;font-weight:600;color:var(--cream);margin-bottom:10px;letter-spacing:0.2px}
+.step p{font-size:14px;color:var(--sage);line-height:1.7;font-weight:300}
+
+.for-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.for-card{background:var(--warm);border-radius:16px;padding:40px 28px;
+  border:1px solid rgba(44,62,45,0.04);text-align:center;
+  transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+.for-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(44,62,45,0.08)}
+.for-icon{width:64px;height:64px;border-radius:16px;margin:0 auto 24px;
+  display:flex;align-items:center;justify-content:center;font-size:28px}
+.for-icon-1{background:linear-gradient(135deg,rgba(38,51,24,0.08),rgba(201,168,76,0.08))}
+.for-icon-2{background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(212,185,106,0.06))}
+.for-icon-3{background:linear-gradient(135deg,rgba(92,74,58,0.08),rgba(38,51,24,0.06))}
+.for-card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--forest);margin-bottom:12px}
+.for-card p{font-size:14px;color:var(--bark-light);line-height:1.7;margin-bottom:20px}
+.for-detail{font-size:13px;color:var(--bark);line-height:1.65;text-align:left;
+  background:var(--cream);border-radius:10px;padding:16px 20px}
+
+.industries{text-align:center;padding:80px 40px 100px}
+.industries h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--forest);margin-bottom:12px}
+.industries p{font-size:15px;color:var(--bark-light);margin-bottom:36px;font-weight:300}
+.ind-wrap{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;max-width:800px;margin:0 auto}
+.ind-pill{padding:14px 28px;border-radius:40px;font-size:14px;font-weight:500;
+  color:var(--forest);border:1px solid rgba(44,62,45,0.12);background:var(--warm);
+  transition:all 0.3s ease;cursor:default}
+.ind-pill:hover{background:var(--forest);color:var(--cream);border-color:var(--forest);transform:translateY(-2px)}
+
+.cta{background:var(--forest);position:relative;overflow:hidden;text-align:center;padding:100px 40px}
+.cta-orb{position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,0.06)}
+.cta-orb-1{width:500px;height:500px;top:-250px;left:-100px}
+.cta-orb-2{width:300px;height:300px;bottom:-100px;right:-50px}
+.cta-inner{position:relative;z-index:1;max-width:580px;margin:0 auto}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,40px);
+  color:var(--cream);margin-bottom:16px;line-height:1.25;letter-spacing:-0.5px}
+.cta p{font-size:16px;color:var(--sage-light);margin-bottom:40px;line-height:1.7;font-weight:300}
+.cta .btn-gold{font-size:16px;padding:20px 48px;border-radius:12px}
+.cta-email{margin-top:20px;font-size:13px;color:var(--sage-muted)}
+.cta-email a{color:var(--gold);text-decoration:none;transition:opacity 0.3s}
+.cta-email a:hover{opacity:0.8}
+
+footer{background:var(--charcoal);padding:52px 40px;text-align:center}
+.footer-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.footer-brand span{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--cream)}
+.footer-tagline{font-size:14px;color:var(--sage);font-style:italic;margin-bottom:6px;font-family:'Playfair Display',serif}
+.footer-desc{font-size:12px;color:rgba(143,166,139,0.35);margin-bottom:20px}
+.footer-contact a{font-size:13px;color:var(--gold);text-decoration:none;transition:opacity 0.3s}
+.footer-contact a:hover{opacity:0.7}
+
+@media(max-width:768px){
+  .pain-grid,.steps-grid,.for-grid{grid-template-columns:1fr}
+  .stats-inner{flex-direction:column;gap:32px}
+  .stat+.stat::before{display:none}
+  .hero-inner{padding:130px 24px 80px}
+  .chapter{padding:80px 24px}
+  .dark-section .chapter{padding:80px 24px}
+  .hero-actions{flex-direction:column}
+  .btn-gold,.btn-ghost{text-align:center;width:100%}
+  .logbook-preview{margin:0 -8px;border-radius:12px}
+  .nav-link{display:none}
+  nav{padding:16px 0}
+  .nav-inner{padding:0 24px}
+}
+</style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
 
-const PAGES = ["home", "logbook", "search", "post", "consultant", "pricing", "stories"];
-
-// Subtle grain overlay as CSS
-const grainCSS = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --forest: #2C3E2D;
-  --forest-light: #3A5240;
-  --gold: #C9A84C;
-  --gold-soft: #D4B86A;
-  --cream: #FAF6EE;
-  --cream-dark: #F0EADB;
-  --warm-white: #FDFCF8;
-  --bark: #5C4A3A;
-  --bark-light: #8B7355;
-  --charcoal: #2A2A28;
-  --sage: #8FA68B;
-  --sage-light: #B5CBAE;
-  --blush: #E8D5C4;
-  --amber: #D4956B;
-  --shadow: rgba(44,62,45,0.08);
-}
-
-body {
-  font-family: 'Source Sans 3', sans-serif;
-  background: var(--cream);
-  color: var(--charcoal);
-  -webkit-font-smoothing: antialiased;
-}
-
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-12px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-.animate-up {
-  animation: fadeUp 0.6s ease-out both;
-}
-
-.animate-fade {
-  animation: fadeIn 0.5s ease-out both;
-}
-
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
-`;
-
-// ─── Skill tags data ───
-const SKILL_TAGS = {
-  processes: ["Cold-Pour Candle Production", "Hot-Pour Candle Production", "Fragrance Compounding", "Emulsion Manufacturing", "Soap Saponification (Cold Process)", "Reed Diffuser Assembly", "Filling Line Operation", "Wax Melt Production", "SPF Formulation", "Stability Testing"],
-  materials: ["Soy Wax", "Coconut Wax", "Paraffin Wax", "Rapeseed Wax", "Essential Oils", "Synthetic Fragrance Oils", "Surfactants", "Emulsifiers", "Botanical Extracts", "Preservatives"],
-  equipment: ["Jacketed Mixing Vessels", "Planetary Mixers", "6-Head Filling Line", "Wicking Machines", "Labelling Machines", "Homogenisers", "pH Meters", "Viscometers"],
-  standards: ["GMP (ISO 22716)", "EN 15493", "EN 15426", "IFRA Standards", "EU Cosmetics Regulation", "REACH", "CLP Labelling", "ISO 9001"],
-};
-
-const VERIFICATION_LEVELS = {
-  "employer": { label: "Employer Confirmed", color: "#2C3E2D", bg: "#E8F0E8" },
-  "peer": { label: "Peer Verified", color: "#C9A84C", bg: "#FDF6E3" },
-  "cert": { label: "Certification Backed", color: "#5C4A3A", bg: "#F0E8DC" },
-  "self": { label: "Self-Declared", color: "#8B7355", bg: "#F5F0E8" },
-};
-
-// ─── Icons (inline SVGs) ───
-function IconFlask({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3h6M10 3v6.5L4 20h16L14 9.5V3"/><path d="M7.5 16h9" opacity="0.4"/></svg>;
-}
-function IconSearch({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>;
-}
-function IconUser({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>;
-}
-function IconBriefcase({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>;
-}
-function IconCheck({ size = 16 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"/></svg>;
-}
-function IconStar({ size = 16 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>;
-}
-function IconBook({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5z"/></svg>;
-}
-function IconCompass({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" opacity="0.15" stroke="currentColor"/></svg>;
-}
-function IconHammer({ size = 20 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12l-8.5 8.5a2.12 2.12 0 01-3-3L12 9"/><path d="M17.64 15L22 10.64a1 1 0 000-1.41l-7.23-7.23a1 1 0 00-1.41 0L9 6.36"/></svg>;
-}
-
-// ─── Verification Badge ───
-function VerifBadge({ level }) {
-  const v = VERIFICATION_LEVELS[level];
-  if (!v) return null;
-  return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 4,
-      padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
-      color: v.color, background: v.bg, letterSpacing: 0.3,
-    }}>
-      <IconCheck size={12} />{v.label}
-    </span>
-  );
-}
-
-// ─── Nav ───
-function Nav({ page, setPage }) {
-  return (
-    <nav style={{
-      position: "sticky", top: 0, zIndex: 100,
-      background: "rgba(250,246,238,0.92)", backdropFilter: "blur(16px)",
-      borderBottom: "1px solid rgba(44,62,45,0.08)",
-    }}>
-      <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "0 24px",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        height: 64,
-      }}>
-        <button onClick={() => setPage("home")} style={{
-          background: "none", border: "none", cursor: "pointer",
-          display: "flex", alignItems: "center", gap: 8,
-        }}>
-          <IconFlask size={24} />
-          <span style={{
-            fontFamily: "'Playfair Display', serif", fontSize: 22,
-            fontWeight: 700, color: "var(--forest)", letterSpacing: -0.5,
-          }}>BenchLab</span>
-        </button>
-        <div style={{ display: "flex", gap: 4 }}>
-          {[
-            { id: "home", label: "Home", icon: <IconCompass size={16} /> },
-            { id: "logbook", label: "Logbook", icon: <IconBook size={16} /> },
-            { id: "search", label: "Find Talent", icon: <IconSearch size={16} /> },
-            { id: "post", label: "Post a Role", icon: <IconBriefcase size={16} /> },
-            { id: "consultant", label: "Consultants", icon: <IconHammer size={16} /> },
-            { id: "pricing", label: "Pricing", icon: <IconStar size={16} /> },
-            { id: "stories", label: "Stories", icon: <IconUser size={16} /> },
-          ].map(item => (
-            <button key={item.id} onClick={() => setPage(item.id)} style={{
-              background: page === item.id ? "var(--forest)" : "transparent",
-              color: page === item.id ? "var(--cream)" : "var(--bark)",
-              border: "none", borderRadius: 8, padding: "8px 14px",
-              fontSize: 13, fontWeight: 500, cursor: "pointer",
-              display: "flex", alignItems: "center", gap: 6,
-              transition: "all 0.25s ease",
-              fontFamily: "'Source Sans 3', sans-serif",
-            }}>
-              {item.icon}{item.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-// ─── HOME PAGE ───
-function HomePage({ setPage }) {
-  return (
-    <div>
-      {/* Hero */}
-      <section style={{
-        position: "relative", overflow: "hidden",
-        background: "linear-gradient(160deg, var(--forest) 0%, #1E2E20 60%, var(--bark) 100%)",
-        padding: "100px 24px 80px", textAlign: "center",
-      }}>
-        {/* Decorative circles */}
-        <div style={{ position: "absolute", top: -120, right: -80, width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(201,168,76,0.12)" }} />
-        <div style={{ position: "absolute", bottom: -60, left: -40, width: 250, height: 250, borderRadius: "50%", border: "1px solid rgba(201,168,76,0.08)" }} />
-
-        <div className="animate-up" style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <div style={{
-            display: "inline-block", padding: "6px 18px", borderRadius: 24,
-            border: "1px solid rgba(201,168,76,0.3)", marginBottom: 28,
-            fontSize: 13, color: "var(--gold-soft)", letterSpacing: 1.5,
-            fontWeight: 500, textTransform: "uppercase",
-          }}>
-            For the craft &amp; formulation industries
-          </div>
-          <h1 style={{
-            fontFamily: "'Playfair Display', serif", fontSize: 56,
-            color: "var(--cream)", fontWeight: 700, lineHeight: 1.15,
-            marginBottom: 20, letterSpacing: -1,
-          }}>
-            What you can do<br />
-            <span style={{ color: "var(--gold)" }}>matters more</span><br />
-            than what you say.
-          </h1>
-          <p className="animate-up stagger-2" style={{
-            fontSize: 18, color: "var(--sage-light)", lineHeight: 1.7,
-            maxWidth: 540, margin: "0 auto 40px", fontWeight: 300,
-          }}>
-            BenchLab connects verified craftspeople, formulators, and production specialists
-            with employers who value proven expertise over polished CVs.
-          </p>
-          <div className="animate-up stagger-3" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => setPage("logbook")} style={{
-              background: "var(--gold)", color: "var(--forest)", border: "none",
-              padding: "14px 32px", borderRadius: 8, fontSize: 15, fontWeight: 600,
-              cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-              transition: "transform 0.2s ease",
-            }} onMouseEnter={e => e.target.style.transform = "translateY(-2px)"}
-               onMouseLeave={e => e.target.style.transform = "translateY(0)"}>
-              Build Your Logbook
-            </button>
-            <button onClick={() => setPage("search")} style={{
-              background: "transparent", color: "var(--cream)",
-              border: "1px solid rgba(250,246,238,0.25)",
-              padding: "14px 32px", borderRadius: 8, fontSize: 15, fontWeight: 500,
-              cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-              transition: "all 0.2s ease",
-            }} onMouseEnter={e => { e.target.style.borderColor = "var(--gold)"; e.target.style.color = "var(--gold)"; }}
-               onMouseLeave={e => { e.target.style.borderColor = "rgba(250,246,238,0.25)"; e.target.style.color = "var(--cream)"; }}>
-              Find Talent
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section style={{ maxWidth: 1000, margin: "0 auto", padding: "80px 24px" }}>
-        <h2 className="animate-up" style={{
-          fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
-          textAlign: "center", marginBottom: 12,
-        }}>Not a CV. A Craftsperson's Logbook.</h2>
-        <p className="animate-up stagger-1" style={{
-          textAlign: "center", color: "var(--bark-light)", fontSize: 16,
-          maxWidth: 560, margin: "0 auto 56px", lineHeight: 1.6,
-        }}>
-          Your BenchLab profile captures what generic platforms miss — the processes you've mastered,
-          the materials you know, and the standards you work to.
-        </p>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-          {[
-            {
-              icon: <IconBook size={28} />, title: "Build Your Logbook",
-              desc: "Select from industry-specific processes, materials, equipment, and standards. No keyword guessing — a taxonomy built by people who've worked the bench.",
-              color: "var(--forest)",
-            },
-            {
-              icon: <IconCheck size={28} />, title: "Get Verified",
-              desc: "Peers and former employers confirm your skills. Verification that means something — not a stranger clicking 'endorse' on a skill they've never seen you use.",
-              color: "var(--gold)",
-            },
-            {
-              icon: <IconSearch size={28} />, title: "Get Found",
-              desc: "Employers search by capability, not keywords. When a manufacturer needs someone who can run a six-head filler and understands GMP, they find you.",
-              color: "var(--amber)",
-            },
-          ].map((item, i) => (
-            <div key={i} className={`animate-up stagger-${i + 2}`} style={{
-              background: "var(--warm-white)", borderRadius: 16, padding: 36,
-              border: "1px solid rgba(44,62,45,0.06)",
-              boxShadow: "0 2px 20px var(--shadow)",
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-              cursor: "default",
-            }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(44,62,45,0.12)"; }}
-               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 20px var(--shadow)"; }}>
-              <div style={{ color: item.color, marginBottom: 16 }}>{item.icon}</div>
-              <h3 style={{
-                fontFamily: "'Playfair Display', serif", fontSize: 20,
-                color: "var(--forest)", marginBottom: 12,
-              }}>{item.title}</h3>
-              <p style={{ color: "var(--bark-light)", fontSize: 14, lineHeight: 1.7 }}>{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Industries */}
-      <section style={{ background: "var(--forest)", padding: "72px 24px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <h2 style={{
-            fontFamily: "'Playfair Display', serif", fontSize: 28, color: "var(--cream)",
-            textAlign: "center", marginBottom: 48,
-          }}>Built for your industry</h2>
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 16 }}>
-            {["Home Fragrance", "Fine & Functional Fragrance", "Skincare", "Personal Care & Toiletries", "Regulatory & Compliance"].map((ind, i) => (
-              <div key={i} style={{
-                padding: "14px 28px", borderRadius: 40,
-                border: "1px solid rgba(201,168,76,0.25)",
-                color: "var(--gold-soft)", fontSize: 14, fontWeight: 500,
-                letterSpacing: 0.5, transition: "all 0.3s ease", cursor: "default",
-              }} onMouseEnter={e => { e.target.style.background = "rgba(201,168,76,0.12)"; e.target.style.borderColor = "var(--gold)"; }}
-                 onMouseLeave={e => { e.target.style.background = "transparent"; e.target.style.borderColor = "rgba(201,168,76,0.25)"; }}>
-                {ind}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section style={{ padding: "64px 24px", background: "var(--cream-dark)" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, textAlign: "center" }}>
-          {[
-            { num: "142", label: "Verified Practitioners" },
-            { num: "38", label: "Registered Employers" },
-            { num: "24", label: "Active Consultants" },
-          ].map((s, i) => (
-            <div key={i}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 44, color: "var(--forest)", fontWeight: 700 }}>{s.num}</div>
-              <div style={{ color: "var(--bark-light)", fontSize: 14, marginTop: 4, letterSpacing: 0.5 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">&#x2697; BenchLab</a>
+    <div style="display:flex;align-items:center;gap:8px">
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#cta" class="nav-cta">Get Early Access</a>
     </div>
-  );
-}
+  </div>
+</nav>
 
-// ─── LOGBOOK PROFILE PAGE ───
-function LogbookPage() {
-  const [activeTab, setActiveTab] = useState("processes");
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line hero-line-1"></div>
+  <div class="hero-line hero-line-2"></div>
+  <div class="hero-line hero-line-3"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div><span>The Verified Skills Platform</span></div>
+    <h1>What you can do <em>matters more</em> than what you say you can do.</h1>
+    <p>BenchLab connects verified craftspeople, formulators, and production specialists with employers who need proven, bench-level expertise.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-gold">Register Your Interest</a>
+      <a href="#gap" class="btn-ghost">Read the Story</a>
+    </div>
+  </div>
+</section>
 
-  const profile = {
-    name: "Sarah Mitchell",
-    title: "Senior Production Specialist",
-    location: "West Midlands, UK",
-    years: 12,
-    sectors: ["Home Fragrance", "Personal Care"],
-    bio: "Twelve years in candle and fragrance manufacturing. Experienced across hand-pour artisan production and high-volume automated lines. GMP-trained with deep knowledge of wax behaviour, fragrance loading, and burn performance testing.",
-    skills: {
-      processes: [
-        { name: "Cold-Pour Candle Production", level: "employer", years: 10 },
-        { name: "Hot-Pour Candle Production", level: "employer", years: 8 },
-        { name: "Fragrance Compounding", level: "peer", years: 6 },
-        { name: "Reed Diffuser Assembly", level: "employer", years: 5 },
-        { name: "Filling Line Operation", level: "peer", years: 7 },
-        { name: "Wax Melt Production", level: "self", years: 4 },
-      ],
-      materials: [
-        { name: "Soy Wax", level: "employer", years: 10 },
-        { name: "Coconut Wax", level: "peer", years: 6 },
-        { name: "Paraffin Wax", level: "employer", years: 8 },
-        { name: "Essential Oils", level: "peer", years: 9 },
-        { name: "Synthetic Fragrance Oils", level: "employer", years: 10 },
-      ],
-      equipment: [
-        { name: "Jacketed Mixing Vessels", level: "employer", years: 8 },
-        { name: "6-Head Filling Line", level: "employer", years: 7 },
-        { name: "Wicking Machines", level: "peer", years: 9 },
-        { name: "Labelling Machines", level: "self", years: 5 },
-      ],
-      standards: [
-        { name: "EN 15493 (Fire Safety)", level: "cert", years: 10 },
-        { name: "GMP (ISO 22716)", level: "employer", years: 6 },
-        { name: "IFRA Standards", level: "peer", years: 5 },
-        { name: "CLP Labelling", level: "self", years: 4 },
-      ],
-    },
-    endorsements: [
-      { from: "Mark Thompson", role: "Production Director", company: "Wicks & Wax Ltd", text: "Sarah ran our production floor for three years. Her understanding of wax behaviour across different blends is exceptional." },
-      { from: "Priya Kapoor", role: "QC Manager", company: "Essence Contract Manufacturing", text: "Meticulous with quality control. She can spot a wick defect or fragrance imbalance before it reaches testing." },
-    ],
-  };
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat reveal"><div class="stat-number">&pound;30bn</div><div class="stat-label">Industry GDP contribution</div></div>
+    <div class="stat reveal reveal-d1"><div class="stat-number">496,000</div><div class="stat-label">People employed in the sector</div></div>
+    <div class="stat reveal reveal-d2"><div class="stat-number gold">Zero</div><div class="stat-label">Dedicated talent platforms</div></div>
+  </div>
+</section>
 
-  const tabs = [
-    { id: "processes", label: "Processes" },
-    { id: "materials", label: "Materials" },
-    { id: "equipment", label: "Equipment" },
-    { id: "standards", label: "Standards" },
-  ];
+<section class="chapter" id="gap">
+  <div class="chapter-label reveal"><div class="chapter-num">1</div><div class="chapter-title">The Gap</div></div>
+  <h2 class="reveal reveal-d1">A &pound;30 billion industry with <em>no way</em> to find its own people.</h2>
+  <p class="chapter-body reveal reveal-d2">The UK beauty, personal care, fragrance, and home fragrance industries form one of the fastest-growing sectors in the economy. Yet there is no platform &mdash; anywhere &mdash; where the skilled practitioners who manufacture these products can be found, verified, or hired based on what they can actually do.</p>
+  <div class="pain-grid">
+    <div class="pain-card reveal reveal-d2">
+      <span class="pain-icon">&#x1F50D;</span>
+      <h3>The Wrong Tools</h3>
+      <p>Job boards can&rsquo;t distinguish a cosmetic formulator from a food scientist. LinkedIn treats &ldquo;Production Operative&rdquo; as one role &mdash; it&rsquo;s actually hundreds of different skill profiles.</p>
+    </div>
+    <div class="pain-card reveal reveal-d3">
+      <span class="pain-icon">&#x23F3;</span>
+      <h3>Months of Searching</h3>
+      <p>Specialist production and formulation roles take 8&ndash;16 weeks to fill. Agencies charge &pound;4,000&ndash;&pound;10,000 per placement and still send mismatched candidates.</p>
+    </div>
+    <div class="pain-card reveal reveal-d4">
+      <span class="pain-icon">&#x1F47B;</span>
+      <h3>Invisible Talent</h3>
+      <p>Thousands of experienced practitioners &mdash; chandlers, soapmakers, fragrance compounders, QC technicians &mdash; are simply not findable on any existing platform. They find work through word of mouth. That&rsquo;s not a system.</p>
+    </div>
+  </div>
+</section>
 
-  return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 80px" }}>
-      {/* Profile header */}
-      <div className="animate-up" style={{
-        background: "var(--warm-white)", borderRadius: 20, padding: 40,
-        border: "1px solid rgba(44,62,45,0.06)",
-        boxShadow: "0 2px 24px var(--shadow)",
-        marginBottom: 32,
-      }}>
-        <div style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
-          <div style={{
-            width: 88, height: 88, borderRadius: 16,
-            background: "linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: "var(--gold)", fontSize: 32, fontFamily: "'Playfair Display', serif",
-            fontWeight: 700, flexShrink: 0,
-          }}>SM</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4, flexWrap: "wrap" }}>
-              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "var(--forest)" }}>
-                {profile.name}
-              </h1>
-              <span style={{
-                padding: "4px 12px", borderRadius: 20, fontSize: 11,
-                background: "var(--forest)", color: "var(--gold)",
-                fontWeight: 600, letterSpacing: 0.5, textTransform: "uppercase",
-              }}>Verified Profile</span>
-            </div>
-            <p style={{ color: "var(--bark)", fontSize: 16, marginBottom: 4 }}>{profile.title}</p>
-            <p style={{ color: "var(--bark-light)", fontSize: 14, marginBottom: 16 }}>
-              {profile.location} · {profile.years} years bench experience
-            </p>
-            <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-              {profile.sectors.map(s => (
-                <span key={s} style={{
-                  padding: "5px 14px", borderRadius: 20, fontSize: 12,
-                  background: "var(--cream)", color: "var(--forest)",
-                  fontWeight: 500, border: "1px solid rgba(44,62,45,0.1)",
-                }}>{s}</span>
-              ))}
-            </div>
-            <p style={{ color: "var(--bark)", fontSize: 14, lineHeight: 1.7 }}>{profile.bio}</p>
-            <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
-              <button onClick={() => {
-                const printWin = window.open('', '_blank');
-                const allSkills = Object.entries(profile.skills).map(([cat, skills]) =>
-                  `<h3 style="color:#263318;font-family:Georgia;margin:18px 0 8px;text-transform:capitalize;">${cat}</h3>
-                  <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">
-                  <tr style="background:#263318;color:white;"><th style="padding:6px 10px;text-align:left;font-size:12px;">Skill</th><th style="padding:6px 10px;text-align:left;font-size:12px;">Verification</th><th style="padding:6px 10px;text-align:left;font-size:12px;">Years</th></tr>
-                  ${skills.map((s, i) => `<tr style="background:${i % 2 === 0 ? '#F5F0E8' : 'white'}"><td style="padding:5px 10px;font-size:12px;">${s.name}</td><td style="padding:5px 10px;font-size:12px;">${s.level === 'employer' ? 'Employer Confirmed' : s.level === 'peer' ? 'Peer Verified' : s.level === 'cert' ? 'Certification Backed' : 'Self-Declared'}</td><td style="padding:5px 10px;font-size:12px;">${s.years} years</td></tr>`).join('')}
-                  </table>`
-                ).join('');
-                printWin.document.write(`<!DOCTYPE html><html><head><title>BenchLab Logbook - ${profile.name}</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:40px;color:#1A1A1A;}h1{font-family:Georgia;color:#263318;}h2{font-family:Georgia;color:#263318;font-size:18px;border-bottom:2px solid #C9A84C;padding-bottom:8px;}@media print{body{padding:20px;}}</style></head><body>
-                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #C9A84C;padding-bottom:16px;margin-bottom:24px;">
-                <div><h1 style="margin:0;font-size:28px;">BenchLab</h1><p style="color:#8B7355;font-size:12px;letter-spacing:2px;margin:4px 0 0;">CRAFTSPERSON'S LOGBOOK</p></div>
-                <div style="text-align:right;font-size:12px;color:#666;">Generated ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div></div>
-                <h2>Profile</h2>
-                <p><strong style="font-size:20px;color:#263318;">${profile.name}</strong></p>
-                <p>${profile.title} &middot; ${profile.location} &middot; ${profile.years} years bench experience</p>
-                <p style="line-height:1.6;margin:12px 0;">${profile.bio}</p>
-                <h2>Verified Skills</h2>
-                ${allSkills}
-                <h2>Peer Endorsements</h2>
-                ${profile.endorsements.map(e => `<div style="background:#F5F0E8;border-radius:8px;padding:16px;margin-bottom:12px;"><p style="font-style:italic;font-size:13px;line-height:1.6;">"${e.text}"</p><p style="font-size:12px;margin-top:8px;"><strong>${e.from}</strong> &middot; ${e.role}, ${e.company}</p></div>`).join('')}
-                <div style="margin-top:32px;padding-top:16px;border-top:1px solid #C9A84C;font-size:11px;color:#888;text-align:center;">BenchLab &middot; The Verified Skills Platform for Craft & Formulation Industries &middot; benchlab.co.uk</div>
-                </body></html>`);
-                printWin.document.close();
-                setTimeout(() => printWin.print(), 500);
-              }} style={{
-                background: "var(--forest)", color: "var(--cream)", border: "none",
-                padding: "10px 20px", borderRadius: 8, fontSize: 13, fontWeight: 600,
-                cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-                display: "flex", alignItems: "center", gap: 6,
-                transition: "background 0.2s ease",
-              }} onMouseEnter={e => e.target.style.background = "var(--forest-light)"}
-                 onMouseLeave={e => e.target.style.background = "var(--forest)"}>
-                <IconBook size={16} /> Download Logbook PDF
-              </button>
-              <button style={{
-                background: "transparent", color: "var(--forest)", 
-                border: "1px solid rgba(44,62,45,0.2)",
-                padding: "10px 20px", borderRadius: 8, fontSize: 13, fontWeight: 500,
-                cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-              }}>
-                Share Profile Link
-              </button>
-            </div>
-          </div>
-        </div>
+<section class="dark-section" id="how">
+  <div class="chapter">
+    <div class="chapter-label reveal"><div class="chapter-num">2</div><div class="chapter-title">The Solution</div></div>
+    <h2 class="reveal reveal-d1">Not a CV. A <em>Craftsperson&rsquo;s Logbook.</em></h2>
+    <p class="chapter-body reveal reveal-d2">BenchLab replaces the traditional CV with something the industry actually understands &mdash; a structured, verified record of what a practitioner knows how to do. Built around an industry-specific taxonomy of processes, materials, equipment, and standards.</p>
+    <div class="logbook-preview reveal reveal-d3">
+      <div class="logbook-header">
+        <div class="logbook-avatar">SM</div>
+        <div><div class="logbook-name">Sarah M.</div><div class="logbook-role">Senior Production Specialist &middot; West Midlands &middot; 12 years</div></div>
       </div>
-
-      {/* Skills tabs */}
-      <div className="animate-up stagger-1" style={{
-        background: "var(--warm-white)", borderRadius: 20, overflow: "hidden",
-        border: "1px solid rgba(44,62,45,0.06)",
-        boxShadow: "0 2px 24px var(--shadow)", marginBottom: 32,
-      }}>
-        <div style={{
-          display: "flex", borderBottom: "1px solid rgba(44,62,45,0.08)",
-          background: "var(--cream)",
-        }}>
-          <div style={{
-            padding: "16px 24px",
-            fontFamily: "'Playfair Display', serif", fontSize: 16, color: "var(--forest)",
-            fontWeight: 600, borderRight: "1px solid rgba(44,62,45,0.08)",
-            display: "flex", alignItems: "center", gap: 8,
-          }}>
-            <IconBook size={18} /> Logbook
-          </div>
-          {tabs.map(tab => (
-            <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
-              background: activeTab === tab.id ? "var(--warm-white)" : "transparent",
-              border: "none",
-              borderBottom: activeTab === tab.id ? "2px solid var(--gold)" : "2px solid transparent",
-              padding: "16px 20px", fontSize: 13, fontWeight: 500, cursor: "pointer",
-              color: activeTab === tab.id ? "var(--forest)" : "var(--bark-light)",
-              fontFamily: "'Source Sans 3', sans-serif",
-              transition: "all 0.2s ease",
-            }}>{tab.label}</button>
-          ))}
-        </div>
-
-        <div style={{ padding: 28 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {profile.skills[activeTab].map((skill, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "14px 20px", borderRadius: 12,
-                background: i % 2 === 0 ? "var(--cream)" : "transparent",
-                transition: "background 0.2s ease",
-              }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 16, flex: 1 }}>
-                  <span style={{ fontSize: 14, fontWeight: 500, color: "var(--charcoal)", minWidth: 220 }}>
-                    {skill.name}
-                  </span>
-                  <VerifBadge level={skill.level} />
-                </div>
-                <span style={{
-                  fontSize: 13, color: "var(--bark-light)",
-                  fontWeight: 500,
-                }}>
-                  {skill.years} {skill.years === 1 ? "year" : "years"}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Peer endorsements */}
-      <div className="animate-up stagger-2">
-        <h3 style={{
-          fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)",
-          marginBottom: 16,
-        }}>Peer Endorsements</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-          {profile.endorsements.map((e, i) => (
-            <div key={i} style={{
-              background: "var(--warm-white)", borderRadius: 16, padding: 28,
-              border: "1px solid rgba(44,62,45,0.06)",
-              boxShadow: "0 2px 16px var(--shadow)",
-              position: "relative",
-            }}>
-              <div style={{
-                position: "absolute", top: 16, right: 20,
-                fontFamily: "'Playfair Display', serif", fontSize: 48,
-                color: "var(--gold)", opacity: 0.2, lineHeight: 1,
-              }}>"</div>
-              <p style={{ fontSize: 14, color: "var(--bark)", lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
-                "{e.text}"
-              </p>
-              <div>
-                <p style={{ fontSize: 14, fontWeight: 600, color: "var(--forest)" }}>{e.from}</p>
-                <p style={{ fontSize: 13, color: "var(--bark-light)" }}>{e.role}, {e.company}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div class="logbook-body">
+        <div class="logbook-section-label">Processes</div>
+        <div class="skill-row"><span class="skill-name">Cold-Pour Container Candles</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
+        <div class="skill-row"><span class="skill-name">Fragrance Loading &amp; Blending</span><span class="skill-meta"><span class="skill-years">9 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
+        <div class="skill-row"><span class="skill-name">Burn Testing &amp; QC</span><span class="skill-meta"><span class="skill-years">8 yrs</span><span class="skill-badge badge-peer">Peer Verified</span></span></div>
+        <div class="logbook-section-label">Materials</div>
+        <div class="skill-row"><span class="skill-name">Soy Wax (multiple blends)</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
+        <div class="skill-row"><span class="skill-name">Synthetic Fragrance Oils</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-peer">Peer Verified</span></span></div>
+        <div class="logbook-section-label">Standards</div>
+        <div class="skill-row"><span class="skill-name">EN 15493 (Fire Safety)</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-cert">Certification</span></span></div>
+        <div class="skill-row"><span class="skill-name">GMP (ISO 22716)</span><span class="skill-meta"><span class="skill-years">6 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
       </div>
     </div>
-  );
-}
-
-// ─── SEARCH / FIND TALENT PAGE ───
-function SearchPage() {
-  const [selectedSkills, setSelectedSkills] = useState(["GMP (ISO 22716)", "Fragrance Compounding"]);
-  const [results, setResults] = useState(true);
-
-  const toggleSkill = (skill) => {
-    setSelectedSkills(prev =>
-      prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
-    );
-  };
-
-  const candidates = [
-    { name: "Sarah Mitchell", title: "Senior Production Specialist", location: "West Midlands", years: 12, match: 96, skills: ["GMP (ISO 22716)", "Fragrance Compounding", "Cold-Pour Candle Production"], verif: "employer" },
-    { name: "James Whitfield", title: "Cosmetic Chemist", location: "London", years: 30, match: 88, skills: ["GMP (ISO 22716)", "Fragrance Compounding", "Emulsion Manufacturing"], verif: "cert" },
-    { name: "Adama Diallo", title: "QC Technician", location: "Manchester", years: 7, match: 82, skills: ["GMP (ISO 22716)", "EN 15493", "Stability Testing"], verif: "peer" },
-    { name: "Rebecca Chen", title: "Fragrance Evaluator", location: "Surrey", years: 15, match: 78, skills: ["Fragrance Compounding", "IFRA Standards", "Essential Oils"], verif: "employer" },
-  ];
-
-  return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px 80px" }}>
-      <h1 className="animate-up" style={{
-        fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
-        marginBottom: 8,
-      }}>Find Talent</h1>
-      <p className="animate-up stagger-1" style={{ color: "var(--bark-light)", fontSize: 15, marginBottom: 32 }}>
-        Search by capability, not keywords. Select the skills you need and we'll match you with verified practitioners.
-      </p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 32 }}>
-        {/* Filters */}
-        <div className="animate-up stagger-2">
-          <div style={{
-            background: "var(--warm-white)", borderRadius: 16, padding: 24,
-            border: "1px solid rgba(44,62,45,0.06)",
-            boxShadow: "0 2px 20px var(--shadow)",
-          }}>
-            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "var(--forest)", marginBottom: 16 }}>
-              Required Skills
-            </h3>
-            {["Processes", "Standards", "Materials"].map((cat, ci) => (
-              <div key={cat} style={{ marginBottom: 20 }}>
-                <p style={{ fontSize: 11, color: "var(--bark-light)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>{cat}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {(cat === "Processes" ? SKILL_TAGS.processes.slice(0, 5) : cat === "Standards" ? SKILL_TAGS.standards.slice(0, 4) : SKILL_TAGS.materials.slice(0, 4)).map(skill => {
-                    const selected = selectedSkills.includes(skill);
-                    return (
-                      <button key={skill} onClick={() => toggleSkill(skill)} style={{
-                        padding: "6px 12px", borderRadius: 20, fontSize: 12,
-                        border: selected ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
-                        background: selected ? "var(--forest)" : "transparent",
-                        color: selected ? "var(--cream)" : "var(--bark)",
-                        cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-                        fontWeight: 500, transition: "all 0.2s ease",
-                      }}>{skill}</button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-
-            <div style={{ borderTop: "1px solid rgba(44,62,45,0.08)", paddingTop: 16, marginTop: 8 }}>
-              <p style={{ fontSize: 11, color: "var(--bark-light)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
-                Verification Level
-              </p>
-              {Object.entries(VERIFICATION_LEVELS).map(([key, val]) => (
-                <label key={key} style={{
-                  display: "flex", alignItems: "center", gap: 8, marginBottom: 8,
-                  fontSize: 13, color: "var(--bark)", cursor: "pointer",
-                }}>
-                  <input type="checkbox" defaultChecked={key !== "self"} style={{ accentColor: "var(--forest)" }} />
-                  {val.label}
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Results */}
-        <div>
-          <div className="animate-up stagger-2" style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            marginBottom: 20,
-          }}>
-            <p style={{ fontSize: 14, color: "var(--bark-light)" }}>
-              <span style={{ fontWeight: 600, color: "var(--forest)" }}>4 practitioners</span> match your requirements
-            </p>
-            <span style={{ fontSize: 13, color: "var(--bark-light)" }}>Sorted by match strength</span>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {candidates.map((c, i) => (
-              <div key={i} className={`animate-up stagger-${i + 2}`} style={{
-                background: "var(--warm-white)", borderRadius: 16, padding: 24,
-                border: "1px solid rgba(44,62,45,0.06)",
-                boxShadow: "0 2px 16px var(--shadow)",
-                display: "flex", alignItems: "center", gap: 20,
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                cursor: "pointer",
-              }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 28px rgba(44,62,45,0.12)"; }}
-                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 16px var(--shadow)"; }}>
-                <div style={{
-                  width: 56, height: 56, borderRadius: 12,
-                  background: `linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "var(--gold)", fontFamily: "'Playfair Display', serif",
-                  fontSize: 18, fontWeight: 700, flexShrink: 0,
-                }}>{c.name.split(" ").map(n => n[0]).join("")}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-                    <span style={{ fontSize: 16, fontWeight: 600, color: "var(--forest)" }}>{c.name}</span>
-                    <VerifBadge level={c.verif} />
-                  </div>
-                  <p style={{ fontSize: 13, color: "var(--bark-light)", marginBottom: 8 }}>
-                    {c.title} · {c.location} · {c.years} years
-                  </p>
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {c.skills.map(s => (
-                      <span key={s} style={{
-                        padding: "3px 10px", borderRadius: 16, fontSize: 11,
-                        background: selectedSkills.includes(s) ? "rgba(44,62,45,0.08)" : "var(--cream)",
-                        color: selectedSkills.includes(s) ? "var(--forest)" : "var(--bark-light)",
-                        fontWeight: selectedSkills.includes(s) ? 600 : 400,
-                        border: selectedSkills.includes(s) ? "1px solid rgba(44,62,45,0.15)" : "1px solid transparent",
-                      }}>{s}</span>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ textAlign: "center", flexShrink: 0 }}>
-                  <div style={{
-                    width: 52, height: 52, borderRadius: "50%",
-                    border: `3px solid ${c.match > 90 ? "var(--forest)" : c.match > 80 ? "var(--gold)" : "var(--sage)"}`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontWeight: 700, fontSize: 16,
-                    color: c.match > 90 ? "var(--forest)" : c.match > 80 ? "var(--gold)" : "var(--sage)",
-                  }}>{c.match}%</div>
-                  <span style={{ fontSize: 10, color: "var(--bark-light)", display: "block", marginTop: 4 }}>Match</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+    <div class="steps-grid">
+      <div class="step reveal"><div class="step-num">1</div><h3>Build your Logbook</h3><p>Select from an industry-specific skills taxonomy. Processes, materials, equipment, standards. No keyword guessing. Takes under 10 minutes.</p></div>
+      <div class="step reveal reveal-d1"><div class="step-num">2</div><h3>Get verified</h3><p>Former colleagues and managers confirm your specific capabilities. Real verification from people who&rsquo;ve seen you work &mdash; not strangers clicking &ldquo;endorse.&rdquo;</p></div>
+      <div class="step reveal reveal-d2"><div class="step-num">3</div><h3>Get found</h3><p>Employers search by capability: &ldquo;Show me someone with GMP experience, fragrance compounding, and 5 years on a filling line.&rdquo; Matched. Ranked. Contacted.</p></div>
     </div>
-  );
-}
+  </div>
+</section>
 
-// ─── POST A ROLE PAGE ───
-function PostRolePage() {
-  const [step, setStep] = useState(1);
-  const [selected, setSelected] = useState(["GMP (ISO 22716)", "EN 15493"]);
-
-  const toggleReq = (s) => setSelected(prev =>
-    prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]
-  );
-
-  return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px 80px" }}>
-      <h1 className="animate-up" style={{
-        fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
-        marginBottom: 8,
-      }}>Post a Role</h1>
-      <p className="animate-up stagger-1" style={{ color: "var(--bark-light)", fontSize: 15, marginBottom: 36 }}>
-        Describe what you need by selecting capabilities. We'll match you with the right people.
-      </p>
-
-      {/* Progress */}
-      <div className="animate-up stagger-1" style={{ display: "flex", gap: 4, marginBottom: 40 }}>
-        {["Role Details", "Required Skills", "Preferences", "Review"].map((s, i) => (
-          <div key={i} style={{ flex: 1 }}>
-            <div style={{
-              height: 3, borderRadius: 2,
-              background: i + 1 <= step ? "var(--gold)" : "rgba(44,62,45,0.1)",
-              transition: "background 0.3s ease",
-            }} />
-            <p style={{
-              fontSize: 11, marginTop: 6, textTransform: "uppercase", letterSpacing: 0.8,
-              color: i + 1 <= step ? "var(--forest)" : "var(--bark-light)",
-              fontWeight: i + 1 === step ? 600 : 400,
-            }}>{s}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="animate-up stagger-2" style={{
-        background: "var(--warm-white)", borderRadius: 20, padding: 36,
-        border: "1px solid rgba(44,62,45,0.06)",
-        boxShadow: "0 2px 24px var(--shadow)",
-      }}>
-        {step === 1 && (
-          <>
-            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)", marginBottom: 24 }}>
-              Tell us about the role
-            </h3>
-            {[
-              { label: "Role Title", placeholder: "e.g. QC Technician, Production Supervisor" },
-              { label: "Company", placeholder: "Your company name" },
-              { label: "Location", placeholder: "e.g. West Midlands, UK" },
-            ].map((field, i) => (
-              <div key={i} style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "var(--forest)", display: "block", marginBottom: 6 }}>{field.label}</label>
-                <input type="text" placeholder={field.placeholder} style={{
-                  width: "100%", padding: "12px 16px", borderRadius: 10,
-                  border: "1px solid rgba(44,62,45,0.15)", fontSize: 14,
-                  fontFamily: "'Source Sans 3', sans-serif", color: "var(--charcoal)",
-                  background: "var(--cream)", outline: "none",
-                  transition: "border-color 0.2s ease",
-                }} onFocus={e => e.target.style.borderColor = "var(--gold)"}
-                   onBlur={e => e.target.style.borderColor = "rgba(44,62,45,0.15)"} />
-              </div>
-            ))}
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: "var(--forest)", display: "block", marginBottom: 6 }}>Role Type</label>
-              <div style={{ display: "flex", gap: 10 }}>
-                {["Permanent", "Contract", "Freelance / Project"].map(t => (
-                  <button key={t} style={{
-                    padding: "10px 20px", borderRadius: 10,
-                    border: t === "Permanent" ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
-                    background: t === "Permanent" ? "var(--forest)" : "transparent",
-                    color: t === "Permanent" ? "var(--cream)" : "var(--bark)",
-                    fontSize: 13, fontWeight: 500, cursor: "pointer",
-                    fontFamily: "'Source Sans 3', sans-serif",
-                  }}>{t}</button>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-
-        {step === 2 && (
-          <>
-            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)", marginBottom: 8 }}>
-              What skills does this role need?
-            </h3>
-            <p style={{ color: "var(--bark-light)", fontSize: 14, marginBottom: 24 }}>
-              Select from the taxonomy below. Required skills are matched against verified practitioner profiles.
-            </p>
-
-            {[
-              { cat: "Standards & Compliance", items: SKILL_TAGS.standards },
-              { cat: "Processes", items: SKILL_TAGS.processes.slice(0, 6) },
-              { cat: "Equipment", items: SKILL_TAGS.equipment.slice(0, 5) },
-            ].map(({ cat, items }) => (
-              <div key={cat} style={{ marginBottom: 24 }}>
-                <p style={{ fontSize: 12, color: "var(--bark-light)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>{cat}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {items.map(skill => {
-                    const sel = selected.includes(skill);
-                    return (
-                      <button key={skill} onClick={() => toggleReq(skill)} style={{
-                        padding: "8px 16px", borderRadius: 24, fontSize: 13,
-                        border: sel ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
-                        background: sel ? "var(--forest)" : "transparent",
-                        color: sel ? "var(--cream)" : "var(--bark)",
-                        cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-                        fontWeight: 500, transition: "all 0.2s ease",
-                        display: "flex", alignItems: "center", gap: 6,
-                      }}>
-                        {sel && <IconCheck size={14} />}{skill}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-
-            {selected.length > 0 && (
-              <div style={{
-                marginTop: 12, padding: 16, borderRadius: 12,
-                background: "var(--cream)", border: "1px solid rgba(44,62,45,0.08)",
-              }}>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "var(--forest)", marginBottom: 8 }}>
-                  Selected Requirements ({selected.length})
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {selected.map(s => (
-                    <span key={s} onClick={() => toggleReq(s)} style={{
-                      padding: "5px 12px", borderRadius: 16, fontSize: 12,
-                      background: "var(--forest)", color: "var(--gold)",
-                      fontWeight: 500, cursor: "pointer",
-                      display: "flex", alignItems: "center", gap: 4,
-                    }}>{s} ×</span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
-          {step > 1 && (
-            <button onClick={() => setStep(step - 1)} style={{
-              padding: "12px 24px", borderRadius: 8, border: "1px solid rgba(44,62,45,0.15)",
-              background: "transparent", color: "var(--bark)", fontSize: 14,
-              cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-            }}>Back</button>
-          )}
-          <button onClick={() => setStep(Math.min(step + 1, 4))} style={{
-            padding: "12px 28px", borderRadius: 8, border: "none",
-            background: "var(--gold)", color: "var(--forest)", fontSize: 14,
-            fontWeight: 600, cursor: "pointer", fontFamily: "'Source Sans 3', sans-serif",
-            marginLeft: "auto",
-          }}>
-            {step < 4 ? "Continue" : "Post Role"}
-          </button>
-        </div>
-      </div>
+<section class="chapter">
+  <div class="chapter-label reveal"><div class="chapter-num">3</div><div class="chapter-title">Who It&rsquo;s For</div></div>
+  <h2 class="reveal reveal-d1">Three audiences. <em>One platform.</em></h2>
+  <p class="chapter-body reveal reveal-d2">BenchLab serves everyone in the hiring equation &mdash; the people with the skills, the companies that need them, and the specialists who work between projects.</p>
+  <div class="for-grid">
+    <div class="for-card reveal reveal-d2">
+      <div class="for-icon for-icon-1">&#x1F9EA;</div>
+      <h3>Practitioners</h3>
+      <p>Your twelve years of bench experience finally becomes visible.</p>
+      <div class="for-detail">Build a Logbook that captures what you actually know. Get verified by people who&rsquo;ve worked alongside you. Be found by employers who value capability over keywords. Always free.</div>
     </div>
-  );
-}
-
-// ─── CONSULTANT DIRECTORY ───
-function ConsultantPage() {
-  const consultants = [
-    { name: "James Whitfield", specialty: "Skincare Formulation", location: "London", rate: "£650/day", avail: "3 days/week", years: 30, skills: ["Emulsion Formulation", "SPF Development", "Stability Testing", "ISO 22716"], bio: "Semi-retired cosmetic chemist. Thirty years formulating for leading skincare brands. Available for product development, stability programmes, and regulatory support." },
-    { name: "Helen Okafor", specialty: "GMP & Regulatory", location: "Birmingham", rate: "£550/day", avail: "Full time", years: 18, skills: ["GMP (ISO 22716)", "EU Cosmetics Regulation", "REACH", "Audit Preparation"], bio: "Former Head of Quality at two contract manufacturers. Specialises in GMP audit preparation, regulatory compliance reviews, and quality system implementation." },
-    { name: "Tom Ashworth", specialty: "Fragrance & Home", location: "Yorkshire", rate: "£480/day", avail: "Project basis", years: 22, skills: ["Fragrance Compounding", "IFRA Standards", "Candle Production", "Burn Testing"], bio: "Twenty-two years in fragrance and home products. Expert in fragrance loading optimisation, burn performance, and product development for retail brands." },
-  ];
-
-  return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 80px" }}>
-      <h1 className="animate-up" style={{
-        fontFamily: "'Playfair Display', serif", fontSize: 32, color: "var(--forest)",
-        marginBottom: 8,
-      }}>Consultant Directory</h1>
-      <p className="animate-up stagger-1" style={{ color: "var(--bark-light)", fontSize: 15, marginBottom: 36 }}>
-        Experienced specialists available for project work, audits, training, and advisory roles.
-      </p>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        {consultants.map((c, i) => (
-          <div key={i} className={`animate-up stagger-${i + 2}`} style={{
-            background: "var(--warm-white)", borderRadius: 20, padding: 32,
-            border: "1px solid rgba(44,62,45,0.06)",
-            boxShadow: "0 2px 20px var(--shadow)",
-            transition: "transform 0.2s ease",
-          }} onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
-             onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
-            <div style={{ display: "flex", gap: 20 }}>
-              <div style={{
-                width: 64, height: 64, borderRadius: 14,
-                background: "linear-gradient(135deg, var(--bark) 0%, var(--bark-light) 100%)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--cream)", fontFamily: "'Playfair Display', serif",
-                fontSize: 20, fontWeight: 700, flexShrink: 0,
-              }}>{c.name.split(" ").map(n => n[0]).join("")}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4, flexWrap: "wrap", gap: 8 }}>
-                  <div>
-                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)" }}>{c.name}</h3>
-                    <p style={{ fontSize: 14, color: "var(--bark)", marginTop: 2 }}>{c.specialty} · {c.location} · {c.years} years</p>
-                  </div>
-                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <div style={{ textAlign: "right" }}>
-                      <p style={{ fontSize: 18, fontWeight: 700, color: "var(--forest)" }}>{c.rate}</p>
-                      <p style={{ fontSize: 12, color: "var(--bark-light)" }}>{c.avail}</p>
-                    </div>
-                  </div>
-                </div>
-                <p style={{ fontSize: 14, color: "var(--bark)", lineHeight: 1.7, margin: "12px 0 16px" }}>{c.bio}</p>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {c.skills.map(s => (
-                    <span key={s} style={{
-                      padding: "5px 14px", borderRadius: 20, fontSize: 12,
-                      background: "var(--cream)", color: "var(--forest)",
-                      fontWeight: 500, border: "1px solid rgba(44,62,45,0.1)",
-                    }}>{s}</span>
-                  ))}
-                </div>
-                <button style={{
-                  marginTop: 20, padding: "10px 24px", borderRadius: 8,
-                  background: "var(--forest)", color: "var(--cream)",
-                  border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                  fontFamily: "'Source Sans 3', sans-serif",
-                  transition: "background 0.2s ease",
-                }} onMouseEnter={e => e.target.style.background = "var(--forest-light)"}
-                   onMouseLeave={e => e.target.style.background = "var(--forest)"}>
-                  Send Enquiry
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div class="for-card reveal reveal-d3">
+      <div class="for-icon for-icon-2">&#x1F3ED;</div>
+      <h3>Employers</h3>
+      <p>Find the right person in days, not months.</p>
+      <div class="for-detail">Search by verified capability across processes, materials, equipment, and standards. See who actually has GMP experience in cosmetics &mdash; not food. Post roles that reach people no other platform can find. From &pound;79/month.</div>
     </div>
-  );
-}
-
-// ─── PRICING PAGE ───
-function PricingPage() {
-  const [annual, setAnnual] = useState(false);
-
-  const tiers = [
-    {
-      name: "Starter", price: annual ? 63 : 79, period: annual ? "/month (billed annually)" : "/month",
-      annualTotal: annual ? "£759/year — save £189" : "or £759/year (save 20%)",
-      desc: "For small manufacturers and artisan makers hiring occasionally.",
-      color: "var(--sage)", features: [
-        { text: "Basic taxonomy search with filters", included: true },
-        { text: "15 messages per month", included: true },
-        { text: "1 active job post", included: true },
-        { text: "3 saved searches", included: true },
-        { text: "1 shortlist", included: true },
-        { text: "Consultant directory (browse only)", included: true },
-        { text: "1 team seat", included: true },
-        { text: "Basic company profile", included: true },
-        { text: "Advanced match ranking", included: false },
-        { text: "Project briefs to consultants", included: false },
-        { text: "Priority support", included: false },
-      ],
-    },
-    {
-      name: "Professional", price: annual ? 159 : 199, period: annual ? "/month (billed annually)" : "/month",
-      annualTotal: annual ? "£1,910/year — save £478" : "or £1,910/year (save 20%)",
-      desc: "For mid-size manufacturers and contract houses hiring regularly.",
-      color: "var(--gold)", featured: true, features: [
-        { text: "Advanced search with match ranking", included: true },
-        { text: "50 messages per month", included: true },
-        { text: "5 active job posts", included: true },
-        { text: "Unlimited saved searches", included: true },
-        { text: "Unlimited shortlists", included: true },
-        { text: "Full consultant access + project briefs", included: true },
-        { text: "3 team seats", included: true },
-        { text: "Enhanced profile with verification badge", included: true },
-        { text: "Verification-level filtering", included: true },
-        { text: "Priority email support", included: true },
-        { text: "Dedicated account support", included: false },
-      ],
-    },
-    {
-      name: "Enterprise", price: annual ? 359 : 449, period: annual ? "/month (billed annually)" : "/month",
-      annualTotal: annual ? "£4,310/year — save £1,078" : "or £4,310/year (save 20%)",
-      desc: "For large manufacturers and multi-site operations.",
-      color: "var(--forest)", features: [
-        { text: "Everything in Professional", included: true },
-        { text: "Unlimited messages", included: true },
-        { text: "Unlimited job posts", included: true },
-        { text: "Priority access to new profiles", included: true },
-        { text: "Priority consultant matching", included: true },
-        { text: "10 team seats", included: true },
-        { text: "Premium featured company profile", included: true },
-        { text: "Dedicated account support", included: true },
-        { text: "Quarterly skills market report", included: true },
-        { text: "Custom onboarding", included: true },
-        { text: "Volume engagement discounts", included: true },
-      ],
-    },
-  ];
-
-  return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px 80px" }}>
-      <div className="animate-up" style={{ textAlign: "center", marginBottom: 40 }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: "var(--forest)", marginBottom: 12 }}>
-          Simple, Transparent Pricing
-        </h1>
-        <p style={{ color: "var(--bark-light)", fontSize: 16, maxWidth: 560, margin: "0 auto 24px" }}>
-          Practitioners are always free. Employers pay for access to verified talent.
-          Less than the cost of one agency placement.
-        </p>
-
-        {/* Annual toggle */}
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 12, background: "var(--warm-white)", borderRadius: 30, padding: "4px 6px", border: "1px solid rgba(44,62,45,0.08)" }}>
-          <button onClick={() => setAnnual(false)} style={{
-            padding: "8px 20px", borderRadius: 24, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer",
-            background: !annual ? "var(--forest)" : "transparent",
-            color: !annual ? "var(--cream)" : "var(--bark-light)",
-            fontFamily: "'Source Sans 3', sans-serif",
-          }}>Monthly</button>
-          <button onClick={() => setAnnual(true)} style={{
-            padding: "8px 20px", borderRadius: 24, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer",
-            background: annual ? "var(--forest)" : "transparent",
-            color: annual ? "var(--cream)" : "var(--bark-light)",
-            fontFamily: "'Source Sans 3', sans-serif",
-          }}>Annual <span style={{ color: annual ? "var(--gold)" : "var(--sage)", fontSize: 11 }}>save 20%</span></button>
-        </div>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "start" }}>
-        {tiers.map((tier, i) => (
-          <div key={i} className={`animate-up stagger-${i + 2}`} style={{
-            background: "var(--warm-white)", borderRadius: 20, padding: 32,
-            border: tier.featured ? "2px solid var(--gold)" : "1px solid rgba(44,62,45,0.06)",
-            boxShadow: tier.featured ? "0 8px 40px rgba(201,168,76,0.15)" : "0 2px 20px var(--shadow)",
-            position: "relative",
-            transform: tier.featured ? "scale(1.03)" : "none",
-          }}>
-            {tier.featured && (
-              <div style={{
-                position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
-                background: "var(--gold)", color: "var(--forest)", padding: "4px 16px",
-                borderRadius: 20, fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
-                textTransform: "uppercase",
-              }}>Most Popular</div>
-            )}
-            <div style={{ color: tier.color, fontSize: 13, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>
-              {tier.name}
-            </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 44, fontWeight: 700, color: "var(--forest)" }}>£{tier.price}</span>
-              <span style={{ fontSize: 14, color: "var(--bark-light)" }}>{tier.period}</span>
-            </div>
-            <p style={{ fontSize: 12, color: "var(--sage)", marginBottom: 16 }}>{tier.annualTotal}</p>
-            <p style={{ fontSize: 13, color: "var(--bark)", lineHeight: 1.6, marginBottom: 24, minHeight: 40 }}>{tier.desc}</p>
-            <button style={{
-              width: "100%", padding: "12px 24px", borderRadius: 8, border: "none",
-              background: tier.featured ? "var(--gold)" : "var(--forest)",
-              color: tier.featured ? "var(--forest)" : "var(--cream)",
-              fontSize: 14, fontWeight: 600, cursor: "pointer",
-              fontFamily: "'Source Sans 3', sans-serif", marginBottom: 24,
-            }}>Get Started</button>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {tier.features.map((f, fi) => (
-                <div key={fi} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <span style={{ color: f.included ? "var(--forest)" : "var(--cream-dark)", fontSize: 14, marginTop: 1, flexShrink: 0 }}>
-                    {f.included ? "✓" : "—"}
-                  </span>
-                  <span style={{ fontSize: 13, color: f.included ? "var(--bark)" : "var(--cream-dark)", lineHeight: 1.4 }}>{f.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Comparison to alternatives */}
-      <div className="animate-up stagger-5" style={{
-        marginTop: 56, background: "var(--forest)", borderRadius: 20, padding: "40px 36px",
-      }}>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: "var(--cream)", marginBottom: 8, textAlign: "center" }}>
-          How does this compare?
-        </h2>
-        <p style={{ color: "var(--sage)", fontSize: 14, textAlign: "center", marginBottom: 32 }}>
-          BenchLab costs less than one agency placement and gives you year-round access.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-          {[
-            { method: "Recruitment Agency", cost: "£4,000–£10,000", per: "per placement", note: "15–20% of salary" },
-            { method: "LinkedIn Recruiter", cost: "£8,000–£12,000", per: "per year per seat", note: "Not industry-specific" },
-            { method: "Indeed / Reed", cost: "£200–£500", per: "per listing + time", note: "Keyword-based, no verification" },
-            { method: "BenchLab Professional", cost: "£2,388", per: "per year (all-inclusive)", note: "Verified, capability-matched", highlight: true },
-          ].map((item, i) => (
-            <div key={i} style={{
-              background: item.highlight ? "rgba(201,168,76,0.15)" : "rgba(250,246,238,0.06)",
-              borderRadius: 12, padding: 20, textAlign: "center",
-              border: item.highlight ? "1px solid rgba(201,168,76,0.3)" : "1px solid rgba(250,246,238,0.08)",
-            }}>
-              <p style={{ fontSize: 12, color: item.highlight ? "var(--gold)" : "var(--sage)", fontWeight: 600, marginBottom: 8 }}>{item.method}</p>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "var(--cream)", fontWeight: 700, marginBottom: 4 }}>{item.cost}</p>
-              <p style={{ fontSize: 11, color: "var(--sage-light)", marginBottom: 8 }}>{item.per}</p>
-              <p style={{ fontSize: 11, color: item.highlight ? "var(--gold)" : "rgba(143,166,139,0.6)" }}>{item.note}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Consultant marketplace callout */}
-      <div className="animate-up stagger-6" style={{
-        marginTop: 32, background: "var(--warm-white)", borderRadius: 20, padding: "32px 36px",
-        border: "1px solid rgba(44,62,45,0.06)", boxShadow: "0 2px 20px var(--shadow)",
-        display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20,
-      }}>
-        <div>
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)", marginBottom: 8 }}>
-            Consultant Marketplace
-          </h3>
-          <p style={{ color: "var(--bark-light)", fontSize: 14, maxWidth: 500, lineHeight: 1.6 }}>
-            Access verified freelance specialists for project work, audits, training, and interim roles.
-            A 12.5% service charge applies to completed engagements, charged to the employer.
-            Consultants always receive their full quoted rate.
-          </p>
-        </div>
-        <div style={{
-          background: "var(--cream)", borderRadius: 12, padding: "16px 24px", textAlign: "center",
-          border: "1px solid rgba(44,62,45,0.08)",
-        }}>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "var(--forest)", fontWeight: 700 }}>12.5%</p>
-          <p style={{ fontSize: 12, color: "var(--bark-light)" }}>service charge on engagements</p>
-          <p style={{ fontSize: 11, color: "var(--sage)", marginTop: 4 }}>vs 25–40% agency markup</p>
-        </div>
-      </div>
+    <div class="for-card reveal reveal-d4">
+      <div class="for-icon for-icon-3">&#x1F4BC;</div>
+      <h3>Consultants</h3>
+      <p>Go from invisible to fully booked.</p>
+      <div class="for-detail">List your specialism, day rate, and availability in a searchable directory. Receive relevant project briefs. Build a track record that attracts repeat work. No platform deduction from your rate.</div>
     </div>
-  );
-}
+  </div>
+</section>
 
-// ─── SUCCESS STORIES PAGE ───
-function StoriesPage() {
-  const stories = [
-    {
-      type: "employer",
-      company: "Essence Contract Manufacturing",
-      person: "David Hargreaves",
-      role: "Operations Director",
-      location: "Manchester",
-      image: "DH",
-      headline: "Found a GMP-trained QC technician in four days instead of three months.",
-      quote: "We'd been trying to fill a QC role for twelve weeks through Reed and an agency. The agency sent us three candidates — one had food manufacturing GMP experience, not cosmetics. The other two had never operated our testing equipment. Within four days of posting on BenchLab, we had a shortlist of five practitioners, all with verified EN 15493 and cosmetic GMP experience. The person we hired had employer-confirmed skills from a competitor. We couldn't have found them on any other platform.",
-      stats: [
-        { label: "Time to shortlist", value: "4 days", sub: "vs 12 weeks previously" },
-        { label: "Cost saving", value: "£7,200", sub: "vs agency placement fee" },
-        { label: "Candidate quality", value: "5 of 5", sub: "verified matches" },
-      ],
-    },
-    {
-      type: "practitioner",
-      company: "",
-      person: "Sarah Mitchell",
-      role: "Senior Production Specialist",
-      location: "West Midlands",
-      image: "SM",
-      headline: "My twelve years of bench experience finally became visible.",
-      quote: "I've been making candles for twelve years — cold-pour, hot-pour, fragrance blending, filling lines, burn testing. None of that shows up on a normal CV. It just says 'Production Operative' or 'Manufacturing Technician.' On BenchLab, I built my Logbook in about eight minutes and it captures everything I actually know. Two former managers verified my skills. Within a week I had three employers reach out — all of them understood exactly what I could do before they even spoke to me. I've never had that experience on any other platform.",
-      stats: [
-        { label: "Profile build time", value: "8 min", sub: "" },
-        { label: "Skills verified", value: "14", sub: "by 2 former managers" },
-        { label: "Employer approaches", value: "3", sub: "within first week" },
-      ],
-    },
-    {
-      type: "consultant",
-      company: "Independent",
-      person: "James Whitfield",
-      role: "Cosmetic Chemist & Formulation Consultant",
-      location: "London",
-      image: "JW",
-      headline: "Went from invisible to fully booked in six weeks.",
-      quote: "After thirty years in skincare formulation, I semi-retired and wanted to do project work — formulation development, stability programmes, regulatory support. But I had no way to make myself visible to the brands that needed me. I wasn't on LinkedIn properly, and agencies don't really handle freelance chemists. I listed on BenchLab's consultant directory with my day rate and availability. Within six weeks I had three active projects — a startup skincare brand, a contract manufacturer needing stability testing support, and a regulatory compliance review. The platform essentially replaced my need to network.",
-      stats: [
-        { label: "Time to first engagement", value: "9 days", sub: "" },
-        { label: "Active projects", value: "3", sub: "within 6 weeks" },
-        { label: "Day rate achieved", value: "£650", sub: "full rate, no platform deduction" },
-      ],
-    },
-    {
-      type: "employer",
-      company: "Lumière Home Fragrances",
-      person: "Amara Osei",
-      role: "Founder & Creative Director",
-      location: "Bristol",
-      image: "AO",
-      headline: "As a small brand, I could never afford an agency. BenchLab changed that.",
-      quote: "We're a five-person candle company scaling from artisan to commercial production. We needed someone who could operate a semi-automated filling line and understood fragrance loading for soy wax. An agency wanted £6,000 to find someone — that's a quarter of our quarterly revenue. BenchLab Starter costs us £79 a month and we found exactly the right person in two weeks. She had peer-verified filling line experience and three years with coconut-soy blends. Perfect fit.",
-      stats: [
-        { label: "Monthly cost", value: "£79", sub: "vs £6,000 agency fee" },
-        { label: "Time to hire", value: "2 weeks", sub: "" },
-        { label: "Candidate match", value: "92%", sub: "skills matched" },
-      ],
-    },
-  ];
+<section class="industries reveal">
+  <h2>Built for your industry</h2>
+  <p>Purpose-built for the sectors that make the products people use every day.</p>
+  <div class="ind-wrap">
+    <span class="ind-pill">Home Fragrance &amp; Candles</span>
+    <span class="ind-pill">Skincare &amp; Personal Care</span>
+    <span class="ind-pill">Fine &amp; Functional Fragrance</span>
+    <span class="ind-pill">Toiletries &amp; Soap</span>
+    <span class="ind-pill">Quality, Regulatory &amp; Testing</span>
+  </div>
+</section>
 
-  return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px 80px" }}>
-      <div className="animate-up" style={{ textAlign: "center", marginBottom: 48 }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: "var(--forest)", marginBottom: 12 }}>
-          Success Stories
-        </h1>
-        <p style={{ color: "var(--bark-light)", fontSize: 16, maxWidth: 520, margin: "0 auto" }}>
-          How employers, practitioners, and consultants are using BenchLab to transform
-          how the craft and formulation industries find and hire talent.
-        </p>
-      </div>
+<section class="cta" id="cta">
+  <div class="cta-orb cta-orb-1"></div>
+  <div class="cta-orb cta-orb-2"></div>
+  <div class="cta-inner reveal">
+    <h2>We&rsquo;re building BenchLab for&nbsp;people&nbsp;like&nbsp;you.</h2>
+    <p>Whether you&rsquo;re a practitioner who wants to be found for what you can do, an employer tired of hiring the wrong people, or a consultant who deserves to be visible &mdash; we&rsquo;d love to hear from you.</p>
+    <a href="mailto:boyowa@thebenchlab.co.uk?subject=BenchLab%20%E2%80%94%20I%27m%20interested" class="btn-gold">Register Your Interest</a>
+    <div class="cta-email">Or email us directly at <a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
+  </div>
+</section>
 
-      {/* Story type filters */}
-      <div className="animate-up stagger-1" style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 40 }}>
-        {["All Stories", "Employers", "Practitioners", "Consultants"].map((label, i) => (
-          <button key={i} style={{
-            padding: "8px 18px", borderRadius: 20, border: i === 0 ? "1.5px solid var(--forest)" : "1px solid rgba(44,62,45,0.15)",
-            background: i === 0 ? "var(--forest)" : "transparent",
-            color: i === 0 ? "var(--cream)" : "var(--bark)",
-            fontSize: 13, fontWeight: 500, cursor: "pointer",
-            fontFamily: "'Source Sans 3', sans-serif",
-          }}>{label}</button>
-        ))}
-      </div>
+<footer>
+  <div class="footer-brand"><span>&#x2697; BenchLab</span></div>
+  <div class="footer-tagline">What you can do matters more than what you say you can do.</div>
+  <div class="footer-desc">The verified skills platform for craft &amp; formulation industries</div>
+  <div class="footer-contact"><a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
+</footer>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-        {stories.map((story, i) => (
-          <div key={i} className={`animate-up stagger-${i + 2}`} style={{
-            background: "var(--warm-white)", borderRadius: 20, overflow: "hidden",
-            border: "1px solid rgba(44,62,45,0.06)",
-            boxShadow: "0 2px 24px var(--shadow)",
-          }}>
-            {/* Header bar */}
-            <div style={{
-              background: story.type === "employer" ? "var(--forest)" : story.type === "consultant" ? "var(--bark)" : "linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)",
-              padding: "20px 28px", display: "flex", alignItems: "center", gap: 16,
-            }}>
-              <div style={{
-                width: 52, height: 52, borderRadius: 12,
-                background: "rgba(250,246,238,0.15)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--gold)", fontFamily: "'Playfair Display', serif",
-                fontSize: 18, fontWeight: 700, flexShrink: 0,
-              }}>{story.image}</div>
-              <div>
-                <p style={{ fontSize: 16, fontWeight: 600, color: "var(--cream)" }}>{story.person}</p>
-                <p style={{ fontSize: 13, color: "var(--sage-light)" }}>
-                  {story.role}{story.company ? ` · ${story.company}` : ""} · {story.location}
-                </p>
-              </div>
-              <span style={{
-                marginLeft: "auto", padding: "4px 12px", borderRadius: 16,
-                fontSize: 11, fontWeight: 600, letterSpacing: 0.5, textTransform: "uppercase",
-                background: "rgba(201,168,76,0.2)", color: "var(--gold)",
-              }}>{story.type}</span>
-            </div>
-
-            <div style={{ padding: "28px 28px 24px" }}>
-              <h3 style={{
-                fontFamily: "'Playfair Display', serif", fontSize: 20, color: "var(--forest)",
-                marginBottom: 16, lineHeight: 1.4,
-              }}>"{story.headline}"</h3>
-
-              <p style={{
-                fontSize: 14, color: "var(--bark)", lineHeight: 1.75, marginBottom: 24,
-                fontStyle: "italic", position: "relative", paddingLeft: 0,
-              }}>{story.quote}</p>
-
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-                {story.stats.map((stat, si) => (
-                  <div key={si} style={{
-                    background: "var(--cream)", borderRadius: 12, padding: "16px 20px", textAlign: "center",
-                  }}>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: "var(--forest)", fontWeight: 700 }}>{stat.value}</p>
-                    <p style={{ fontSize: 12, color: "var(--bark)", fontWeight: 500, marginTop: 2 }}>{stat.label}</p>
-                    {stat.sub && <p style={{ fontSize: 11, color: "var(--bark-light)", marginTop: 2 }}>{stat.sub}</p>}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── MAIN APP ───
-function BenchLabApp() {
-  const [page, setPage] = useState("home");
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
-
-  return (
-    <>
-      <style>{grainCSS}</style>
-      <div className="grain-overlay" />
-      <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
-        <Nav page={page} setPage={setPage} />
-        {page === "home" && <HomePage setPage={setPage} />}
-        {page === "logbook" && <LogbookPage />}
-        {page === "search" && <SearchPage />}
-        {page === "post" && <PostRolePage />}
-        {page === "consultant" && <ConsultantPage />}
-        {page === "pricing" && <PricingPage />}
-        {page === "stories" && <StoriesPage />}
-
-        {/* Footer */}
-        <footer style={{
-          background: "var(--forest)", padding: "48px 24px",
-          textAlign: "center",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 16 }}>
-            <IconFlask size={20} />
-            <span style={{
-              fontFamily: "'Playfair Display', serif", fontSize: 18,
-              fontWeight: 700, color: "var(--cream)",
-            }}>BenchLab</span>
-          </div>
-          <p style={{ color: "var(--sage)", fontSize: 13, marginBottom: 4 }}>
-            The verified skills platform for craft &amp; formulation industries
-          </p>
-          <p style={{ color: "rgba(143,166,139,0.5)", fontSize: 12 }}>
-            What you can do matters more than what you say you can do.
-          </p>
-        </footer>
-      </div>
-    </>
-  );
-}
-
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<BenchLabApp />);
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>

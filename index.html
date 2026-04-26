@@ -2,365 +2,1379 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BenchLab — The Verified Skills Platform for Craft & Formulation Industries</title>
-<meta name="description" content="A sector that employs hundreds of thousands of people, contributes £30 billion to GDP, and has zero dedicated talent infrastructure. BenchLab exists to change that.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2697;</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>STAKT — The wealth playbook your parents never had</title>
+<meta name="description" content="Each generation doesn't need to start from zero. Get the free First £10 Guide and join the waitlist for STAKT — the UK challenger banking and investing app for first-generation wealth builders.">
+<meta property="og:title" content="STAKT — The wealth playbook your parents never had">
+<meta property="og:description" content="Each generation doesn't need to start from zero. Get the free First £10 Guide and join the waitlist.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --forest:#263318;--forest-mid:#2C3E2D;--forest-deep:#1A2610;
-  --gold:#C9A84C;--gold-soft:#D4B86A;--gold-pale:rgba(201,168,76,0.08);
-  --cream:#FAF6EE;--cream-mid:#F0EADB;--warm:#FDFCF8;
-  --bark:#5C4A3A;--bark-light:#8B7355;--charcoal:#2A2A28;
-  --sage:#8FA68B;--sage-light:#B5CBAE;--sage-muted:rgba(143,166,139,0.4);
+html,body,#root{height:100%;width:100%;overflow:hidden}
+body{background:#0A0A0A;-webkit-font-smoothing:antialiased}
+input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#2A2522}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;border-radius:50%;background:#FF8C00;margin-top:-8px;border:2px solid #0A0A0A;box-shadow:0 2px 8px rgba(255,140,0,0.3)}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:#2A2522}
+input[type=range]::-moz-range-thumb{height:22px;width:22px;border-radius:50%;background:#FF8C00;border:2px solid #0A0A0A}
+textarea:focus,input:focus{border-color:#FF8C00 !important}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse-glow{0%,100%{opacity:0.15}50%{opacity:0.25}}
+.desktop-shell{display:none}
+@media(min-width:768px){
+  .desktop-shell{display:flex;align-items:center;justify-content:center;gap:80px;height:100vh;padding:40px;overflow:hidden}
+  .desktop-brand{max-width:420px;flex-shrink:0}
+  .desktop-brand h1{font-family:'Outfit',sans-serif;font-weight:800;font-size:56px;color:#F5F0EB;letter-spacing:-0.03em;line-height:1.05}
+  .desktop-brand .tagline{font-family:'DM Sans',sans-serif;font-size:18px;color:#A89E94;margin-top:16px;line-height:1.6}
+  .desktop-brand .stat-row{display:flex;gap:24px;margin-top:32px}
+  .desktop-brand .stat{text-align:left}
+  .desktop-brand .stat-num{font-family:'Outfit',sans-serif;font-weight:700;font-size:28px;color:#FF8C00}
+  .desktop-brand .stat-label{font-family:'DM Sans',sans-serif;font-size:12px;color:#6B6360;margin-top:2px}
+  .desktop-brand .cta-note{font-family:'DM Sans',sans-serif;font-size:13px;color:#6B6360;margin-top:36px;padding-top:24px;border-top:1px solid #2A2522;line-height:1.6}
+  .desktop-brand .cta-note span{color:#FF8C00;font-weight:600}
+
+/* ── Guide Modal ── */
+#guide-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modal-fade 0.3s ease;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Libre Franklin',sans-serif;background:var(--cream);color:var(--charcoal);
-  -webkit-font-smoothing:antialiased;overflow-x:hidden}
-
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-
-.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
-.reveal-d4{transition-delay:.4s}.reveal-d5{transition-delay:.5s}
-
-nav{position:fixed;top:0;width:100%;z-index:100;transition:all 0.5s ease;padding:24px 0}
-nav.scrolled{background:rgba(250,246,238,0.94);backdrop-filter:blur(24px);padding:14px 0;
-  border-bottom:1px solid rgba(44,62,45,0.06)}
-.nav-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);
-  text-decoration:none;display:flex;align-items:center;gap:10px;transition:color 0.4s;letter-spacing:-0.3px}
-nav.scrolled .logo{color:var(--forest)}
-.nav-link{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;
-  transition:all 0.3s;color:rgba(250,246,238,0.7);letter-spacing:0.3px}
-nav.scrolled .nav-link{color:var(--bark-light)}
-.nav-link:hover{color:var(--gold)}
-.nav-cta{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;
-  transition:all 0.3s;background:var(--gold);color:var(--forest);letter-spacing:0.3px}
-.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.3)}
-
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;background:var(--forest);overflow:hidden}
-.hero-bg{position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(44,62,45,0.9) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(26,38,16,0.8) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 50%),
-    linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 100%)}
-.hero-line{position:absolute;background:linear-gradient(180deg,rgba(201,168,76,0.12) 0%,transparent 100%);width:1px}
-.hero-line-1{height:200px;top:80px;left:15%}
-.hero-line-2{height:300px;top:0;left:45%;opacity:0.5}
-.hero-line-3{height:150px;top:120px;right:20%;opacity:0.7}
-.hero-inner{max-width:1080px;margin:0 auto;padding:160px 40px 120px;position:relative;z-index:1}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:40px;animation:fadeDown 1s ease both 0.2s}
-.hero-eyebrow-line{width:40px;height:1px;background:var(--gold)}
-.hero-eyebrow span{font-size:11px;color:var(--gold-soft);letter-spacing:3px;text-transform:uppercase;font-weight:500}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,6vw,72px);color:var(--cream);
-  font-weight:700;line-height:1.08;margin-bottom:32px;max-width:680px;letter-spacing:-1.5px;animation:fadeDown 1s ease both 0.4s}
-.hero h1 em{color:var(--gold);font-style:italic}
-.hero-sub{font-size:clamp(16px,1.8vw,20px);color:var(--sage-light);line-height:1.7;
-  max-width:480px;margin-bottom:52px;font-weight:300;letter-spacing:0.2px;animation:fadeDown 1s ease both 0.6s}
-.hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeDown 1s ease both 0.8s}
-.btn-gold{padding:18px 40px;border-radius:10px;background:var(--gold);color:var(--forest);
-  font-size:15px;font-weight:600;text-decoration:none;transition:all 0.35s ease;
-  border:none;cursor:pointer;font-family:'Libre Franklin',sans-serif;letter-spacing:0.3px}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.35)}
-.btn-ghost{padding:18px 40px;border-radius:10px;background:transparent;color:var(--cream);
-  font-size:15px;font-weight:400;text-decoration:none;transition:all 0.35s ease;
-  border:1px solid rgba(250,246,238,0.15)}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
-@keyframes fadeDown{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-.stats{background:var(--forest-deep);position:relative;overflow:hidden}
-.stats::before{content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(201,168,76,0.03) 0%,transparent 40%,transparent 60%,rgba(201,168,76,0.03) 100%)}
-.stats-inner{max-width:1080px;margin:0 auto;padding:64px 40px;display:flex;align-items:center;justify-content:center;gap:0}
-.stat{flex:1;text-align:center;padding:0 32px;position:relative}
-.stat+.stat::before{content:'';position:absolute;left:0;top:10%;height:80%;width:1px;
-  background:linear-gradient(180deg,transparent,rgba(201,168,76,0.2),transparent)}
-.stat-number{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,56px);
-  font-weight:700;color:var(--cream);margin-bottom:6px;letter-spacing:-1px}
-.stat-number.gold{color:var(--gold)}
-.stat-label{font-size:13px;color:var(--sage);letter-spacing:0.5px;font-weight:400;line-height:1.5}
-
-.chapter{max-width:1080px;margin:0 auto;padding:120px 40px}
-.chapter-label{display:flex;align-items:center;gap:16px;margin-bottom:24px}
-.chapter-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--gold);
-  width:32px;height:32px;border-radius:50%;border:1.5px solid var(--gold);
-  display:flex;align-items:center;justify-content:center}
-.chapter-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--bark-light);font-weight:600}
-.chapter h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);
-  color:var(--forest);line-height:1.2;margin-bottom:24px;max-width:620px;letter-spacing:-0.5px}
-.chapter h2 em{color:var(--gold);font-style:italic}
-.chapter-body{font-size:17px;color:var(--bark);line-height:1.8;max-width:600px;margin-bottom:56px;font-weight:300}
-
-.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.pain-card{background:var(--warm);border-radius:16px;padding:36px 28px;
-  border:1px solid rgba(44,62,45,0.04);position:relative;overflow:hidden;
-  transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
-.pain-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--gold);transform:scaleX(0);transition:transform 0.4s ease;transform-origin:left}
-.pain-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,62,45,0.08)}
-.pain-card:hover::before{transform:scaleX(1)}
-.pain-icon{font-size:28px;margin-bottom:20px;display:block}
-.pain-card h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--forest);margin-bottom:12px}
-.pain-card p{font-size:14px;color:var(--bark-light);line-height:1.7}
-
-.dark-section{background:var(--forest);position:relative;overflow:hidden}
-.dark-section .chapter{padding:120px 40px}
-.dark-section .chapter-title{color:var(--sage)}
-.dark-section .chapter h2{color:var(--cream)}
-.dark-section .chapter-body{color:var(--sage-light)}
-
-.logbook-preview{max-width:680px;margin:0 auto;background:var(--warm);border-radius:20px;
-  overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.3)}
-.logbook-header{background:linear-gradient(135deg,var(--forest-mid),var(--forest-deep));
-  padding:28px 32px;display:flex;align-items:center;gap:20px}
-.logbook-avatar{width:56px;height:56px;border-radius:14px;background:rgba(201,168,76,0.15);
-  display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;
-  font-size:20px;font-weight:700;color:var(--gold);flex-shrink:0}
-.logbook-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);font-weight:600}
-.logbook-role{font-size:13px;color:var(--sage-light);margin-top:2px}
-.logbook-body{padding:24px 32px 28px}
-.logbook-section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--bark-light);font-weight:600;margin-bottom:12px;margin-top:20px}
-.logbook-section-label:first-child{margin-top:0}
-.skill-row{display:flex;align-items:center;justify-content:space-between;
-  padding:10px 14px;border-radius:8px;margin-bottom:4px;transition:background 0.2s}
-.skill-row:nth-child(even){background:rgba(38,51,24,0.03)}
-.skill-name{font-size:14px;color:var(--charcoal);font-weight:500}
-.skill-meta{display:flex;align-items:center;gap:10px}
-.skill-years{font-size:12px;color:var(--bark-light)}
-.skill-badge{font-size:10px;padding:3px 10px;border-radius:12px;font-weight:600;letter-spacing:0.3px}
-.badge-employer{background:rgba(38,51,24,0.1);color:var(--forest)}
-.badge-peer{background:rgba(201,168,76,0.12);color:var(--gold)}
-.badge-cert{background:rgba(44,120,60,0.1);color:#2B7A3C}
-
-.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
-.step{position:relative;padding:36px 28px;border-radius:16px;
-  background:rgba(250,246,238,0.05);border:1px solid rgba(250,246,238,0.06);transition:all 0.4s ease}
-.step:hover{background:rgba(250,246,238,0.09);border-color:rgba(201,168,76,0.15)}
-.step-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;
-  color:var(--gold);opacity:0.3;margin-bottom:16px;line-height:1}
-.step h3{font-size:17px;font-weight:600;color:var(--cream);margin-bottom:10px;letter-spacing:0.2px}
-.step p{font-size:14px;color:var(--sage);line-height:1.7;font-weight:300}
-
-.for-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.for-card{background:var(--warm);border-radius:16px;padding:40px 28px;
-  border:1px solid rgba(44,62,45,0.04);text-align:center;
-  transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
-.for-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(44,62,45,0.08)}
-.for-icon{width:64px;height:64px;border-radius:16px;margin:0 auto 24px;
-  display:flex;align-items:center;justify-content:center;font-size:28px}
-.for-icon-1{background:linear-gradient(135deg,rgba(38,51,24,0.08),rgba(201,168,76,0.08))}
-.for-icon-2{background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(212,185,106,0.06))}
-.for-icon-3{background:linear-gradient(135deg,rgba(92,74,58,0.08),rgba(38,51,24,0.06))}
-.for-card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--forest);margin-bottom:12px}
-.for-card p{font-size:14px;color:var(--bark-light);line-height:1.7;margin-bottom:20px}
-.for-detail{font-size:13px;color:var(--bark);line-height:1.65;text-align:left;
-  background:var(--cream);border-radius:10px;padding:16px 20px}
-
-.industries{text-align:center;padding:80px 40px 100px}
-.industries h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--forest);margin-bottom:12px}
-.industries p{font-size:15px;color:var(--bark-light);margin-bottom:36px;font-weight:300}
-.ind-wrap{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;max-width:800px;margin:0 auto}
-.ind-pill{padding:14px 28px;border-radius:40px;font-size:14px;font-weight:500;
-  color:var(--forest);border:1px solid rgba(44,62,45,0.12);background:var(--warm);
-  transition:all 0.3s ease;cursor:default}
-.ind-pill:hover{background:var(--forest);color:var(--cream);border-color:var(--forest);transform:translateY(-2px)}
-
-.cta{background:var(--forest);position:relative;overflow:hidden;text-align:center;padding:100px 40px}
-.cta-orb{position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,0.06)}
-.cta-orb-1{width:500px;height:500px;top:-250px;left:-100px}
-.cta-orb-2{width:300px;height:300px;bottom:-100px;right:-50px}
-.cta-inner{position:relative;z-index:1;max-width:580px;margin:0 auto}
-.cta h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,40px);
-  color:var(--cream);margin-bottom:16px;line-height:1.25;letter-spacing:-0.5px}
-.cta p{font-size:16px;color:var(--sage-light);margin-bottom:40px;line-height:1.7;font-weight:300}
-.cta .btn-gold{font-size:16px;padding:20px 48px;border-radius:12px}
-.cta-email{margin-top:20px;font-size:13px;color:var(--sage-muted)}
-.cta-email a{color:var(--gold);text-decoration:none;transition:opacity 0.3s}
-.cta-email a:hover{opacity:0.8}
-
-footer{background:var(--charcoal);padding:52px 40px;text-align:center}
-.footer-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
-.footer-brand span{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--cream)}
-.footer-tagline{font-size:14px;color:var(--sage);font-style:italic;margin-bottom:6px;font-family:'Playfair Display',serif}
-.footer-desc{font-size:12px;color:rgba(143,166,139,0.35);margin-bottom:20px}
-.footer-contact a{font-size:13px;color:var(--gold);text-decoration:none;transition:opacity 0.3s}
-.footer-contact a:hover{opacity:0.7}
-
-@media(max-width:768px){
-  .pain-grid,.steps-grid,.for-grid{grid-template-columns:1fr}
-  .stats-inner{flex-direction:column;gap:32px}
-  .stat+.stat::before{display:none}
-  .hero-inner{padding:130px 24px 80px}
-  .chapter{padding:80px 24px}
-  .dark-section .chapter{padding:80px 24px}
-  .hero-actions{flex-direction:column}
-  .btn-gold,.btn-ghost{text-align:center;width:100%}
-  .logbook-preview{margin:0 -8px;border-radius:12px}
-  .nav-link{display:none}
-  nav{padding:16px 0}
-  .nav-inner{padding:0 24px}
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+#guide-modal .modal-card {
+  background: linear-gradient(145deg, #141414, #0F0F0F);
+  border: 1px solid rgba(255,140,0,0.3);
+  border-radius: 24px;
+  padding: 40px 36px;
+  max-width: 460px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(255,140,0,0.1);
+}
+#guide-modal .modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #A89E94;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+#guide-modal .modal-close:hover {
+  background: rgba(255,255,255,0.1);
+  color: #F5F0EB;
+}
+#guide-modal .modal-eyebrow {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: rgba(255,140,0,0.15);
+  color: #FF8C00;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+#guide-modal h2 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: #F5F0EB;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+#guide-modal h2 span { color: #FF8C00; }
+#guide-modal .modal-lede {
+  font-family: 'DM Sans', sans-serif;
+  color: #A89E94;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 22px;
+}
+#guide-modal .modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#guide-modal .modal-form input {
+  background: #0A0A0A;
+  border: 1px solid #2A2522;
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #F5F0EB;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s;
+}
+#guide-modal .modal-form input:focus {
+  border-color: #FF8C00;
+}
+#guide-modal .modal-form input::placeholder {
+  color: #6B6360;
+}
+#guide-modal .modal-form button {
+  background: linear-gradient(135deg, #FF8C00, #FF6B00);
+  color: #0A0A0A;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+#guide-modal .modal-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(255,140,0,0.3);
+}
+#guide-modal .modal-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+#guide-modal .modal-success {
+  display: none;
+  text-align: center;
+  padding: 12px 0;
+}
+#guide-modal .modal-success.show { display: block; }
+#guide-modal .modal-success .check {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: rgba(127,176,105,0.15);
+  border: 2px solid #7FB069;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7FB069;
+  font-size: 26px;
+}
+#guide-modal .modal-success h3 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #F5F0EB;
+  margin-bottom: 8px;
+}
+#guide-modal .modal-success p {
+  font-family: 'DM Sans', sans-serif;
+  color: #A89E94;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+#guide-modal .modal-success a.download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #FF8C00, #FF6B00);
+  color: #0A0A0A;
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+}
+#guide-modal .privacy-note {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  color: #6B6360;
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.55;
+}
+  .phone-frame{width:380px;height:760px;border-radius:40px;border:3px solid #2A2522;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 24px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,140,0,0.05)}
+  .phone-frame::before{content:'';position:absolute;top:12px;left:50%;transform:translateX(-50%);width:100px;height:5px;border-radius:3px;background:#2A2522;z-index:10}
+  .phone-frame::after{content:'';position:absolute;top:50%;left:50%;width:500px;height:500px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,140,0,0.06) 0%,transparent 70%);pointer-events:none;z-index:-1}
+  .phone-frame-inner{width:100%;height:100%;overflow:hidden}
+  .mobile-fullscreen{display:none}
+}
+@media(max-width:767px){
+  .desktop-shell{display:none}
+  .mobile-fullscreen{display:block;height:100%}
 }
 </style>
 </head>
 <body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
 
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="#" class="logo">&#x2697; BenchLab</a>
-    <div style="display:flex;align-items:center;gap:8px">
-      <a href="#how" class="nav-link">How It Works</a>
-      <a href="#cta" class="nav-cta">Get Early Access</a>
-    </div>
-  </div>
-</nav>
+// ─── MAILCHIMP INTEGRATION ───
+// INSTRUCTIONS: Replace the URL below with your Mailchimp form action URL.
+// To find it: Mailchimp → Audience → Signup forms → Embedded forms → copy the form action URL
+// It looks like: https://XXXXX.usXX.list-manage.com/subscribe/post?u=XXXXXXXXXX&id=XXXXXXXXXX
+const MAILCHIMP_URL = "https://money.us5.list-manage.com/subscribe/post?u=e2124e03a0e42bfe33734a282&id=e2d5904335&f_id=0010f8e9f0";
 
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-line hero-line-1"></div>
-  <div class="hero-line hero-line-2"></div>
-  <div class="hero-line hero-line-3"></div>
-  <div class="hero-inner">
-    <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div><span>The Verified Skills Platform</span></div>
-    <h1>What you can do <em>matters more</em> than what you say you can do.</h1>
-    <p>BenchLab connects verified craftspeople, formulators, and production specialists with employers who need proven, bench-level expertise.</p>
-    <div class="hero-actions">
-      <a href="#cta" class="btn-gold">Register Your Interest</a>
-      <a href="#gap" class="btn-ghost">Read the Story</a>
-    </div>
-  </div>
-</section>
+const subscribeToMailchimp = (email, firstName) => {
+  if (!email || MAILCHIMP_URL.includes("PASTE_YOUR")) return;
+  try {
+    const url = MAILCHIMP_URL.replace("/post?", "/post-json?")
+      + "&EMAIL=" + encodeURIComponent(email)
+      + (firstName ? "&FNAME=" + encodeURIComponent(firstName) : "")
+      + "&c=__mcCb" + Date.now();
+    const s = document.createElement("script");
+    s.src = url;
+    document.body.appendChild(s);
+    setTimeout(() => { try { s.remove(); } catch(e){} }, 5000);
+  } catch(e) { console.error("Mailchimp error:", e); }
+};
 
-<section class="stats">
-  <div class="stats-inner">
-    <div class="stat reveal"><div class="stat-number">&pound;30bn</div><div class="stat-label">Industry GDP contribution</div></div>
-    <div class="stat reveal reveal-d1"><div class="stat-number">496,000</div><div class="stat-label">People employed in the sector</div></div>
-    <div class="stat reveal reveal-d2"><div class="stat-number gold">Zero</div><div class="stat-label">Dedicated talent platforms</div></div>
-  </div>
-</section>
+// Simple localStorage-based feedback storage for standalone deployment
+const feedbackStorage = {
+  save: (data) => {
+    try {
+      const existing = JSON.parse(localStorage.getItem('stakt-feedback') || '[]');
+      existing.push(data);
+      localStorage.setItem('stakt-feedback', JSON.stringify(existing));
+      return true;
+    } catch(e) { console.error(e); return false; }
+  }
+};
 
-<section class="chapter" id="gap">
-  <div class="chapter-label reveal"><div class="chapter-num">1</div><div class="chapter-title">The Gap</div></div>
-  <h2 class="reveal reveal-d1">A &pound;30 billion industry with <em>no way</em> to find its own people.</h2>
-  <p class="chapter-body reveal reveal-d2">The UK beauty, personal care, fragrance, and home fragrance industries form one of the fastest-growing sectors in the economy. Yet there is no platform &mdash; anywhere &mdash; where the skilled practitioners who manufacture these products can be found, verified, or hired based on what they can actually do.</p>
-  <div class="pain-grid">
-    <div class="pain-card reveal reveal-d2">
-      <span class="pain-icon">&#x1F50D;</span>
-      <h3>The Wrong Tools</h3>
-      <p>Job boards can&rsquo;t distinguish a cosmetic formulator from a food scientist. LinkedIn treats &ldquo;Production Operative&rdquo; as one role &mdash; it&rsquo;s actually hundreds of different skill profiles.</p>
-    </div>
-    <div class="pain-card reveal reveal-d3">
-      <span class="pain-icon">&#x23F3;</span>
-      <h3>Months of Searching</h3>
-      <p>Specialist production and formulation roles take 8&ndash;16 weeks to fill. Agencies charge &pound;4,000&ndash;&pound;10,000 per placement and still send mismatched candidates.</p>
-    </div>
-    <div class="pain-card reveal reveal-d4">
-      <span class="pain-icon">&#x1F47B;</span>
-      <h3>Invisible Talent</h3>
-      <p>Thousands of experienced practitioners &mdash; chandlers, soapmakers, fragrance compounders, QC technicians &mdash; are simply not findable on any existing platform. They find work through word of mouth. That&rsquo;s not a system.</p>
-    </div>
-  </div>
-</section>
 
-<section class="dark-section" id="how">
-  <div class="chapter">
-    <div class="chapter-label reveal"><div class="chapter-num">2</div><div class="chapter-title">The Solution</div></div>
-    <h2 class="reveal reveal-d1">Not a CV. A <em>Craftsperson&rsquo;s Logbook.</em></h2>
-    <p class="chapter-body reveal reveal-d2">BenchLab replaces the traditional CV with something the industry actually understands &mdash; a structured, verified record of what a practitioner knows how to do. Built around an industry-specific taxonomy of processes, materials, equipment, and standards.</p>
-    <div class="logbook-preview reveal reveal-d3">
-      <div class="logbook-header">
-        <div class="logbook-avatar">SM</div>
-        <div><div class="logbook-name">Sarah M.</div><div class="logbook-role">Senior Production Specialist &middot; West Midlands &middot; 12 years</div></div>
+const SCREENS = {
+  SPLASH: "splash",
+  INTRO_1: "intro_1",
+  INTRO_2: "intro_2",
+  INTRO_3: "intro_3",
+  QUIZ_1: "quiz_1",
+  QUIZ_2: "quiz_2",
+  QUIZ_3: "quiz_3",
+  DASHBOARD: "dashboard",
+  FEATURE_STACK: "feature_stack",
+  FEATURE_CIRCLE: "feature_circle",
+  FEATURE_LEARN: "feature_learn",
+  FEATURE_TWO_PATHS: "feature_two_paths",
+  FEATURE_TWO_PATHS_STORY: "feature_two_paths_story",
+  SUCCESS_STORIES: "success_stories",
+  GAME_JOURNEY: "game_journey",
+  GAME_BADGES: "game_badges",
+  CALC_INPUT: "calc_input",
+  CALC_RESULT: "calc_result",
+  CALC_GENERATIONS: "calc_generations",
+  FEEDBACK: "feedback",
+  THANKS: "thanks",
+};
+
+const FLOW = [
+  SCREENS.SPLASH,
+  SCREENS.INTRO_1,
+  SCREENS.INTRO_2,
+  SCREENS.INTRO_3,
+  SCREENS.QUIZ_1,
+  SCREENS.QUIZ_2,
+  SCREENS.QUIZ_3,
+  SCREENS.DASHBOARD,
+  SCREENS.FEATURE_STACK,
+  SCREENS.FEATURE_CIRCLE,
+  SCREENS.FEATURE_LEARN,
+  SCREENS.FEATURE_TWO_PATHS,
+  SCREENS.FEATURE_TWO_PATHS_STORY,
+  SCREENS.SUCCESS_STORIES,
+  SCREENS.GAME_JOURNEY,
+  SCREENS.GAME_BADGES,
+  SCREENS.CALC_INPUT,
+  SCREENS.CALC_RESULT,
+  SCREENS.CALC_GENERATIONS,
+  SCREENS.FEEDBACK,
+  SCREENS.THANKS,
+];
+
+// ─── Colour Palette (Orange & Black) ───
+const C = {
+  bg: "#0A0A0A",
+  card: "#141414",
+  cardHover: "#1C1C1C",
+  accent: "#FF8C00",
+  accentDim: "#E07800",
+  accentGlow: "rgba(255,140,0,0.15)",
+  warm: "#FFB347",
+  warmGlow: "rgba(255,179,71,0.12)",
+  purple: "#FF6B2B",
+  purpleGlow: "rgba(255,107,43,0.12)",
+  text: "#F5F0EB",
+  textSoft: "#A89E94",
+  textMuted: "#6B6360",
+  border: "#2A2522",
+  danger: "#FF4444",
+  dangerGlow: "rgba(255,68,68,0.12)",
+  success: "#FF8C00",
+};
+
+const fontDisplay = `'Outfit', sans-serif`;
+const fontBody = `'DM Sans', sans-serif`;
+
+// ─── Calculator Logic ───
+const calcWealth = (monthly, years, rate) => {
+  const mr = rate / 100 / 12;
+  const months = years * 12;
+  if (mr === 0) return monthly * months;
+  return monthly * ((Math.pow(1 + mr, months) - 1) / mr);
+};
+
+const calcBasicSavings = (monthly, years) => calcWealth(monthly, years, 0.5);
+
+const formatGBP = (v) => {
+  if (v >= 1000000) return `£${(v / 1000000).toFixed(1)}m`;
+  if (v >= 1000) return `£${Math.round(v / 1000).toLocaleString()}k`;
+  return `£${Math.round(v)}`;
+};
+
+const formatGBPFull = (v) =>
+  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
+
+// Stable phone wrapper - defined OUTSIDE the component so React keeps it mounted
+const PhoneShell = ({ containerRef, fadeIn, children }) => (
+  <div style={{ width: "100%", height: "100%", background: C.bg, position: "relative", fontFamily: fontBody, color: C.text, overflow: "hidden" }}>
+    <div ref={containerRef} style={{ height: "100%", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
+      <div style={{ opacity: fadeIn ? 1 : 0, transform: fadeIn ? "translateY(0)" : "translateY(12px)", transition: "all 0.28s ease", minHeight: "100%", display: "flex", flexDirection: "column" }}>
+        {children}
       </div>
-      <div class="logbook-body">
-        <div class="logbook-section-label">Processes</div>
-        <div class="skill-row"><span class="skill-name">Cold-Pour Container Candles</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
-        <div class="skill-row"><span class="skill-name">Fragrance Loading &amp; Blending</span><span class="skill-meta"><span class="skill-years">9 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
-        <div class="skill-row"><span class="skill-name">Burn Testing &amp; QC</span><span class="skill-meta"><span class="skill-years">8 yrs</span><span class="skill-badge badge-peer">Peer Verified</span></span></div>
-        <div class="logbook-section-label">Materials</div>
-        <div class="skill-row"><span class="skill-name">Soy Wax (multiple blends)</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
-        <div class="skill-row"><span class="skill-name">Synthetic Fragrance Oils</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-peer">Peer Verified</span></span></div>
-        <div class="logbook-section-label">Standards</div>
-        <div class="skill-row"><span class="skill-name">EN 15493 (Fire Safety)</span><span class="skill-meta"><span class="skill-years">10 yrs</span><span class="skill-badge badge-cert">Certification</span></span></div>
-        <div class="skill-row"><span class="skill-name">GMP (ISO 22716)</span><span class="skill-meta"><span class="skill-years">6 yrs</span><span class="skill-badge badge-employer">Employer Confirmed</span></span></div>
+    </div>
+  </div>
+);
+
+// All shared UI components defined outside for stable React references
+const Btn = ({ children, onClick, variant = "primary", disabled = false }) => {
+  const base = { width: "100%", padding: "16px 24px", borderRadius: 14, border: "none", fontFamily: fontDisplay, fontWeight: 600, fontSize: 16, cursor: disabled ? "default" : "pointer", transition: "all 0.2s ease", opacity: disabled ? 0.4 : 1 };
+  const styles = {
+    primary: { ...base, background: C.accent, color: C.bg },
+    secondary: { ...base, background: "transparent", color: C.accent, border: `1.5px solid ${C.border}` },
+  };
+  return <button style={styles[variant]} onClick={disabled ? undefined : onClick}>{children}</button>;
+};
+
+const Pill = ({ children, active, onClick }) => (
+  <button onClick={onClick} style={{ padding: "10px 18px", borderRadius: 100, border: `1.5px solid ${active ? C.accent : C.border}`, background: active ? C.accentGlow : "transparent", color: active ? C.accent : C.textSoft, fontFamily: fontBody, fontWeight: 500, fontSize: 14, cursor: "pointer", transition: "all 0.2s ease" }}>{children}</button>
+);
+
+const Tag = ({ children, color = C.accent, bg = C.accentGlow }) => (
+  <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: 100, background: bg, color, fontSize: 12, fontWeight: 600, fontFamily: fontDisplay, letterSpacing: "0.04em", textTransform: "uppercase" }}>{children}</span>
+);
+
+const GlowBG = ({ color = C.accent, opacity = 0.08, top = "-20%", left = "50%" }) => (
+  <div style={{ position: "absolute", top, left, transform: "translateX(-50%)", width: 400, height: 400, borderRadius: "50%", background: color, opacity, filter: "blur(100px)", pointerEvents: "none" }} />
+);
+
+const MiniChart = ({ data, height = 160 }) => {
+  const maxVal = Math.max(...data.map(d => d.invested));
+  return (
+    <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height, padding: "0 4px" }}>
+      {data.map((d, i) => {
+        const investedH = maxVal > 0 ? (d.invested / maxVal) * height * 0.88 : 4;
+        const savedH = maxVal > 0 ? (d.saved / maxVal) * height * 0.88 : 4;
+        return (
+          <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 2, width: "100%" }}>
+              <div style={{ flex: 1, height: Math.max(investedH, 4), borderRadius: 4, background: `linear-gradient(180deg, ${C.accent}, ${C.accentDim})`, transition: "height 0.6s ease" }} />
+              <div style={{ flex: 1, height: Math.max(savedH, 4), borderRadius: 4, background: C.danger, opacity: 0.45, transition: "height 0.6s ease" }} />
+            </div>
+            <span style={{ fontSize: 9, color: C.textMuted, fontWeight: 600 }}>{d.age}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+function STAKTPrototype() {
+  const [screen, setScreen] = useState(SCREENS.SPLASH);
+  const [fadeIn, setFadeIn] = useState(true);
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [feedback, setFeedback] = useState({ rating: 0, excites: [], comment: "", email: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [calcAge, setCalcAge] = useState(25);
+  const [calcMonthly, setCalcMonthly] = useState(100);
+  const [twoPathsIdx, setTwoPathsIdx] = useState(0);
+  const [storyIdx, setStoryIdx] = useState(0);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+  }, []);
+
+  const retireAge = 65;
+  const calcYears = retireAge - calcAge;
+  const withInvesting = useMemo(() => calcWealth(calcMonthly, calcYears, 7), [calcMonthly, calcYears]);
+  const withoutInvesting = useMemo(() => calcBasicSavings(calcMonthly, calcYears), [calcMonthly, calcYears]);
+  const totalContributed = calcMonthly * 12 * calcYears;
+  const missedGrowth = withInvesting - withoutInvesting;
+
+  const genData = useMemo(() => {
+    const g1 = withInvesting;
+    const g2Start = g1 * 0.3;
+    const g2Own = calcWealth(calcMonthly, 30, 7);
+    const g2 = g2Start * Math.pow(1.07, 30) + g2Own;
+    const g3Start = g2 * 0.3;
+    const g3Own = calcWealth(calcMonthly, 30, 7);
+    const g3 = g3Start * Math.pow(1.07, 30) + g3Own;
+    return { g1, g2, g3 };
+  }, [withInvesting, calcMonthly]);
+
+  const chartData = useMemo(() => {
+    const points = [];
+    for (let age = calcAge; age <= retireAge; age += 5) {
+      const yrs = age - calcAge;
+      points.push({ age, invested: calcWealth(calcMonthly, yrs, 7), saved: calcBasicSavings(calcMonthly, yrs) });
+    }
+    return points;
+  }, [calcAge, calcMonthly]);
+
+  const transition = (next) => {
+    setFadeIn(false);
+    setTimeout(() => {
+      setScreen(next);
+      setFadeIn(true);
+      if (containerRef.current) containerRef.current.scrollTop = 0;
+    }, 280);
+  };
+
+  const next = () => {
+    const i = FLOW.indexOf(screen);
+    if (i < FLOW.length - 1) transition(FLOW[i + 1]);
+  };
+
+  const saveFeedback = async () => {
+    setSubmitting(true);
+    try {
+      const entry = { quizAnswers, calcAge, calcMonthly, withInvesting, withoutInvesting, feedback, timestamp: new Date().toISOString() };
+      feedbackStorage.save(entry);
+      // Subscribe to Mailchimp if email provided
+      if (feedback.email && feedback.email.includes("@")) {
+        subscribeToMailchimp(feedback.email);
+      }
+    } catch (e) { console.error("Storage error:", e); }
+    setSubmitting(false);
+    next();
+  };
+
+  // ════════════════════════════════════════
+  //  S C R E E N S
+  // ════════════════════════════════════════
+
+  // ── SPLASH ──
+  if (screen === SCREENS.SPLASH) {
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 32, position: "relative", textAlign: "center" }}>
+          <GlowBG />
+          <div style={{ width: 80, height: 80, borderRadius: 20, background: `linear-gradient(135deg, ${C.accent}, #FF6B00)`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, boxShadow: `0 8px 32px ${C.accentGlow}` }}>
+            <span style={{ fontSize: 36, fontFamily: fontDisplay, fontWeight: 900, color: C.bg }}>S</span>
+          </div>
+          <h1 style={{ fontFamily: fontDisplay, fontWeight: 800, fontSize: 42, margin: 0, letterSpacing: "-0.03em", lineHeight: 1.1 }}>STAKT</h1>
+          <p style={{ color: C.textSoft, fontSize: 15, marginTop: 8, lineHeight: 1.5, maxWidth: 280 }}>The wealth playbook your parents never had.<br />Each generation doesn't need to start from zero.</p>
+          <div style={{ marginTop: 48, width: "100%" }}><Btn onClick={next}>See How It Works</Btn></div>
+          <p style={{ color: C.textMuted, fontSize: 12, marginTop: 16 }}>Interactive concept preview · 5 min</p>
+          <a href="#" onClick={(e) => { e.preventDefault(); if (typeof document !== 'undefined') { const m = document.getElementById('guide-modal'); if (m) m.style.display = 'flex'; } }} style={{ marginTop: 20, color: C.accent, fontSize: 13, fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>📘 Or get the free First £10 Guide →</a>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── INTROS ──
+  const introData = {
+    [SCREENS.INTRO_1]: { emoji: "🧱", title: "Built for builders", body: "STAKT is for people building wealth from the ground up — no family money, no safety net, just ambition and a plan.", highlight: "73% of young people from lower-income families say they have no idea where to start with money." },
+    [SCREENS.INTRO_2]: { emoji: "📊", title: "Stack. Track. Grow.", body: "Set micro-goals. Stack small wins. Watch your money habits compound into something real — starting from as little as £10.", highlight: "Your progress is always visible, always moving forward." },
+    [SCREENS.INTRO_3]: { emoji: "🤝", title: "Your crew, your journey", body: "Join circles of people on the same path. Share wins, swap strategies, hold each other accountable. No judgement, just progress.", highlight: "Wealth-building doesn't have to be lonely." },
+  };
+
+  if ([SCREENS.INTRO_1, SCREENS.INTRO_2, SCREENS.INTRO_3].includes(screen)) {
+    const d = introData[screen];
+    const idx = [SCREENS.INTRO_1, SCREENS.INTRO_2, SCREENS.INTRO_3].indexOf(screen);
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={idx === 1 ? C.warm : idx === 2 ? C.purple : C.accent} />
+          <div style={{ display: "flex", gap: 6, marginBottom: 48, marginTop: 16 }}>
+            {[0, 1, 2].map(i => (<div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= idx ? C.accent : C.border, transition: "all 0.3s" }} />))}
+          </div>
+          <div style={{ fontSize: 56, marginBottom: 20 }}>{d.emoji}</div>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 32, margin: 0, lineHeight: 1.15, letterSpacing: "-0.02em" }}>{d.title}</h2>
+          <p style={{ color: C.textSoft, fontSize: 16, lineHeight: 1.65, marginTop: 16 }}>{d.body}</p>
+          <div style={{ marginTop: 24, padding: 16, borderRadius: 12, background: C.accentGlow, borderLeft: `3px solid ${C.accent}` }}>
+            <p style={{ margin: 0, fontSize: 14, color: C.accent, lineHeight: 1.55, fontWeight: 500 }}>{d.highlight}</p>
+          </div>
+          <div style={{ flex: 1 }} />
+          <div style={{ paddingBottom: 20 }}><Btn onClick={next}>Continue</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── QUIZ ──
+  const quizData = {
+    [SCREENS.QUIZ_1]: { q: "Where are you on your money journey?", key: "stage", options: ["Just getting started", "Got a bit saved", "Building momentum", "Ready to level up"] },
+    [SCREENS.QUIZ_2]: { q: "What's your biggest money challenge right now?", key: "challenge", options: ["Not enough to save", "Don't know where to start", "Staying consistent", "Making it grow"] },
+    [SCREENS.QUIZ_3]: { q: "What would help you most?", key: "need", options: ["Simple daily habits", "A clear plan", "People doing the same", "Seeing real progress"] },
+  };
+
+  if ([SCREENS.QUIZ_1, SCREENS.QUIZ_2, SCREENS.QUIZ_3].includes(screen)) {
+    const d = quizData[screen];
+    const quizScreens = [SCREENS.QUIZ_1, SCREENS.QUIZ_2, SCREENS.QUIZ_3];
+    const idx = quizScreens.indexOf(screen);
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={C.purple} opacity={0.06} />
+          <div style={{ marginTop: 16 }}><Tag color={C.purple} bg={C.purpleGlow}>Quick Setup</Tag></div>
+          <div style={{ display: "flex", gap: 6, justifyContent: "center", margin: "24px 0 32px" }}>
+            {quizScreens.map((_, i) => (<div key={i} style={{ width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i <= idx ? C.accent : C.border, transition: "all 0.3s ease" }} />))}
+          </div>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 26, margin: 0, lineHeight: 1.2 }}>{d.q}</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 32 }}>
+            {d.options.map((opt, i) => (
+              <button key={i} onClick={() => setQuizAnswers(prev => ({ ...prev, [d.key]: opt }))} style={{
+                padding: "16px 20px", borderRadius: 14, border: `1.5px solid ${quizAnswers[d.key] === opt ? C.accent : C.border}`,
+                background: quizAnswers[d.key] === opt ? C.accentGlow : C.card, color: quizAnswers[d.key] === opt ? C.accent : C.text,
+                fontFamily: fontBody, fontWeight: 500, fontSize: 15, cursor: "pointer", textAlign: "left", transition: "all 0.2s ease",
+                display: "flex", alignItems: "center", gap: 12,
+              }}>
+                <span style={{ width: 22, height: 22, borderRadius: "50%", border: `2px solid ${quizAnswers[d.key] === opt ? C.accent : C.border}`, background: quizAnswers[d.key] === opt ? C.accent : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s" }}>
+                  {quizAnswers[d.key] === opt && <span style={{ color: C.bg, fontSize: 12, fontWeight: 700 }}>✓</span>}
+                </span>
+                {opt}
+              </button>
+            ))}
+          </div>
+          <div style={{ flex: 1 }} />
+          <div style={{ paddingBottom: 20 }}><Btn onClick={next} disabled={!quizAnswers[d.key]}>Next</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── DASHBOARD ──
+  if (screen === SCREENS.DASHBOARD) {
+    const stackData = [35, 50, 45, 70, 65, 85, 90];
+    const days = ["M", "T", "W", "T", "F", "S", "S"];
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ padding: 24, position: "relative" }}>
+          <GlowBG color={C.accent} opacity={0.05} top="-30%" />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, marginBottom: 28 }}>
+            <div>
+              <p style={{ margin: 0, color: C.textMuted, fontSize: 13, fontWeight: 500 }}>Welcome back</p>
+              <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 24, margin: 0, marginTop: 2 }}>Your Stack</h2>
+            </div>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: `linear-gradient(135deg, ${C.accent}, #FF6B2B)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>👤</div>
+          </div>
+          <div style={{ padding: 24, borderRadius: 20, background: `linear-gradient(145deg, ${C.card}, #1a1a1a)`, border: `1px solid ${C.border}`, marginBottom: 20, position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: C.accent, opacity: 0.04, filter: "blur(40px)" }} />
+            <p style={{ margin: 0, color: C.textMuted, fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>Total Stacked</p>
+            <h1 style={{ fontFamily: fontDisplay, fontWeight: 800, fontSize: 40, margin: "8px 0 4px", letterSpacing: "-0.03em" }}>£1,247<span style={{ fontSize: 24, color: C.textSoft }}>.50</span></h1>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ color: C.success, fontSize: 13, fontWeight: 600 }}>↑ 12.4%</span>
+              <span style={{ color: C.textMuted, fontSize: 12 }}>this month</span>
+            </div>
+          </div>
+          <div style={{ padding: 20, borderRadius: 16, background: C.card, border: `1px solid ${C.border}`, marginBottom: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Weekly Streak</p>
+              <Tag>5 Days 🔥</Tag>
+            </div>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 80 }}>
+              {stackData.map((val, i) => (
+                <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                  <div style={{ width: "100%", height: `${val}%`, borderRadius: 6, background: i === 6 ? `linear-gradient(180deg, ${C.accent}, ${C.accentDim})` : C.border, transition: "height 0.5s ease", minHeight: 8 }} />
+                  <span style={{ fontSize: 10, color: i === 6 ? C.accent : C.textMuted, fontWeight: 600 }}>{days[i]}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+            {[{ emoji: "💰", label: "Stack Now", sub: "Add to your pot" }, { emoji: "🎯", label: "Set Goal", sub: "New target" }, { emoji: "👥", label: "My Circle", sub: "3 active" }, { emoji: "📚", label: "Learn", sub: "Daily lesson" }].map((item, i) => (
+              <div key={i} style={{ padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}`, cursor: "pointer" }}>
+                <div style={{ fontSize: 24, marginBottom: 8 }}>{item.emoji}</div>
+                <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{item.label}</p>
+                <p style={{ margin: 0, color: C.textMuted, fontSize: 12, marginTop: 2 }}>{item.sub}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: 16, borderRadius: 14, background: C.warmGlow, border: `1px solid rgba(255,179,71,0.2)`, display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
+            <span style={{ fontSize: 28 }}>🏆</span>
+            <div>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 14, color: C.warm }}>Next milestone: £1,500</p>
+              <div style={{ marginTop: 6, width: 180, height: 6, borderRadius: 3, background: "rgba(255,179,71,0.15)" }}>
+                <div style={{ width: "83%", height: "100%", borderRadius: 3, background: C.warm }} />
+              </div>
+            </div>
+          </div>
+          <Btn onClick={next}>Explore Features →</Btn>
+          <div style={{ height: 20 }} />
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── FEATURES ──
+  const featureScreens = {
+    [SCREENS.FEATURE_STACK]: { tag: "Core Feature", tagColor: C.accent, tagBg: C.accentGlow, emoji: "📊", title: "Micro-Stacking", subtitle: "Small moves. Big results.", points: [{ icon: "🪙", text: "Round-ups on every purchase — spare change goes straight to your stack" }, { icon: "📱", text: "Daily £1–£5 challenges that build the savings habit painlessly" }, { icon: "📈", text: "Visual compound tracker — see your £5/day become £1,825/year" }], glowColor: C.accent },
+    [SCREENS.FEATURE_CIRCLE]: { tag: "Community", tagColor: C.purple, tagBg: C.purpleGlow, emoji: "👥", title: "Stack Circles", subtitle: "Your accountability crew.", points: [{ icon: "🤝", text: "Join 5-person circles with people on a similar journey" }, { icon: "🏆", text: "Weekly challenges and friendly competition keep you motivated" }, { icon: "🔒", text: "Amounts stay private — it's about habits, not numbers" }], glowColor: C.purple },
+    [SCREENS.FEATURE_LEARN]: { tag: "Education", tagColor: C.warm, tagBg: C.warmGlow, emoji: "🧠", title: "Street Smart Money", subtitle: "No jargon. No lectures.", points: [{ icon: "⚡", text: "2-minute daily lessons designed for real life, not textbooks" }, { icon: "🧪", text: "Interactive scenarios — practice decisions with zero risk" }, { icon: "🗣️", text: "Built by people who built from nothing, for people doing the same" }], glowColor: C.warm },
+  };
+
+  // ── TWO PATHS FEATURE — INTRO ──
+  if (screen === SCREENS.FEATURE_TWO_PATHS) {
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={C.accent} opacity={0.07} />
+          <Tag color={C.accent} bg={C.accentGlow}>Case Study</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 30, margin: "16px 0 0", lineHeight: 1.15 }}>Watch the two paths</h2>
+          <p style={{ color: C.textSoft, fontSize: 16, marginTop: 8, lineHeight: 1.55 }}>Two graduates. Same start. 43 years of divergence.</p>
+
+          <div style={{ marginTop: 28, padding: 20, borderRadius: 16, background: `linear-gradient(145deg, ${C.card}, #1a1a1a)`, border: `1px solid ${C.border}` }}>
+            <p style={{ margin: "0 0 14px", fontWeight: 600, fontSize: 13, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.06em" }}>The Setup</p>
+            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: C.text }}>Both graduate at 22. Both enter full-time work at £28k. Both have company pensions with matching contributions. Then life happens.</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 20 }}>
+            <div style={{ padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}` }}>
+              <p style={{ margin: "0 0 6px", fontWeight: 600, fontSize: 13, color: C.accent }}>Graduate A</p>
+              <p style={{ margin: 0, fontSize: 11, color: C.textMuted, lineHeight: 1.4 }}>Starts a business at 27. It fails. Years of freelance work and unemployment follow.</p>
+            </div>
+            <div style={{ padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}` }}>
+              <p style={{ margin: "0 0 6px", fontWeight: 600, fontSize: 13, color: C.warm }}>Graduate B</p>
+              <p style={{ margin: 0, fontSize: 11, color: C.textMuted, lineHeight: 1.4 }}>Stays employed. Gets raises. Stays consistent. Never stops contributing.</p>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 20, padding: 16, borderRadius: 14, background: C.accentGlow, borderLeft: `3px solid ${C.accent}` }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.accent, lineHeight: 1.55, fontWeight: 500 }}>By age 65, the wealth gap is £1.64m. This is what STAKT solves.</p>
+          </div>
+
+          <div style={{ flex: 1 }} />
+          <div style={{ paddingBottom: 20 }}><Btn onClick={next}>Tap Through the Milestones</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── TWO PATHS FEATURE — STORY (Milestone tapper) ──
+  if (screen === SCREENS.FEATURE_TWO_PATHS_STORY) {
+    const twoPaths = {
+      age22: { label: "Age 22", subtitle: "Both graduate, start full-time work", a: { status: "Graduate A: Full-time employed", salary: "£28,000", pension: "£0", savings: "£0", netWorth: "£0", narrative: "Both enter the same position. Same salary. Same pension setup. Same potential." }, b: { status: "Graduate B: Full-time employed", salary: "£28,000", pension: "£0", savings: "£0", netWorth: "£0", narrative: "Both have identical circumstances. The difference isn't luck — it's consistency." } },
+      age27: { label: "Age 27", subtitle: "Five years in. The paths begin to diverge.", a: { status: "Graduate A: Self-employed (unstable)", salary: "Variable", pension: "£11,500", savings: "£2,800", netWorth: "£14,300", narrative: "Left full-time to start a business. Income is unpredictable. Can't afford regular pension contributions. Savings are depleting." }, b: { status: "Graduate B: Still full-time employed", salary: "£32,200", pension: "£18,500", savings: "£12,000", netWorth: "£30,500", narrative: "Stayed employed. Got raises. Pension compounded quietly. Built savings without thinking about it. The gap is already £16k." } },
+      age30: { label: "Age 30", subtitle: "The business failed. Graduate A is now unemployed.", a: { status: "Graduate A: Unemployed", salary: "£0", pension: "£11,500", savings: "£800", netWorth: "£12,300", narrative: "Business collapsed. No income. Dipped into savings just to survive. Can't think about pensions. The gap is now £46k." }, b: { status: "Graduate B: Promoted, earning more", salary: "£37,800", pension: "£34,200", savings: "£28,000", netWorth: "£62,200", narrative: "Steady progression. Pension is now substantial. Savings are accelerating. Thinking about property. The gap widens to £50k." } },
+      age40: { label: "Age 40", subtitle: "A decade of consistency vs. intermittent work.", a: { status: "Graduate A: Freelance (barely surviving)", salary: "£22,000", pension: "£11,500", savings: "£4,200", netWorth: "£15,700", narrative: "Found freelance gigs but income fluctuates. No pension contributions in 10 years. Savings are minimal. One crisis away from disaster." }, b: { status: "Graduate B: Senior role, mortgage, investments", salary: "£50,400", pension: "£124,000", savings: "£85,000", property: "£180,000", netWorth: "£389,000", narrative: "Consistent career progression. Owns property. Diversified into investments. The gap is now £373k. B is building generational wealth." } },
+      age50: { label: "Age 50", subtitle: "15 years into divergent paths.", a: { status: "Graduate A: Still freelancing, no pension security", salary: "£24,000", pension: "£11,500", savings: "£12,000", netWorth: "£23,500", narrative: "At 50, Graduate A has no meaningful pension. Can't retire. Still freelancing. By age 50, the wealth gap is catastrophic: £622k apart." }, b: { status: "Graduate B: Planning retirement, portfolio growing", salary: "£61,600", pension: "£285,000", savings: "£165,000", property: "£420,000", investments: "£95,000", netWorth: "£645,500", narrative: "Pension pot is now real. Property appreciated. Investments are diversified. At 50, B can actually see retirement. Graduate A will work until 70+." } },
+      age65: { label: "Age 65", subtitle: "Retirement age. The consequence of 43 years of divergence.", a: { status: "Graduate A: Still working. Minimal pension.", salary: "Still working", pension: "£11,500", savings: "£18,000", netWorth: "£29,500", narrative: "At 65, Graduate A has no choice but to keep working. Pension is £11.5k — not enough to live on. Retirement is impossible." }, b: { status: "Graduate B: Retiring comfortably", salary: "Retired", pension: "£425,000", savings: "£245,000", property: "£620,000", investments: "£380,000", netWorth: "£1,670,000", narrative: "At 65, Graduate B retires with over £1.6m in net worth. Pension covers living expenses. Property provides wealth. His children inherit a foundation of wealth." } }
+    };
+
+    const ages = ["age22", "age27", "age30", "age40", "age50", "age65"];
+    const currentAge = ages[twoPathsIdx];
+    const data = twoPaths[currentAge];
+
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={C.accent} opacity={0.06} />
+
+          <div style={{ display: "flex", gap: 4, marginBottom: 20, marginTop: 12 }}>
+            {ages.map((age, i) => (<div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= twoPathsIdx ? C.accent : C.border, transition: "all 0.3s" }} />))}
+          </div>
+
+          <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 12, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.06em" }}>{data.label}</p>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 24, margin: "0 0 8px", lineHeight: 1.15 }}>{data.subtitle}</h2>
+
+          {/* Graduate A */}
+          <div style={{ marginTop: 20, padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}` }}>
+            <p style={{ margin: "0 0 10px", fontWeight: 600, fontSize: 12, color: C.accent }}>GRADUATE A</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: C.text }}>{data.a.status}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+              {data.a.salary && <div><span style={{ color: C.textMuted, fontSize: 10 }}>Salary</span><p style={{ margin: 0, fontFamily: fontDisplay, fontWeight: 700, fontSize: 14, color: C.accent }}>{data.a.salary}</p></div>}
+              {data.a.pension && <div><span style={{ color: C.textMuted, fontSize: 10 }}>Pension</span><p style={{ margin: 0, fontFamily: fontDisplay, fontWeight: 700, fontSize: 14, color: C.textSoft }}>{data.a.pension}</p></div>}
+            </div>
+            <p style={{ margin: "0 0 8px", fontSize: 10, color: C.textMuted, lineHeight: 1.5 }}>{data.a.narrative}</p>
+            <div style={{ padding: 10, borderRadius: 10, background: C.border, textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: 11, fontFamily: fontDisplay, fontWeight: 700, color: C.danger }}>Net Worth: {data.a.netWorth}</p>
+            </div>
+          </div>
+
+          {/* Graduate B */}
+          <div style={{ marginTop: 12, padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}` }}>
+            <p style={{ margin: "0 0 10px", fontWeight: 600, fontSize: 12, color: C.warm }}>GRADUATE B</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: C.text }}>{data.b.status}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+              {data.b.salary && <div><span style={{ color: C.textMuted, fontSize: 10 }}>Salary</span><p style={{ margin: 0, fontFamily: fontDisplay, fontWeight: 700, fontSize: 14, color: C.warm }}>{data.b.salary}</p></div>}
+              {data.b.pension && <div><span style={{ color: C.textMuted, fontSize: 10 }}>Pension</span><p style={{ margin: 0, fontFamily: fontDisplay, fontWeight: 700, fontSize: 14, color: C.textSoft }}>{data.b.pension}</p></div>}
+            </div>
+            <p style={{ margin: "0 0 8px", fontSize: 10, color: C.textMuted, lineHeight: 1.5 }}>{data.b.narrative}</p>
+            <div style={{ padding: 10, borderRadius: 10, background: C.border, textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: 11, fontFamily: fontDisplay, fontWeight: 700, color: C.success }}>Net Worth: {data.b.netWorth}</p>
+            </div>
+          </div>
+
+          {/* Gap */}
+          {currentAge !== "age22" && (
+            <div style={{ marginTop: 14, padding: 12, borderRadius: 12, background: C.accentGlow, border: `1px solid rgba(255,140,0,0.2)` }}>
+              <p style={{ margin: 0, fontSize: 11, color: C.accent, fontWeight: 600, textAlign: "center" }}>The gap is {(() => {
+                const gaps = { age22: "£0", age27: "£16,200", age30: "£49,900", age40: "£373,300", age50: "£622,000", age65: "£1,640,500" };
+                return gaps[currentAge];
+              })()}</p>
+            </div>
+          )}
+
+          <div style={{ flex: 1 }} />
+          <div style={{ display: "flex", gap: 12, paddingBottom: 20 }}>
+            <Btn variant="secondary" onClick={() => twoPathsIdx > 0 && setTwoPathsIdx(twoPathsIdx - 1)} disabled={twoPathsIdx === 0}>← Back</Btn>
+            {twoPathsIdx < ages.length - 1 ? (
+              <Btn onClick={() => setTwoPathsIdx(twoPathsIdx + 1)}>Next →</Btn>
+            ) : (
+              <Btn onClick={next}>How STAKT Changes This →</Btn>
+            )}
+          </div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  if ([SCREENS.FEATURE_STACK, SCREENS.FEATURE_CIRCLE, SCREENS.FEATURE_LEARN].includes(screen)) {
+    const d = featureScreens[screen];
+    const featureIdx = [SCREENS.FEATURE_STACK, SCREENS.FEATURE_CIRCLE, SCREENS.FEATURE_LEARN].indexOf(screen);
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={d.glowColor} opacity={0.07} />
+          <div style={{ display: "flex", gap: 6, marginTop: 16, marginBottom: 32 }}>
+            {[0, 1, 2].map(i => (<div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= featureIdx ? d.tagColor : C.border, transition: "all 0.3s" }} />))}
+          </div>
+          <Tag color={d.tagColor} bg={d.tagBg}>{d.tag}</Tag>
+          <div style={{ fontSize: 56, marginTop: 20, marginBottom: 12 }}>{d.emoji}</div>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 30, margin: 0, lineHeight: 1.15 }}>{d.title}</h2>
+          <p style={{ color: C.textSoft, fontSize: 16, marginTop: 8 }}>{d.subtitle}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 28 }}>
+            {d.points.map((pt, i) => (
+              <div key={i} style={{ display: "flex", gap: 14, padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}` }}>
+                <span style={{ fontSize: 24, flexShrink: 0 }}>{pt.icon}</span>
+                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: C.textSoft }}>{pt.text}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ flex: 1 }} />
+          <div style={{ paddingBottom: 20 }}>
+            <Btn onClick={next}>{featureIdx === 2 ? "Watch the Two Paths →" : "Next Feature →"}</Btn>
+          </div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ══════════════════════════════════════
+  //  S U C C E S S  S T O R I E S
+  // ══════════════════════════════════════
+
+  if (screen === SCREENS.SUCCESS_STORIES) {
+    const stories = [
+      { name: "Tunde", age: 28, city: "London", emoji: "🎯", title: "From GBP10 to First Property", steps: ["Started STAKT", "3 months in", "6 months in", "Today (Year 2)"], details: ["Invested GBP10 in her first stock. Nervous but determined.", "Joined a Stack Circle. Community accountability changed everything.", "GBP500/month regular investment. Understood compound interest.", "GBP47k invested across stocks, crypto, and property fund. On track for first house in 18 months."], quote: "I did not think I could invest. STAKT made it real." },
+      { name: "Amina", age: 32, city: "Manchester", emoji: "💫", title: "Building Wealth for Her Kids", steps: ["Year 1", "Discovered STAKT", "Invested in education", "Today (Year 3)"], details: ["Had GBP2k in savings. Felt stuck. Traditional banks were not helping.", "Used the calculator. Saw she could build GBP150k by 50 with discipline.", "Learned about pensions, ISAs, and diversification.", "GBP47k portfolio. Junior ISA set up for both kids. Breaking the wealth gap cycle."], quote: "This is not just about me. It is about my kids' future." },
+      { name: "Dev", age: 25, city: "Birmingham", emoji: "🚀", title: "First-Time Investor, No Regrets", steps: ["Before STAKT", "Overcome fear", "Took action", "Today (Year 1.5)"], details: ["Earned GBP28k/year. No savings. No idea where to start investing.", "Street Smart Money lessons demystified stocks and crypto.", "Started with GBP10/month in an ETF. Then added crypto. Then set up pension.", "GBP8k invested. Salary increased to GBP32k. On pace for GBP100k by 30."], quote: "I thought investing was only for rich people. I was wrong." }
+    ];
+    const s = stories[storyIdx];
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={C.accent} opacity={0.06} />
+          <div style={{ display: "flex", gap: 6, marginBottom: 20 }}>
+            {stories.map((_, i) => (<div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i === storyIdx ? C.accent : C.border, cursor: "pointer", transition: "all 0.3s" }} onClick={() => setStoryIdx(i)} />))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+            <div style={{ fontSize: 48 }}>{s.emoji}</div>
+            <div><h3 style={{ margin: "0 0 2px", fontFamily: fontDisplay, fontWeight: 700, fontSize: 20, color: C.text }}>{s.name}</h3><p style={{ margin: 0, fontSize: 12, color: C.textMuted }}>{s.age}, {s.city}</p></div>
+          </div>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 24, margin: "0 0 16px", lineHeight: 1.2 }}>{s.title}</h2>
+          <div style={{ marginTop: 20, marginBottom: 20 }}>
+            {s.steps.map((step, i) => (
+              <div key={i} style={{ display: "flex", gap: 12, marginBottom: 14, position: "relative" }}>
+                {i < s.steps.length - 1 && <div style={{ position: "absolute", left: 18, top: 36, width: 2, height: 50, background: C.accent, opacity: 0.3 }} />}
+                <div style={{ width: 36, height: 36, borderRadius: "50%", background: C.accentGlow, border: "2px solid " + C.accent, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: C.accent }}>{i + 1}</div>
+                <div style={{ flex: 1, paddingTop: 4 }}><p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 13 }}>{step}</p><p style={{ margin: 0, fontSize: 12, color: C.textMuted, lineHeight: 1.5 }}>{s.details[i]}</p></div>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: 16, borderRadius: 14, background: C.accentGlow, borderLeft: "3px solid " + C.accent, marginTop: 12, marginBottom: 20 }}><p style={{ margin: 0, fontSize: 14, fontStyle: "italic", color: C.accent, lineHeight: 1.55, fontWeight: 500 }}>"{s.quote}"</p></div>
+          <div style={{ flex: 1 }} />
+          <div style={{ display: "flex", gap: 12, paddingTop: 20 }}>
+            <Btn variant="secondary" onClick={() => storyIdx > 0 && setStoryIdx(storyIdx - 1)} disabled={storyIdx === 0}>Back</Btn>
+            {storyIdx < stories.length - 1 ? <Btn onClick={() => setStoryIdx(storyIdx + 1)}>Next</Btn> : <Btn onClick={next}>See Your Potential</Btn>}
+          </div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ══════════════════════════════════════
+  //  G A M I F I C A T I O N  S C R E E N S
+  // ══════════════════════════════════════
+
+  // ── YOUR JOURNEY / LEVELS ──
+  if (screen === SCREENS.GAME_JOURNEY) {
+    const levels = [
+      { level: 1, name: "Seed", xp: "0–500 XP", desc: "Open your account, complete first lesson, set your first goal", icon: "🌱", fill: 100, col: "#8B9A6B" },
+      { level: 2, name: "Sprout", xp: "500–2,000 XP", desc: "30-day streak, first £100 stacked, finish Module 1", icon: "🌿", fill: 65, col: "#6BAF6B" },
+      { level: 3, name: "Root", xp: "2,000–5,000 XP", desc: "6-month streak, join a Circle, complete risk profile", icon: "🌳", fill: 35, col: "#4A9F5A" },
+      { level: 4, name: "Branch", xp: "5,000–15,000 XP", desc: "1-year streak, first £1,000 stacked, mentor a new member", icon: "🪵", fill: 15, col: C.warm },
+      { level: 5, name: "Canopy", xp: "15,000+ XP", desc: "Emergency fund built, ISA opened, generational plan started", icon: "🏔️", fill: 5, col: C.accent },
+    ];
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ padding: 28, position: "relative" }}>
+          <GlowBG color={C.accent} opacity={0.06} />
+          <Tag>Progression</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 26, margin: "16px 0 0", lineHeight: 1.15 }}>Your wealth journey<br />has levels</h2>
+          <p style={{ color: C.textSoft, fontSize: 14, lineHeight: 1.55, marginTop: 8 }}>Not quick wins. Not day-trading dopamine. STAKT rewards the things that actually build wealth — <strong style={{ color: C.accent }}>consistency, knowledge, and patience</strong>.</p>
+
+          {/* Simulated player card */}
+          <div style={{ marginTop: 24, padding: 16, borderRadius: 16, background: `linear-gradient(145deg, ${C.card}, #1a1a1a)`, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: C.accentGlow, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, border: `2px solid ${C.accent}`, flexShrink: 0 }}>🌿</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Level 2 · <span style={{ color: "#6BAF6B" }}>Sprout</span></p>
+                <span style={{ fontSize: 12, color: C.accent, fontWeight: 700, fontFamily: fontDisplay }}>1,240 XP</span>
+              </div>
+              <div style={{ marginTop: 6, width: "100%", height: 6, borderRadius: 3, background: C.border }}>
+                <div style={{ width: "62%", height: "100%", borderRadius: 3, background: `linear-gradient(90deg, #6BAF6B, ${C.accent})`, transition: "width 0.8s ease" }} />
+              </div>
+              <p style={{ margin: "4px 0 0", fontSize: 10, color: C.textMuted }}>760 XP to Level 3 · Root</p>
+            </div>
+          </div>
+
+          {/* Level ladder */}
+          <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 8 }}>
+            {levels.map((l, i) => (
+              <div key={i} style={{
+                padding: "12px 14px", borderRadius: 12,
+                background: i <= 1 ? C.card : "transparent",
+                border: `1px solid ${i <= 1 ? C.border : "transparent"}`,
+                opacity: i <= 1 ? 1 : 0.5,
+                display: "flex", alignItems: "center", gap: 12,
+              }}>
+                <span style={{ fontSize: 22, flexShrink: 0 }}>{l.icon}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <p style={{ margin: 0, fontWeight: 600, fontSize: 13 }}>
+                      <span style={{ color: C.textMuted, marginRight: 6 }}>Lv.{l.level}</span>
+                      <span style={{ color: l.col }}>{l.name}</span>
+                    </p>
+                    <span style={{ fontSize: 10, color: C.textMuted }}>{l.xp}</span>
+                  </div>
+                  <p style={{ margin: "3px 0 0", fontSize: 11, color: C.textMuted, lineHeight: 1.4 }}>{l.desc}</p>
+                </div>
+                {i <= 1 && <span style={{ fontSize: 11, color: i === 0 ? C.accent : C.warm }}>✓</span>}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 16, padding: 14, borderRadius: 12, background: C.accentGlow, borderLeft: `3px solid ${C.accent}` }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.accent, lineHeight: 1.55, fontWeight: 500 }}>Every level is earned through months and years — not minutes. Because real wealth isn't built in a weekend.</p>
+          </div>
+
+          <div style={{ marginTop: 20, paddingBottom: 20 }}><Btn onClick={next}>See The Badges →</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── BADGES ──
+  if (screen === SCREENS.GAME_BADGES) {
+    const earnedBadges = [
+      { icon: "🔥", name: "7-Day Streak", desc: "Saved every day for a week", earned: true },
+      { icon: "📚", name: "First Lesson", desc: "Completed your first money module", earned: true },
+      { icon: "💯", name: "First £100", desc: "Stacked your first hundred", earned: true },
+    ];
+    const lockedBadges = [
+      { icon: "🏃", name: "90-Day Streak", desc: "3 months of consistent saving" },
+      { icon: "🛡️", name: "Safety Net", desc: "Built a 3-month emergency fund" },
+      { icon: "👥", name: "Circle Keeper", desc: "Stayed active in a Circle for 6 months" },
+      { icon: "📈", name: "ISA Opener", desc: "Opened your first Stocks & Shares ISA" },
+      { icon: "🎓", name: "Money Smart", desc: "Completed all 12 learning modules" },
+      { icon: "🌍", name: "Legacy Starter", desc: "Set up a Junior ISA or generational plan" },
+      { icon: "🏔️", name: "£10k Stacked", desc: "A mountain built one day at a time" },
+      { icon: "🫂", name: "Mentor", desc: "Helped 3 new members find their feet" },
+      { icon: "👑", name: "Generational", desc: "5 years invested. Legacy in motion." },
+    ];
+    const xpActions = [
+      { action: "Daily save (any amount)", xp: "+10 XP" },
+      { action: "Complete a lesson", xp: "+25 XP" },
+      { action: "Hit a savings milestone", xp: "+100 XP" },
+      { action: "Maintain a 30-day streak", xp: "+250 XP" },
+      { action: "Stay invested for 1 year", xp: "+1,000 XP" },
+    ];
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ padding: 28, position: "relative" }}>
+          <GlowBG color={C.warm} opacity={0.06} />
+          <Tag color={C.warm} bg={C.warmGlow}>Achievements</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 26, margin: "16px 0 0", lineHeight: 1.15 }}>Earn badges that<br />mean something</h2>
+          <p style={{ color: C.textSoft, fontSize: 14, lineHeight: 1.55, marginTop: 8 }}>No confetti for clicking "buy". Every badge here represents a real step toward financial freedom.</p>
+
+          {/* Earned */}
+          <p style={{ margin: "20px 0 10px", fontWeight: 600, fontSize: 13, color: C.accent }}>Earned (3)</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+            {earnedBadges.map((b, i) => (
+              <div key={i} style={{ padding: 12, borderRadius: 14, background: C.card, border: `1px solid ${C.border}`, textAlign: "center" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: C.accentGlow, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 6px", fontSize: 22, border: `1.5px solid ${C.accent}` }}>{b.icon}</div>
+                <p style={{ margin: 0, fontWeight: 600, fontSize: 11, lineHeight: 1.3 }}>{b.name}</p>
+                <p style={{ margin: "2px 0 0", fontSize: 9, color: C.textMuted, lineHeight: 1.3 }}>{b.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Locked */}
+          <p style={{ margin: "20px 0 10px", fontWeight: 600, fontSize: 13, color: C.textMuted }}>Locked (9)</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+            {lockedBadges.map((b, i) => (
+              <div key={i} style={{ padding: 12, borderRadius: 14, background: "transparent", border: `1px solid ${C.border}`, textAlign: "center", opacity: 0.45 }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: C.border, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 6px", fontSize: 22 }}>🔒</div>
+                <p style={{ margin: 0, fontWeight: 600, fontSize: 11, lineHeight: 1.3 }}>{b.name}</p>
+                <p style={{ margin: "2px 0 0", fontSize: 9, color: C.textMuted, lineHeight: 1.3 }}>{b.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* How XP works */}
+          <div style={{ marginTop: 20, padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}` }}>
+            <p style={{ margin: "0 0 10px", fontWeight: 600, fontSize: 13 }}>How you earn XP</p>
+            {xpActions.map((a, i) => (
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderTop: i > 0 ? `1px solid ${C.border}` : "none" }}>
+                <span style={{ fontSize: 12, color: C.textSoft }}>{a.action}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: C.accent, fontFamily: fontDisplay }}>{a.xp}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 16, padding: 14, borderRadius: 12, background: C.warmGlow, borderLeft: `3px solid ${C.warm}` }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.warm, lineHeight: 1.55, fontWeight: 500 }}>Notice what's missing? No XP for frequent trading. No rewards for taking big risks. STAKT rewards the habits that compound over a lifetime.</p>
+          </div>
+
+          <div style={{ marginTop: 20, paddingBottom: 20 }}><Btn onClick={next}>Now See Your Reality Check →</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ══════════════════════════════════════
+  //  C A L C U L A T O R  S C R E E N S
+  // ══════════════════════════════════════
+
+  // ── CALC INPUT ──
+  if (screen === SCREENS.CALC_INPUT) {
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={C.danger} opacity={0.06} />
+          <Tag color={C.danger} bg={C.dangerGlow}>Reality Check</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 28, margin: "16px 0 0", lineHeight: 1.15 }}>What are you<br />leaving on the table?</h2>
+          <p style={{ color: C.textSoft, fontSize: 14, lineHeight: 1.55, marginTop: 8 }}>Move the sliders. See the real cost of not investing.</p>
+
+          <div style={{ marginTop: 32 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Your age</p>
+              <span style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 22, color: C.accent }}>{calcAge}</span>
+            </div>
+            <input type="range" min={16} max={50} step={1} value={calcAge} onChange={e => setCalcAge(Number(e.target.value))} style={{ width: "100%", accentColor: C.accent, height: 6 }} />
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+              <span style={{ fontSize: 11, color: C.textMuted }}>16</span>
+              <span style={{ fontSize: 11, color: C.textMuted }}>50</span>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 28 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Monthly you could save</p>
+              <span style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 22, color: C.accent }}>£{calcMonthly}</span>
+            </div>
+            <input type="range" min={10} max={500} step={10} value={calcMonthly} onChange={e => setCalcMonthly(Number(e.target.value))} style={{ width: "100%", accentColor: C.accent, height: 6 }} />
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+              <span style={{ fontSize: 11, color: C.textMuted }}>£10</span>
+              <span style={{ fontSize: 11, color: C.textMuted }}>£500</span>
+            </div>
+          </div>
+
+          {/* Live preview */}
+          <div style={{ marginTop: 28, padding: 20, borderRadius: 16, background: C.card, border: `1px solid ${C.border}` }}>
+            <p style={{ margin: 0, color: C.textMuted, fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>By age 65</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 12 }}>
+              <div>
+                <p style={{ margin: 0, fontSize: 12, color: C.textSoft }}>If you invest</p>
+                <p style={{ margin: "4px 0 0", fontFamily: fontDisplay, fontWeight: 700, fontSize: 24, color: C.accent }}>{formatGBP(withInvesting)}</p>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <p style={{ margin: 0, fontSize: 12, color: C.textSoft }}>If you don't</p>
+                <p style={{ margin: "4px 0 0", fontFamily: fontDisplay, fontWeight: 700, fontSize: 24, color: C.danger }}>{formatGBP(withoutInvesting)}</p>
+              </div>
+            </div>
+            <div style={{ marginTop: 14, padding: 10, borderRadius: 10, background: C.dangerGlow, textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: 13, color: C.danger, fontWeight: 600 }}>You'd miss out on {formatGBP(missedGrowth)}</p>
+            </div>
+          </div>
+
+          <div style={{ flex: 1 }} />
+          <div style={{ paddingBottom: 20 }}><Btn onClick={next}>Show Me The Full Picture</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── CALC RESULT ──
+  if (screen === SCREENS.CALC_RESULT) {
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ padding: 28, position: "relative" }}>
+          <GlowBG color={C.danger} opacity={0.08} />
+          <Tag color={C.danger} bg={C.dangerGlow}>The Numbers Don't Lie</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 24, margin: "16px 0 0", lineHeight: 1.2 }}>£{calcMonthly}/month from age {calcAge}</h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 20 }}>
+            <div style={{ padding: 16, borderRadius: 16, background: C.accentGlow, border: `1px solid rgba(255,140,0,0.25)`, textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: 10, color: C.textSoft, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>Invested</p>
+              <p style={{ margin: "6px 0 0", fontFamily: fontDisplay, fontWeight: 800, fontSize: 24, color: C.accent }}>{formatGBP(withInvesting)}</p>
+              <p style={{ margin: "2px 0 0", fontSize: 10, color: C.textSoft }}>at age 65</p>
+            </div>
+            <div style={{ padding: 16, borderRadius: 16, background: C.dangerGlow, border: `1px solid rgba(255,68,68,0.25)`, textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: 10, color: C.textSoft, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>Not invested</p>
+              <p style={{ margin: "6px 0 0", fontFamily: fontDisplay, fontWeight: 800, fontSize: 24, color: C.danger }}>{formatGBP(withoutInvesting)}</p>
+              <p style={{ margin: "2px 0 0", fontSize: 10, color: C.textSoft }}>at age 65</p>
+            </div>
+          </div>
+
+          {/* Chart */}
+          <div style={{ marginTop: 20, padding: 16, borderRadius: 16, background: C.card, border: `1px solid ${C.border}` }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 13 }}>Growth Over Time</p>
+              <div style={{ display: "flex", gap: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 4 }}><div style={{ width: 8, height: 8, borderRadius: 2, background: C.accent }} /><span style={{ fontSize: 9, color: C.textMuted }}>Invested</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: 4 }}><div style={{ width: 8, height: 8, borderRadius: 2, background: C.danger, opacity: 0.5 }} /><span style={{ fontSize: 9, color: C.textMuted }}>Savings</span></div>
+              </div>
+            </div>
+            <MiniChart data={chartData} height={130} />
+          </div>
+
+          {/* Breakdown */}
+          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ padding: 12, borderRadius: 12, background: C.card, border: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 13, color: C.textSoft }}>You'd put in</span>
+              <span style={{ fontSize: 13, fontWeight: 700 }}>{formatGBPFull(totalContributed)}</span>
+            </div>
+            <div style={{ padding: 12, borderRadius: 12, background: C.card, border: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 13, color: C.textSoft }}>Compound growth adds</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: C.accent }}>{formatGBPFull(Math.max(withInvesting - totalContributed, 0))}</span>
+            </div>
+            <div style={{ padding: 12, borderRadius: 12, background: C.dangerGlow, border: `1px solid rgba(255,68,68,0.2)`, display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 13, color: C.danger, fontWeight: 600 }}>Cost of doing nothing</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: C.danger }}>{formatGBPFull(missedGrowth)}</span>
+            </div>
+          </div>
+
+          <p style={{ marginTop: 16, fontSize: 11, color: C.textMuted, textAlign: "center", lineHeight: 1.5 }}>Based on 7% avg annual return (stocks & shares) vs 0.5% basic savings. Past performance doesn't guarantee future results.</p>
+
+          <div style={{ marginTop: 16, paddingBottom: 20 }}><Btn onClick={next}>See The Generational Impact →</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── CALC GENERATIONS ──
+  if (screen === SCREENS.CALC_GENERATIONS) {
+    const gens = [
+      { label: "You", sub: `Starting at ${calcAge}, £${calcMonthly}/mo`, value: genData.g1, emoji: "👤" },
+      { label: "Your Children", sub: "Inherit 30% + invest the same", value: genData.g2, emoji: "👶" },
+      { label: "Grandchildren", sub: "The compound effect snowballs", value: genData.g3, emoji: "👶👶" },
+    ];
+    const maxGen = genData.g3;
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 28, position: "relative" }}>
+          <GlowBG color={C.accent} opacity={0.06} />
+          <Tag>Generational Wealth</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 26, margin: "16px 0 0", lineHeight: 1.15 }}>This isn't just<br />about you</h2>
+          <p style={{ color: C.textSoft, fontSize: 14, lineHeight: 1.55, marginTop: 8 }}>What you start today creates a legacy. Each generation builds on the last.</p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 24 }}>
+            {gens.map((g, i) => {
+              const barW = maxGen > 0 ? Math.max((g.value / maxGen) * 100, 10) : 10;
+              return (
+                <div key={i} style={{ padding: 16, borderRadius: 16, background: C.card, border: `1px solid ${C.border}` }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                    <span style={{ fontSize: 22 }}>{g.emoji}</span>
+                    <div>
+                      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{g.label}</p>
+                      <p style={{ margin: 0, fontSize: 11, color: C.textMuted }}>{g.sub}</p>
+                    </div>
+                  </div>
+                  <div style={{ width: "100%", height: 28, borderRadius: 8, background: C.border, position: "relative", overflow: "hidden" }}>
+                    <div style={{
+                      width: `${barW}%`, height: "100%", borderRadius: 8,
+                      background: i === 0 ? C.accent : i === 1 ? C.warm : `linear-gradient(90deg, ${C.accent}, ${C.warm})`,
+                      transition: "width 0.8s ease",
+                      display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: 8,
+                    }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: C.bg, whiteSpace: "nowrap" }}>{formatGBP(g.value)}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* No investment contrast */}
+          <div style={{ marginTop: 20, padding: 16, borderRadius: 14, background: C.dangerGlow, border: `1px solid rgba(255,68,68,0.2)` }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.danger, fontWeight: 600, marginBottom: 6 }}>Without investing?</p>
+            <p style={{ margin: 0, fontSize: 13, color: C.textSoft, lineHeight: 1.55 }}>Every generation starts from zero. No inheritance. No compound effect. The wealth gap stays exactly where it is.</p>
+          </div>
+
+          <div style={{ marginTop: 16, padding: 16, borderRadius: 14, background: C.accentGlow, borderLeft: `3px solid ${C.accent}` }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.accent, lineHeight: 1.55, fontWeight: 500 }}>
+              Your grandchildren could have <strong>{formatGBP(genData.g3)}</strong>. That's the difference STAKT exists to make.
+            </p>
+          </div>
+
+          <div style={{ flex: 1 }} />
+          <div style={{ paddingBottom: 20 }}><Btn onClick={next}>Give Us Your Thoughts</Btn></div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── FEEDBACK ──
+  if (screen === SCREENS.FEEDBACK) {
+    const exciteOptions = ["Micro-Stacking", "Stack Circles", "Daily Lessons", "XP & Levelling System", "Achievement Badges", "Reality Check Calculator", "Generational Wealth View"];
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ padding: 28, position: "relative" }}>
+          <GlowBG color={C.warm} opacity={0.06} />
+          <Tag color={C.warm} bg={C.warmGlow}>Your Opinion Matters</Tag>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 28, margin: "16px 0 0", lineHeight: 1.15 }}>What do you think?</h2>
+          <p style={{ color: C.textSoft, fontSize: 14, lineHeight: 1.55 }}>Help shape STAKT — your honest feedback builds a better product.</p>
+
+          <div style={{ marginTop: 24 }}>
+            <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14 }}>How likely would you use STAKT?</p>
+            <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+              {[1, 2, 3, 4, 5].map(n => (
+                <button key={n} onClick={() => setFeedback(f => ({ ...f, rating: n }))} style={{
+                  width: 52, height: 52, borderRadius: 14, border: `2px solid ${feedback.rating >= n ? C.accent : C.border}`,
+                  background: feedback.rating >= n ? C.accentGlow : C.card, color: feedback.rating >= n ? C.accent : C.textMuted,
+                  fontSize: 18, fontWeight: 700, cursor: "pointer", fontFamily: fontDisplay, transition: "all 0.2s",
+                }}>{n}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+              <span style={{ fontSize: 11, color: C.textMuted }}>Not likely</span>
+              <span style={{ fontSize: 11, color: C.textMuted }}>Definitely</span>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 28 }}>
+            <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14 }}>What excites you most? <span style={{ fontWeight: 400, color: C.textMuted }}>(pick any)</span></p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {exciteOptions.map(opt => (
+                <Pill key={opt} active={feedback.excites.includes(opt)} onClick={() => {
+                  setFeedback(f => ({ ...f, excites: f.excites.includes(opt) ? f.excites.filter(e => e !== opt) : [...f.excites, opt] }));
+                }}>{opt}</Pill>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 28 }}>
+            <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14 }}>Anything else on your mind?</p>
+            <textarea value={feedback.comment} onChange={e => setFeedback(f => ({ ...f, comment: e.target.value }))} placeholder="What would make STAKT a must-have for you?" style={{
+              width: "100%", minHeight: 80, padding: 14, borderRadius: 14, border: `1.5px solid ${C.border}`,
+              background: C.card, color: C.text, fontFamily: fontBody, fontSize: 14, resize: "vertical", boxSizing: "border-box", outline: "none",
+            }} />
+          </div>
+
+          <div style={{ marginTop: 24 }}>
+            <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14 }}>Want early access? <span style={{ fontWeight: 400, color: C.textMuted }}>(optional)</span></p>
+            <input type="email" value={feedback.email} onChange={e => setFeedback(f => ({ ...f, email: e.target.value }))} placeholder="your@email.com" style={{
+              width: "100%", padding: 14, borderRadius: 14, border: `1.5px solid ${C.border}`,
+              background: C.card, color: C.text, fontFamily: fontBody, fontSize: 14, boxSizing: "border-box", outline: "none",
+            }} />
+          </div>
+
+          <div style={{ marginTop: 32, paddingBottom: 20 }}>
+            <Btn onClick={saveFeedback} disabled={feedback.rating === 0 || submitting}>
+              {submitting ? "Sending..." : "Submit Feedback"}
+            </Btn>
+          </div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  // ── THANKS ──
+  if (screen === SCREENS.THANKS) {
+    return (
+      <PhoneShell containerRef={containerRef} fadeIn={fadeIn}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 32, textAlign: "center", position: "relative" }}>
+          <GlowBG />
+          <div style={{ width: 80, height: 80, borderRadius: "50%", background: C.accentGlow, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, border: `2px solid ${C.accent}` }}>
+            <span style={{ fontSize: 36 }}>🙏</span>
+          </div>
+          <h2 style={{ fontFamily: fontDisplay, fontWeight: 700, fontSize: 30, margin: 0 }}>Thank you!</h2>
+          <p style={{ color: C.textSoft, fontSize: 15, lineHeight: 1.6, marginTop: 12, maxWidth: 280 }}>Your feedback is shaping something real. If you left your email, we'll be in touch when STAKT is ready.</p>
+          <div style={{ marginTop: 32, padding: 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}`, width: "100%" }}>
+            <p style={{ margin: 0, fontSize: 14, color: C.textSoft }}>Know someone who'd want this?</p>
+            <p style={{ margin: "8px 0 0", fontSize: 14, fontWeight: 600, color: C.accent }}>Share this link with them ↗</p>
+          </div>
+          <div style={{ marginTop: 40, width: "100%" }}>
+            <Btn variant="secondary" onClick={() => transition(SCREENS.SPLASH)}>Start Over</Btn>
+          </div>
+        </div>
+      </PhoneShell>
+    );
+  }
+
+  return null;
+}
+
+function App() {
+  return (
+    <>
+      {/* Desktop layout */}
+      <div className="desktop-shell">
+        <div className="desktop-brand">
+          <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:24}}>
+            <div style={{width:56,height:56,borderRadius:14,background:"linear-gradient(135deg,#FF8C00,#FF6B00)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 32px rgba(255,140,0,0.2)"}}>
+              <span style={{fontSize:28,fontFamily:"'Outfit',sans-serif",fontWeight:900,color:"#0A0A0A"}}>S</span>
+            </div>
+            <span style={{fontFamily:"'Outfit',sans-serif",fontWeight:800,fontSize:28,color:"#F5F0EB",letterSpacing:"-0.03em"}}>STAKT</span>
+          </div>
+          <h1>The wealth playbook<br/>your parents <span style={{color:"#FF8C00"}}>never had.</span></h1>
+          <p className="tagline">Each generation doesn't need to start from zero. STAKT is the UK challenger banking and investing app being built for first-generation wealth builders — entry points from £10, education at the core.</p>
+          <div className="stat-row">
+            <div className="stat"><div className="stat-num">90%</div><div className="stat-label">UK wealth gap between<br/>White &amp; Black households</div></div>
+            <div className="stat"><div className="stat-num">68%</div><div className="stat-label">of young people have<br/>less than £1k saved</div></div>
+            <div className="stat"><div className="stat-num">£10</div><div className="stat-label">is all you need<br/>to get started</div></div>
+          </div>
+          <a href="#" onClick={(e) => { e.preventDefault(); document.getElementById('guide-modal').style.display = 'flex'; }} style={{display:"inline-flex",alignItems:"center",gap:10,marginTop:32,padding:"14px 24px",borderRadius:100,background:"linear-gradient(135deg,#FF8C00,#FF6B00)",color:"#0A0A0A",fontFamily:"'Outfit',sans-serif",fontWeight:700,fontSize:15,textDecoration:"none",boxShadow:"0 8px 32px rgba(255,140,0,0.3)"}}>
+            📘 Get the Free First £10 Guide →
+          </a>
+          <p className="cta-note" style={{marginTop:24}}>Drop your email, get the guide, and join the waitlist for early access. <span>Try the prototype on the right →</span></p>
+        </div>
+        <div className="phone-frame">
+          <div className="phone-frame-inner">
+            <STAKTPrototype />
+          </div>
+        </div>
       </div>
+      {/* Mobile layout */}
+      <div className="mobile-fullscreen" style={{height:"100dvh"}}>
+        <STAKTPrototype />
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- GUIDE DOWNLOAD MODAL -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="guide-modal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-card">
+    <button class="modal-close" onclick="document.getElementById('guide-modal').style.display='none'">×</button>
+
+    <div id="modal-form-view">
+      <div class="modal-eyebrow">The First £10 Guide</div>
+      <h2>The wealth playbook your parents <span>never had.</span></h2>
+      <p class="modal-lede">14 pages. Jargon-free. Built for first-generation wealth builders. Drop your email and we'll send it over — plus you'll be on the waitlist for early access when STAKT launches.</p>
+
+      <form class="modal-form" onsubmit="handleGuideSignup(event)">
+        <input type="text" id="guide-fname" placeholder="First name (optional)" autocomplete="given-name">
+        <input type="email" id="guide-email" placeholder="Your email" required autocomplete="email">
+        <button type="submit" id="guide-submit-btn">Send Me the Guide →</button>
+      </form>
+
+      <p class="privacy-note">No spam. We'll send you the guide and occasional updates as we build STAKT. Unsubscribe anytime.</p>
     </div>
-    <div class="steps-grid">
-      <div class="step reveal"><div class="step-num">1</div><h3>Build your Logbook</h3><p>Select from an industry-specific skills taxonomy. Processes, materials, equipment, standards. No keyword guessing. Takes under 10 minutes.</p></div>
-      <div class="step reveal reveal-d1"><div class="step-num">2</div><h3>Get verified</h3><p>Former colleagues and managers confirm your specific capabilities. Real verification from people who&rsquo;ve seen you work &mdash; not strangers clicking &ldquo;endorse.&rdquo;</p></div>
-      <div class="step reveal reveal-d2"><div class="step-num">3</div><h3>Get found</h3><p>Employers search by capability: &ldquo;Show me someone with GMP experience, fragrance compounding, and 5 years on a filling line.&rdquo; Matched. Ranked. Contacted.</p></div>
+
+    <div class="modal-success" id="modal-success-view">
+      <div class="check">✓</div>
+      <h3>Welcome to the movement.</h3>
+      <p>Check your inbox for the guide (it might take a minute or two). You're now on the STAKT waitlist — you'll hear from us first when we launch.</p>
+      <a href="STAKT-First-10-Guide.pdf" download class="download-link">📘 Download the Guide</a>
+      <p style="margin-top:18px;font-size:12px;color:#6B6360;">Already saved to your inbox too — check spam if you don't see it.</p>
     </div>
   </div>
-</section>
-
-<section class="chapter">
-  <div class="chapter-label reveal"><div class="chapter-num">3</div><div class="chapter-title">Who It&rsquo;s For</div></div>
-  <h2 class="reveal reveal-d1">Three audiences. <em>One platform.</em></h2>
-  <p class="chapter-body reveal reveal-d2">BenchLab serves everyone in the hiring equation &mdash; the people with the skills, the companies that need them, and the specialists who work between projects.</p>
-  <div class="for-grid">
-    <div class="for-card reveal reveal-d2">
-      <div class="for-icon for-icon-1">&#x1F9EA;</div>
-      <h3>Practitioners</h3>
-      <p>Your twelve years of bench experience finally becomes visible.</p>
-      <div class="for-detail">Build a Logbook that captures what you actually know. Get verified by people who&rsquo;ve worked alongside you. Be found by employers who value capability over keywords. Always free.</div>
-    </div>
-    <div class="for-card reveal reveal-d3">
-      <div class="for-icon for-icon-2">&#x1F3ED;</div>
-      <h3>Employers</h3>
-      <p>Find the right person in days, not months.</p>
-      <div class="for-detail">Search by verified capability across processes, materials, equipment, and standards. See who actually has GMP experience in cosmetics &mdash; not food. Post roles that reach people no other platform can find. From &pound;79/month.</div>
-    </div>
-    <div class="for-card reveal reveal-d4">
-      <div class="for-icon for-icon-3">&#x1F4BC;</div>
-      <h3>Consultants</h3>
-      <p>Go from invisible to fully booked.</p>
-      <div class="for-detail">List your specialism, day rate, and availability in a searchable directory. Receive relevant project briefs. Build a track record that attracts repeat work. No platform deduction from your rate.</div>
-    </div>
-  </div>
-</section>
-
-<section class="industries reveal">
-  <h2>Built for your industry</h2>
-  <p>Purpose-built for the sectors that make the products people use every day.</p>
-  <div class="ind-wrap">
-    <span class="ind-pill">Home Fragrance &amp; Candles</span>
-    <span class="ind-pill">Skincare &amp; Personal Care</span>
-    <span class="ind-pill">Fine &amp; Functional Fragrance</span>
-    <span class="ind-pill">Toiletries &amp; Soap</span>
-    <span class="ind-pill">Quality, Regulatory &amp; Testing</span>
-  </div>
-</section>
-
-<section class="cta" id="cta">
-  <div class="cta-orb cta-orb-1"></div>
-  <div class="cta-orb cta-orb-2"></div>
-  <div class="cta-inner reveal">
-    <h2>We&rsquo;re building BenchLab for&nbsp;people&nbsp;like&nbsp;you.</h2>
-    <p>Whether you&rsquo;re a practitioner who wants to be found for what you can do, an employer tired of hiring the wrong people, or a consultant who deserves to be visible &mdash; we&rsquo;d love to hear from you.</p>
-    <a href="mailto:boyowa@thebenchlab.co.uk?subject=BenchLab%20%E2%80%94%20I%27m%20interested" class="btn-gold">Register Your Interest</a>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-brand"><span>&#x2697; BenchLab</span></div>
-  <div class="footer-tagline">What you can do matters more than what you say you can do.</div>
-  <div class="footer-desc">The verified skills platform for craft &amp; formulation industries</div>
-  <div class="footer-contact"><a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
-</footer>
+</div>
 
 <script>
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
-},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function handleGuideSignup(event) {
+  event.preventDefault();
+  const email = document.getElementById('guide-email').value.trim();
+  const fname = document.getElementById('guide-fname').value.trim();
+  const btn = document.getElementById('guide-submit-btn');
+
+  if (!email || !email.includes('@')) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  // Submit to Mailchimp via JSONP (CORS workaround)
+  try {
+    const MAILCHIMP_URL = "https://money.us5.list-manage.com/subscribe/post?u=e2124e03a0e42bfe33734a282&id=e2d5904335&f_id=0010f8e9f0";
+    const url = MAILCHIMP_URL.replace("/post?", "/post-json?")
+      + "&EMAIL=" + encodeURIComponent(email)
+      + (fname ? "&FNAME=" + encodeURIComponent(fname) : "")
+      + "&SOURCE=" + encodeURIComponent("guide_download")
+      + "&c=__mcGuideCb" + Date.now();
+    const s = document.createElement("script");
+    s.src = url;
+    document.body.appendChild(s);
+    setTimeout(() => { try { s.remove(); } catch(e){} }, 5000);
+  } catch(e) { console.error("Mailchimp error:", e); }
+
+  // Show success state after brief delay
+  setTimeout(() => {
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success-view').classList.add('show');
+  }, 800);
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('guide-modal').style.display = 'none';
+  }
+});
 </script>
+
 </body>
 </html>

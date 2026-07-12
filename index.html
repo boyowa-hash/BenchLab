@@ -444,10 +444,78 @@ nav.scrolled .nav-hamburger{color:var(--forest)}
 <section class="cta" id="cta">
   <div class="cta-orb cta-orb-1"></div>
   <div class="cta-orb cta-orb-2"></div>
-  <div class="cta-inner reveal">
+  <div class="cta-inner reveal" style="max-width:560px;">
     <h2>We&rsquo;re building BenchLab for&nbsp;people&nbsp;like&nbsp;you.</h2>
-    <p>Whether you&rsquo;re a practitioner who wants to be found for what you can do, an employer tired of hiring the wrong people, or a consultant who deserves to be visible &mdash; we&rsquo;d love to hear from you.</p>
-    <a href="mailto:boyowa@thebenchlab.co.uk?subject=BenchLab%20%E2%80%94%20I%27m%20interested" class="btn-gold">Register Your Interest</a>
+    <p>Whether you&rsquo;re a practitioner who wants to be found for what you can do, an employer tired of hiring the wrong people, or a consultant who deserves to be visible &mdash; register below.</p>
+
+    <!-- Formspree form — sign up at formspree.io, create a new form, replace YOUR_FORM_ID -->
+    <form id="reg-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST"
+      style="margin-top:32px;display:flex;flex-direction:column;gap:14px;text-align:left;">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div>
+          <label style="display:block;font-size:12px;color:var(--sage);letter-spacing:0.5px;margin-bottom:6px;font-weight:500;text-transform:uppercase;">Full Name</label>
+          <input type="text" name="name" required placeholder="Sarah Mitchell"
+            style="width:100%;padding:13px 16px;border-radius:8px;border:1px solid rgba(250,246,238,0.15);background:rgba(250,246,238,0.07);color:var(--cream);font-family:'Libre Franklin',sans-serif;font-size:14px;outline:none;"
+            onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(250,246,238,0.15)'">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;color:var(--sage);letter-spacing:0.5px;margin-bottom:6px;font-weight:500;text-transform:uppercase;">Email Address</label>
+          <input type="email" name="email" required placeholder="you@company.com"
+            style="width:100%;padding:13px 16px;border-radius:8px;border:1px solid rgba(250,246,238,0.15);background:rgba(250,246,238,0.07);color:var(--cream);font-family:'Libre Franklin',sans-serif;font-size:14px;outline:none;"
+            onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(250,246,238,0.15)'">
+        </div>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;color:var(--sage);letter-spacing:0.5px;margin-bottom:6px;font-weight:500;text-transform:uppercase;">Company <span style="opacity:0.5;text-transform:none;">(optional)</span></label>
+        <input type="text" name="company" placeholder="Essence Manufacturing Ltd"
+          style="width:100%;padding:13px 16px;border-radius:8px;border:1px solid rgba(250,246,238,0.15);background:rgba(250,246,238,0.07);color:var(--cream);font-family:'Libre Franklin',sans-serif;font-size:14px;outline:none;"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(250,246,238,0.15)'">
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;color:var(--sage);letter-spacing:0.5px;margin-bottom:6px;font-weight:500;text-transform:uppercase;">I am a&hellip;</label>
+        <select name="type" required
+          style="width:100%;padding:13px 16px;border-radius:8px;border:1px solid rgba(250,246,238,0.15);background:rgba(38,51,24,0.9);color:var(--cream);font-family:'Libre Franklin',sans-serif;font-size:14px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(250,246,238,0.15)'">
+          <option value="" disabled selected>Select your role&hellip;</option>
+          <option value="Employer">Employer &mdash; I hire production and technical staff</option>
+          <option value="Practitioner">Practitioner &mdash; I work in craft or formulation manufacturing</option>
+          <option value="Consultant">Consultant &mdash; I offer specialist project work</option>
+          <option value="Other">Other &mdash; I&rsquo;m interested for another reason</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;color:var(--sage);letter-spacing:0.5px;margin-bottom:6px;font-weight:500;text-transform:uppercase;">Anything to add? <span style="opacity:0.5;text-transform:none;">(optional)</span></label>
+        <textarea name="message" rows="3" placeholder="Tell us a little about your experience in the sector..."
+          style="width:100%;padding:13px 16px;border-radius:8px;border:1px solid rgba(250,246,238,0.15);background:rgba(250,246,238,0.07);color:var(--cream);font-family:'Libre Franklin',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:80px;"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(250,246,238,0.15)'"></textarea>
+      </div>
+
+      <input type="text" name="_gotcha" style="display:none">
+      <input type="hidden" name="_subject" value="New BenchLab Registration — thebenchlab.co.uk">
+
+      <button type="submit"
+        style="width:100%;padding:18px;border-radius:10px;background:var(--gold);color:var(--forest);font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Libre Franklin',sans-serif;letter-spacing:0.3px;transition:all 0.3s;"
+        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(201,168,76,0.35)'"
+        onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+        Register Your Interest &rarr;
+      </button>
+
+      <p style="font-size:12px;color:rgba(143,166,139,0.45);text-align:center;">
+        No spam. No sales calls. We&rsquo;ll be in touch personally.
+      </p>
+    </form>
+
+    <!-- Success state -->
+    <div id="form-success" style="display:none;margin-top:32px;background:rgba(250,246,238,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:36px;text-align:center;">
+      <div style="font-size:36px;margin-bottom:14px;">&#x2713;</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);margin-bottom:10px;">Thank you &mdash; we&rsquo;ll be in touch.</h3>
+      <p style="font-size:15px;color:var(--sage-light);line-height:1.65;">We&rsquo;ve received your registration and will reach out personally. In the meantime, explore the platform prototype.</p>
+      <a href="platform.html" style="display:inline-block;margin-top:20px;padding:13px 28px;border-radius:8px;background:var(--gold);color:var(--forest);font-size:14px;font-weight:600;text-decoration:none;">Explore the Platform &rarr;</a>
+    </div>
   </div>
 </section>
 
@@ -455,12 +523,34 @@ nav.scrolled .nav-hamburger{color:var(--forest)}
   <div class="footer-brand"><span>&#x2697; BenchLab</span></div>
   <div class="footer-tagline">What you can do matters more than what you say you can do.</div>
   <div class="footer-desc">The verified skills platform for craft &amp; formulation industries</div>
-  <div class="footer-contact"><a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
+  <div class="footer-contact"><a href="mailto:hello@thebenchlab.co.uk">hello@thebenchlab.co.uk</a></div>
 </footer>
 
 <script>
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+
+// Registration form — Formspree AJAX submission
+const form=document.getElementById('reg-form');
+if(form){
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const btn=form.querySelector('button[type=submit]');
+    btn.textContent='Sending\u2026';btn.disabled=true;
+    try{
+      const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+      if(res.ok){
+        form.style.display='none';
+        document.getElementById('form-success').style.display='block';
+      } else {
+        btn.textContent='Something went wrong \u2014 please email hello@thebenchlab.co.uk';
+        btn.style.background='rgba(200,80,60,0.8)';btn.disabled=false;
+      }
+    } catch(err){
+      btn.textContent='Network error \u2014 please try again';btn.disabled=false;
+    }
+  });
+}
 const obs=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
 },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});

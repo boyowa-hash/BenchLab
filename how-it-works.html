@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — BenchLab</title>
+<meta name="description" content="BenchLab replaces keyword CVs with a verified Craftsperson's Logbook. See exactly how practitioners get verified and how employers find the right people.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2697;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#263318;--forest-mid:#2C3E2D;--forest-deep:#1A2610;
+  --gold:#C9A84C;--gold-soft:#D4B86A;
+  --cream:#FAF6EE;--cream-mid:#F0EADB;--warm:#FDFCF8;
+  --bark:#5C4A3A;--bark-light:#8B7355;--charcoal:#2A2A28;
+  --sage:#8FA68B;--sage-light:#B5CBAE;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Libre Franklin',sans-serif;background:var(--cream);color:var(--charcoal);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;transition:all 0.5s ease;padding:24px 0}
+nav.scrolled{background:rgba(250,246,238,0.94);backdrop-filter:blur(24px);padding:14px 0;border-bottom:1px solid rgba(44,62,45,0.06)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color 0.4s}
+nav.scrolled .logo{color:var(--forest)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:all 0.3s;color:rgba(250,246,238,0.7)}
+nav.scrolled .nav-link{color:var(--bark-light)}
+.nav-link:hover,.nav-link.active{color:var(--gold)}
+.nav-cta{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s;background:var(--gold);color:var(--forest)}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+.nav-hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--cream);padding:4px 8px}
+nav.scrolled .nav-hamburger{color:var(--forest)}
+.nav-mobile{display:none;position:fixed;inset:0;background:var(--forest);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);text-decoration:none}
+.nav-mobile a:hover{color:var(--gold)}
+.nav-mobile .mobile-cta{padding:16px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-family:'Libre Franklin',sans-serif;font-size:16px;font-weight:700}
+@media(max-width:768px){.nav-links{display:none}.nav-hamburger{display:block}}
+
+/* PAGE HERO */
+.page-hero{background:var(--forest);padding:140px 40px 80px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,0.04),transparent)}
+.page-hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
+.page-hero-line{width:32px;height:1px;background:var(--gold)}
+.page-hero-eyebrow span{font-size:11px;color:var(--gold-soft);letter-spacing:3px;text-transform:uppercase;font-weight:500}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);color:var(--cream);font-weight:700;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+.page-hero h1 em{color:var(--gold);font-style:italic}
+.page-hero p{font-size:clamp(15px,1.8vw,18px);color:var(--sage-light);line-height:1.7;max-width:540px;margin:0 auto;font-weight:300}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:80px 40px}
+.section-label{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.section-num{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:12px;font-weight:600;color:var(--gold)}
+.section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--bark-light);font-weight:600}
+.content h2{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,38px);color:var(--forest);line-height:1.2;margin-bottom:20px;letter-spacing:-0.5px}
+.content h2 em{color:var(--gold);font-style:italic}
+.content-body{font-size:17px;color:var(--bark);line-height:1.8;max-width:600px;margin-bottom:48px;font-weight:300}
+
+/* VERIFICATION TIERS */
+.tier-stack{display:flex;flex-direction:column;gap:16px;max-width:700px}
+.tier{background:var(--warm);border-radius:14px;padding:28px 32px;border:1px solid rgba(44,62,45,0.05);display:flex;align-items:flex-start;gap:24px;transition:all 0.3s ease}
+.tier:hover{transform:translateX(4px);box-shadow:0 4px 24px rgba(44,62,45,0.07)}
+.tier-badge{flex-shrink:0;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;white-space:nowrap}
+.tier-content h3{font-size:16px;font-weight:600;color:var(--charcoal);margin-bottom:6px}
+.tier-content p{font-size:14px;color:var(--bark-light);line-height:1.65}
+.tier-number{flex-shrink:0;font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);opacity:0.2;min-width:28px}
+
+/* PROCESS STEPS */
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.process-step{background:var(--warm);border-radius:16px;padding:36px 28px;border:1px solid rgba(44,62,45,0.04);position:relative;overflow:hidden;transition:all 0.3s ease}
+.process-step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform 0.4s ease;transform-origin:left}
+.process-step:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,62,45,0.08)}
+.process-step:hover::before{transform:scaleX(1)}
+.process-num{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--gold);opacity:0.15;line-height:1;margin-bottom:16px}
+.process-step h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--forest);margin-bottom:10px}
+.process-step p{font-size:14px;color:var(--bark-light);line-height:1.7}
+
+/* DARK DIVIDER */
+.dark-band{background:var(--forest);padding:80px 40px}
+.dark-band-inner{max-width:1080px;margin:0 auto}
+.dark-band h2{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,38px);color:var(--cream);line-height:1.2;margin-bottom:16px}
+.dark-band p{font-size:17px;color:var(--sage-light);max-width:580px;line-height:1.75;font-weight:300;margin-bottom:40px}
+
+/* TAXONOMY PREVIEW */
+.taxonomy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.taxonomy-card{background:rgba(250,246,238,0.06);border:1px solid rgba(250,246,238,0.08);border-radius:12px;padding:24px}
+.taxonomy-card h3{font-size:13px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.taxonomy-pills{display:flex;flex-wrap:wrap;gap:8px}
+.taxonomy-pill{background:rgba(250,246,238,0.08);color:var(--sage-light);font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid rgba(250,246,238,0.06)}
+
+/* FAQ */
+.faq{max-width:700px}
+.faq-item{border-bottom:1px solid var(--cream-mid);padding:24px 0}
+.faq-item:first-child{border-top:1px solid var(--cream-mid)}
+.faq-q{font-size:16px;font-weight:600;color:var(--forest);margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-q::after{content:'+';font-size:20px;color:var(--gold);font-weight:300;transition:transform 0.3s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{font-size:15px;color:var(--bark);line-height:1.7;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* CTA BAND */
+.cta-band{background:linear-gradient(135deg,var(--forest),var(--forest-deep));padding:80px 40px;text-align:center}
+.cta-band h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);color:var(--cream);margin-bottom:14px}
+.cta-band p{font-size:16px;color:var(--sage-light);margin-bottom:36px;font-weight:300}
+.btn-gold{padding:18px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;display:inline-block}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.3)}
+.btn-outline{padding:18px 40px;border-radius:10px;background:transparent;color:var(--cream);font-size:15px;font-weight:400;text-decoration:none;transition:all 0.3s;border:1px solid rgba(250,246,238,0.2);display:inline-block;margin-left:16px}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* FOOTER */
+footer{background:var(--charcoal);padding:48px 40px;text-align:center}
+.footer-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--cream);margin-bottom:8px}
+.footer-tagline{font-size:14px;color:var(--sage);font-style:italic;margin-bottom:4px;font-family:'Playfair Display',serif}
+.footer-desc{font-size:12px;color:rgba(143,166,139,0.35);margin-bottom:16px}
+.footer-contact a{font-size:13px;color:var(--gold);text-decoration:none}
+
+@media(max-width:768px){
+  .process,.taxonomy-grid{grid-template-columns:1fr}
+  .content{padding:60px 24px}
+  .dark-band{padding:60px 24px}
+  .page-hero{padding:120px 24px 60px}
+  .tier{flex-direction:column;gap:12px}
+  .btn-outline{margin-left:0;margin-top:12px;display:block;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">&#x2697; BenchLab</a>
+    <div class="nav-links">
+      <a href="how-it-works.html" class="nav-link active">How It Works</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="stories.html" class="nav-link">Stories</a>
+      <a href="platform.html" class="nav-link">See the Platform</a>
+      <a href="index.html#cta" class="nav-cta">Get Early Access</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger">&#9776;</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <button onclick="document.getElementById('mobileMenu').classList.remove('open')" style="position:absolute;top:24px;right:32px;background:none;border:none;font-size:28px;color:var(--cream);cursor:pointer;">&times;</button>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="stories.html">Stories</a>
+    <a href="platform.html">See the Platform</a>
+    <a href="index.html#cta" class="mobile-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-eyebrow"><div class="page-hero-line"></div><span>How BenchLab Works</span><div class="page-hero-line"></div></div>
+  <h1>Not a CV. A <em>Craftsperson&rsquo;s Logbook.</em></h1>
+  <p>BenchLab replaces keyword guessing with a structured, verified record of exactly what every practitioner knows how to do.</p>
+</section>
+
+<!-- SECTION 1: THE LOGBOOK -->
+<section class="content">
+  <div class="section-label reveal"><div class="section-num">1</div><div class="section-tag">The Logbook</div></div>
+  <h2 class="reveal d1">Built around what you can <em>actually do.</em></h2>
+  <p class="content-body reveal d2">Instead of writing a CV and hoping an employer understands it, practitioners on BenchLab build a Craftsperson&rsquo;s Logbook — a structured profile drawn from an industry-specific taxonomy of processes, materials, equipment, and standards. Every skill is specific, searchable, and verifiable.</p>
+
+  <div class="process reveal d3">
+    <div class="process-step">
+      <div class="process-num">1</div>
+      <h3>Select your skills</h3>
+      <p>Choose from a taxonomy built for your industry — candle production, cosmetic formulation, fragrance compounding, GMP, EN 15493, filling lines. No keyword guessing. Takes under 10 minutes.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">2</div>
+      <h3>Add your context</h3>
+      <p>For each skill, add years of experience, the materials and equipment involved, and any relevant standards you worked to. Your Logbook captures detail that a job title never could.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">3</div>
+      <h3>Get verified</h3>
+      <p>Invite former colleagues and managers to confirm specific skills. Their verification is attached to your profile — showing employers not just what you claim, but what others have witnessed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: VERIFICATION -->
+<section style="background:var(--cream-mid);padding:80px 40px;">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="section-label reveal"><div class="section-num">2</div><div class="section-tag">Verification</div></div>
+    <h2 class="reveal d1" style="font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,38px);color:var(--forest);margin-bottom:16px;">Five levels. <em>Real confidence.</em></h2>
+    <p class="reveal d2" style="font-size:17px;color:var(--bark);line-height:1.8;max-width:580px;margin-bottom:48px;font-weight:300;">We don&rsquo;t ask practitioners to claim skills — we ask the people who&rsquo;ve worked alongside them to confirm them. Every skill on a Logbook carries a verification level employers can see and filter by.</p>
+
+    <div class="tier-stack">
+      <div class="tier reveal">
+        <div class="tier-number">1</div>
+        <span class="tier-badge" style="background:rgba(44,62,45,0.07);color:var(--bark-light);">Self-Declared</span>
+        <div class="tier-content">
+          <h3>Practitioner-declared</h3>
+          <p>The starting point. The practitioner asserts they have the skill. Visible to employers but clearly marked as unconfirmed.</p>
+        </div>
+      </div>
+      <div class="tier reveal d1">
+        <div class="tier-number">2</div>
+        <span class="tier-badge" style="background:rgba(201,168,76,0.12);color:#B8952E;">Peer Verified</span>
+        <div class="tier-content">
+          <h3>Confirmed by a colleague</h3>
+          <p>A current or former colleague confirms they have witnessed the practitioner using this skill in a professional context.</p>
+        </div>
+      </div>
+      <div class="tier reveal d2">
+        <div class="tier-number">3</div>
+        <span class="tier-badge" style="background:rgba(38,51,24,0.08);color:var(--forest);">Employer Confirmed</span>
+        <div class="tier-content">
+          <h3>Confirmed by a named employer</h3>
+          <p>A verified employer account confirms the practitioner used this skill during their employment. The employer&rsquo;s name is displayed on the profile.</p>
+        </div>
+      </div>
+      <div class="tier reveal d3">
+        <div class="tier-number">4</div>
+        <span class="tier-badge" style="background:rgba(44,120,60,0.08);color:#2B7A3C;">Assessment Verified</span>
+        <div class="tier-content">
+          <h3>Passed a practical knowledge assessment</h3>
+          <p>The practitioner has passed a BenchLab skills assessment — industry-developed, multiple-choice tests of real bench-level knowledge. Launching Phase Two.</p>
+        </div>
+      </div>
+      <div class="tier reveal d4">
+        <div class="tier-number">5</div>
+        <span class="tier-badge" style="background:rgba(92,74,58,0.08);color:var(--bark);">Certification Backed</span>
+        <div class="tier-content">
+          <h3>Supported by a formal certification</h3>
+          <p>The practitioner has uploaded and had verified a relevant certification — SCS Diploma, NEBOSH, ISO 22716 GMP training, or similar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: TAXONOMY -->
+<section class="dark-band">
+  <div class="dark-band-inner">
+    <div class="section-label reveal" style="margin-bottom:20px;"><div class="section-num" style="border-color:var(--sage);">3</div><div class="section-tag" style="color:var(--sage);">The Taxonomy</div></div>
+    <h2 class="reveal d1">136 skills. <em>Built for your industry.</em></h2>
+    <p class="reveal d2">The BenchLab taxonomy is the result of direct industry research — 136 skills across four categories, covering every major process, material, piece of equipment, and standard in home fragrance, personal care, skincare, fragrance, and toiletries manufacturing.</p>
+
+    <div class="taxonomy-grid reveal d3">
+      <div class="taxonomy-card">
+        <h3>Processes <span style="color:var(--sage);font-weight:400;font-size:11px;">(51 skills)</span></h3>
+        <div class="taxonomy-pills">
+          <span class="taxonomy-pill">Cold-Pour Candles</span>
+          <span class="taxonomy-pill">Hot-Pour Candles</span>
+          <span class="taxonomy-pill">Emulsion Making</span>
+          <span class="taxonomy-pill">Cold Process Soap</span>
+          <span class="taxonomy-pill">Fragrance Compounding</span>
+          <span class="taxonomy-pill">Stability Testing</span>
+          <span class="taxonomy-pill">Filling Line Operation</span>
+          <span class="taxonomy-pill">Burn Testing</span>
+          <span class="taxonomy-pill">+ 43 more</span>
+        </div>
+      </div>
+      <div class="taxonomy-card">
+        <h3>Materials <span style="color:var(--sage);font-weight:400;font-size:11px;">(35 skills)</span></h3>
+        <div class="taxonomy-pills">
+          <span class="taxonomy-pill">Soy Wax</span>
+          <span class="taxonomy-pill">Beeswax</span>
+          <span class="taxonomy-pill">Synthetic Fragrance Oils</span>
+          <span class="taxonomy-pill">Natural Extracts</span>
+          <span class="taxonomy-pill">Emulsifiers</span>
+          <span class="taxonomy-pill">Preservatives</span>
+          <span class="taxonomy-pill">AHAs &amp; BHAs</span>
+          <span class="taxonomy-pill">+ 28 more</span>
+        </div>
+      </div>
+      <div class="taxonomy-card">
+        <h3>Equipment <span style="color:var(--sage);font-weight:400;font-size:11px;">(23 skills)</span></h3>
+        <div class="taxonomy-pills">
+          <span class="taxonomy-pill">Semi-Auto Filling Lines</span>
+          <span class="taxonomy-pill">Homogenisers</span>
+          <span class="taxonomy-pill">GC-MS Analysis</span>
+          <span class="taxonomy-pill">pH Meters</span>
+          <span class="taxonomy-pill">Viscometers</span>
+          <span class="taxonomy-pill">Labelling Equipment</span>
+          <span class="taxonomy-pill">+ 17 more</span>
+        </div>
+      </div>
+      <div class="taxonomy-card">
+        <h3>Standards <span style="color:var(--sage);font-weight:400;font-size:11px;">(27 skills)</span></h3>
+        <div class="taxonomy-pills">
+          <span class="taxonomy-pill">ISO 22716 GMP</span>
+          <span class="taxonomy-pill">EN 15493</span>
+          <span class="taxonomy-pill">REACH</span>
+          <span class="taxonomy-pill">CLP Regulation</span>
+          <span class="taxonomy-pill">IFRA Guidelines</span>
+          <span class="taxonomy-pill">BRCGS</span>
+          <span class="taxonomy-pill">CPSR</span>
+          <span class="taxonomy-pill">+ 20 more</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: FOR EMPLOYERS -->
+<section class="content">
+  <div class="section-label reveal"><div class="section-num">4</div><div class="section-tag">For Employers</div></div>
+  <h2 class="reveal d1">Search by what people can <em>actually do.</em></h2>
+  <p class="content-body reveal d2">Employers search the BenchLab database by capability, verification level, location, and availability. No keyword guessing. No sifting through irrelevant CVs. The right person — verified, available, and genuinely skilled — surfaces in seconds.</p>
+
+  <div class="process reveal d3">
+    <div class="process-step">
+      <div class="process-num">1</div>
+      <h3>Search by capability</h3>
+      <p>Filter by specific skills, materials, equipment, and standards. Add verification level filters — see only employer-confirmed or certification-backed candidates for roles where it matters.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">2</div>
+      <h3>Post a role</h3>
+      <p>Post a role directly on BenchLab. It reaches practitioners whose verified skills match your requirements — not everyone on a generalist job board.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">3</div>
+      <h3>Shortlist &amp; message</h3>
+      <p>Save candidates to shortlists, message them directly through the platform, and manage your search in one place. No agency intermediary. No unnecessary cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:var(--cream-mid);padding:80px 40px;">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="section-label reveal"><div class="section-num">5</div><div class="section-tag">Common Questions</div></div>
+    <h2 class="reveal d1" style="font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);color:var(--forest);margin-bottom:40px;">Questions we get asked.</h2>
+    <div class="faq reveal d2">
+      <div class="faq-item">
+        <div class="faq-q">Is BenchLab free for practitioners?</div>
+        <div class="faq-a">Yes — always. Practitioners can build their Logbook, get verified, and be found by employers at no cost. This is non-negotiable. BenchLab generates revenue from employers, never from the people with the skills.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How long does it take to build a Logbook?</div>
+        <div class="faq-a">Most practitioners complete a first version in under 10 minutes. The taxonomy does the heavy lifting — you select from a structured list rather than writing from scratch. Your Logbook can be updated at any time as your skills grow.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does verification actually work?</div>
+        <div class="faq-a">You select a skill and invite someone who has worked with you — a former manager, a colleague, a client — to confirm it. They receive an email with a simple one-click confirmation. Their name and relationship are displayed on your profile. We don't ask them to write a reference — just to confirm they've seen you do the thing.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I can't get peer verification?</div>
+        <div class="faq-a">Self-declared skills are still searchable and visible. Verification strengthens your profile but doesn't gate it. Many practitioners build strong profiles through a combination of self-declared and employer-confirmed skills even without peer verification.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is BenchLab different from LinkedIn?</div>
+        <div class="faq-a">LinkedIn treats "Production Operative" as one role. BenchLab knows it could mean a candle chandler, a filling line operator, a soapmaker, or a cosmetic production technician — all with entirely different skills. Our taxonomy captures that specificity. LinkedIn endorsements are vanity metrics. BenchLab verification is meaningful.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What industries does BenchLab cover?</div>
+        <div class="faq-a">Home fragrance and candles, skincare and personal care, fine and functional fragrance, toiletries and soap, and quality, regulatory and testing roles across all of these. We do not cover service delivery roles (salons, makeup artists) — BenchLab is manufacturing only.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2>Ready to see it in action?</h2>
+  <p>Explore the interactive prototype or register your interest to be among the first on the platform.</p>
+  <a href="platform.html" class="btn-gold">Explore the Platform</a>
+  <a href="index.html#cta" class="btn-outline">Register Interest</a>
+</section>
+
+<footer>
+  <div class="footer-brand">&#x2697; BenchLab</div>
+  <div class="footer-tagline">What you can do matters more than what you say you can do.</div>
+  <div class="footer-desc">The verified skills platform for craft &amp; formulation industries</div>
+  <div class="footer-contact"><a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>q.parentElement.classList.toggle('open'))});
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See the Platform — BenchLab</title>
+<meta name="description" content="Explore the BenchLab platform prototype — Logbook creation, talent search, consultant directory, pricing, and more.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2697;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#263318;--forest-mid:#2C3E2D;--forest-deep:#1A2610;
+  --gold:#C9A84C;--gold-soft:#D4B86A;
+  --cream:#FAF6EE;--cream-mid:#F0EADB;--warm:#FDFCF8;
+  --bark:#5C4A3A;--bark-light:#8B7355;--charcoal:#2A2A28;
+  --sage:#8FA68B;--sage-light:#B5CBAE;
+}
+html,body{height:100%;margin:0;padding:0}
+body{font-family:'Libre Franklin',sans-serif;background:var(--forest);color:var(--charcoal);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+
+/* NAV */
+nav{position:relative;z-index:100;background:var(--forest);border-bottom:1px solid rgba(201,168,76,0.12);padding:16px 0;flex-shrink:0}
+.nav-inner{max-width:100%;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--cream);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:all 0.3s;color:rgba(250,246,238,0.6)}
+.nav-link:hover,.nav-link.active{color:var(--gold)}
+.nav-cta{padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s;background:var(--gold);color:var(--forest)}
+.nav-cta:hover{opacity:0.9}
+.nav-hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--cream);padding:4px 8px}
+.nav-mobile{display:none;position:fixed;inset:0;background:var(--forest);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);text-decoration:none}
+.nav-mobile a:hover{color:var(--gold)}
+.nav-mobile .mobile-cta{padding:16px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-family:'Libre Franklin',sans-serif;font-size:16px;font-weight:700}
+@media(max-width:768px){.nav-links{display:none}.nav-hamburger{display:block}}
+
+/* INTRO BANNER */
+.intro{background:var(--forest-deep);border-bottom:1px solid rgba(201,168,76,0.08);padding:20px 40px;text-align:center;flex-shrink:0}
+.intro p{font-size:14px;color:var(--sage-light);line-height:1.5}
+.intro p strong{color:var(--gold);font-weight:600}
+.intro p em{color:var(--sage);font-style:normal}
+
+/* IFRAME CONTAINER */
+.prototype-frame{flex:1;display:flex;flex-direction:column;min-height:0}
+.prototype-frame iframe{flex:1;width:100%;border:none;display:block}
+
+/* FALLBACK for mobile */
+.mobile-fallback{display:none;flex:1;padding:48px 24px;text-align:center;background:var(--cream)}
+.mobile-fallback h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--forest);margin-bottom:12px}
+.mobile-fallback p{font-size:15px;color:var(--bark);line-height:1.65;margin-bottom:28px}
+.btn-gold{padding:16px 36px;border-radius:10px;background:var(--gold);color:var(--forest);font-size:15px;font-weight:600;text-decoration:none;display:inline-block}
+
+@media(max-width:600px){
+  .prototype-frame{display:none}
+  .mobile-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .intro{padding:16px 24px}
+  .nav-inner{padding:0 20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">&#x2697; BenchLab</a>
+    <div class="nav-links">
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="stories.html" class="nav-link">Stories</a>
+      <a href="platform.html" class="nav-link active">See the Platform</a>
+      <a href="index.html#cta" class="nav-cta">Get Early Access</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger">&#9776;</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <button onclick="document.getElementById('mobileMenu').classList.remove('open')" style="position:absolute;top:24px;right:32px;background:none;border:none;font-size:28px;color:var(--cream);cursor:pointer;">&times;</button>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="stories.html">Stories</a>
+    <a href="index.html#cta" class="mobile-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<div class="intro">
+  <p><strong>Interactive Prototype</strong> &mdash; <em>This is a working preview of the BenchLab platform. Click through the screens to explore how it works. No account required.</em></p>
+</div>
+
+<div class="prototype-frame">
+  <iframe src="benchlab-prototype.html" title="BenchLab Platform Prototype" loading="eager" allow="print"></iframe>
+</div>
+
+<div class="mobile-fallback">
+  <h2>Best viewed on desktop</h2>
+  <p>The BenchLab platform prototype is designed for desktop and tablet. For the best experience, open this page on a larger screen — or download the prototype file to explore locally.</p>
+  <a href="index.html#cta" class="btn-gold">Register Your Interest</a>
+</div>
+
+<script>
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+</script>
+</body>
+</html>

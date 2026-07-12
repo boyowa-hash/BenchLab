@@ -208,17 +208,43 @@ footer{background:var(--charcoal);padding:52px 40px;text-align:center}
   .nav-inner{padding:0 24px}
   [style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr!important}
 }
+
+/* ─── SHARED MULTI-PAGE NAV ─── */
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--cream);padding:4px 8px;transition:color 0.3s}
+nav.scrolled .nav-hamburger{color:var(--forest)}
+.nav-mobile{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--forest);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);text-decoration:none;transition:color 0.3s}
+.nav-mobile a:hover{color:var(--gold)}
+.nav-mobile .mobile-cta{padding:16px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-family:'Libre Franklin',sans-serif;font-size:16px;font-weight:700}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-hamburger{display:block}
+}
 </style>
 </head>
 <body>
 
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="logo">&#x2697; BenchLab</a>
-    <div style="display:flex;align-items:center;gap:8px">
-      <a href="#how" class="nav-link">How It Works</a>
+    <a href="index.html" class="logo">&#x2697; BenchLab</a>
+    <div class="nav-links">
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="stories.html" class="nav-link">Stories</a>
+      <a href="platform.html" class="nav-link">See the Platform</a>
       <a href="#cta" class="nav-cta">Get Early Access</a>
     </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu">&#9776;</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <button onclick="document.getElementById('mobileMenu').classList.remove('open')" style="position:absolute;top:24px;right:32px;background:none;border:none;font-size:28px;color:var(--cream);cursor:pointer;">&times;</button>
+    <a href="how-it-works.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">How It Works</a>
+    <a href="pricing.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">Pricing</a>
+    <a href="stories.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">Stories</a>
+    <a href="platform.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">See the Platform</a>
+    <a href="#cta" class="mobile-cta" onclick="document.getElementById('mobileMenu').classList.remove('open')">Get Early Access</a>
   </div>
 </nav>
 
@@ -438,6 +464,11 @@ window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scro
 const obs=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
 },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>

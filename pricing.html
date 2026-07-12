@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — BenchLab</title>
+<meta name="description" content="BenchLab employer subscriptions from £79/month. Always free for practitioners. Less than the cost of one agency placement.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2697;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#263318;--forest-mid:#2C3E2D;--forest-deep:#1A2610;
+  --gold:#C9A84C;--gold-soft:#D4B86A;
+  --cream:#FAF6EE;--cream-mid:#F0EADB;--warm:#FDFCF8;
+  --bark:#5C4A3A;--bark-light:#8B7355;--charcoal:#2A2A28;
+  --sage:#8FA68B;--sage-light:#B5CBAE;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Libre Franklin',sans-serif;background:var(--cream);color:var(--charcoal);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;transition:all 0.5s ease;padding:24px 0}
+nav.scrolled{background:rgba(250,246,238,0.94);backdrop-filter:blur(24px);padding:14px 0;border-bottom:1px solid rgba(44,62,45,0.06)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;transition:color 0.4s}
+nav.scrolled .logo{color:var(--forest)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:all 0.3s;color:rgba(250,246,238,0.7)}
+nav.scrolled .nav-link{color:var(--bark-light)}
+.nav-link:hover,.nav-link.active{color:var(--gold)}
+.nav-cta{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s;background:var(--gold);color:var(--forest)}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+.nav-hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--cream);padding:4px 8px}
+nav.scrolled .nav-hamburger{color:var(--forest)}
+.nav-mobile{display:none;position:fixed;inset:0;background:var(--forest);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);text-decoration:none}
+.nav-mobile a:hover{color:var(--gold)}
+.nav-mobile .mobile-cta{padding:16px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-family:'Libre Franklin',sans-serif;font-size:16px;font-weight:700}
+@media(max-width:768px){.nav-links{display:none}.nav-hamburger{display:block}}
+
+/* PAGE HERO */
+.page-hero{background:var(--forest);padding:140px 40px 80px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,0.04),transparent)}
+.page-hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
+.page-hero-line{width:32px;height:1px;background:var(--gold)}
+.page-hero-eyebrow span{font-size:11px;color:var(--gold-soft);letter-spacing:3px;text-transform:uppercase;font-weight:500}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);color:var(--cream);font-weight:700;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+.page-hero h1 em{color:var(--gold);font-style:italic}
+.page-hero p{font-size:clamp(15px,1.8vw,18px);color:var(--sage-light);line-height:1.7;max-width:540px;margin:0 auto}
+
+/* TOGGLE */
+.toggle-wrap{display:flex;justify-content:center;padding:48px 40px 0;background:var(--cream)}
+.toggle{display:inline-flex;align-items:center;gap:0;background:var(--warm);border-radius:30px;padding:4px;border:1px solid rgba(44,62,45,0.08)}
+.toggle-btn{padding:10px 28px;border-radius:24px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:'Libre Franklin',sans-serif;transition:all 0.3s}
+.toggle-btn.active{background:var(--forest);color:var(--cream)}
+.toggle-btn:not(.active){background:transparent;color:var(--bark-light)}
+.save-badge{font-size:11px;color:var(--sage);margin-left:6px;font-weight:400}
+
+/* PRICING CARDS */
+.pricing-wrap{max-width:1080px;margin:0 auto;padding:48px 40px 80px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.pricing-card{background:var(--warm);border-radius:20px;padding:36px 28px;border:1px solid rgba(44,62,45,0.06);position:relative;transition:all 0.3s ease}
+.pricing-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,62,45,0.08)}
+.pricing-card.featured{border:2px solid var(--gold);box-shadow:0 8px 40px rgba(201,168,76,0.12);transform:scale(1.02)}
+.pricing-card.featured:hover{transform:scale(1.02) translateY(-4px)}
+.featured-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--forest);padding:4px 18px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap}
+.tier-label{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.tier-price{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--forest);line-height:1;margin-bottom:4px}
+.tier-period{font-size:14px;color:var(--bark-light);margin-bottom:6px}
+.tier-annual{font-size:12px;color:var(--sage);margin-bottom:16px}
+.tier-desc{font-size:14px;color:var(--bark);line-height:1.6;margin-bottom:24px;min-height:44px}
+.tier-cta{display:block;width:100%;padding:14px;border-radius:10px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:'Libre Franklin',sans-serif;text-align:center;text-decoration:none;transition:all 0.3s;margin-bottom:28px}
+.tier-cta-primary{background:var(--gold);color:var(--forest)}
+.tier-cta-primary:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+.tier-cta-secondary{background:var(--forest);color:var(--cream)}
+.tier-cta-secondary:hover{background:var(--forest-mid)}
+.features{display:flex;flex-direction:column;gap:10px}
+.feature{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--bark)}
+.feature.included::before{content:'✓';color:var(--forest);font-weight:700;flex-shrink:0;margin-top:1px}
+.feature.excluded{color:var(--cream-mid)}
+.feature.excluded::before{content:'—';color:var(--cream-mid);flex-shrink:0}
+
+/* COMPARISON TABLE */
+.comparison{max-width:1080px;margin:0 auto;padding:0 40px 80px}
+.comparison h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);color:var(--forest);margin-bottom:12px}
+.comparison p{font-size:16px;color:var(--bark-light);margin-bottom:36px;font-weight:300}
+.comp-table{width:100%;border-collapse:collapse;border-radius:16px;overflow:hidden}
+.comp-table th{background:var(--forest);color:#fff;padding:16px 20px;text-align:left;font-size:13px;font-weight:600;letter-spacing:0.3px}
+.comp-table td{padding:14px 20px;font-size:14px;color:var(--charcoal);border-bottom:1px solid var(--cream-mid)}
+.comp-table tr:nth-child(even) td{background:var(--cream-mid)}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-highlight{background:rgba(38,51,24,0.04)!important;font-weight:600;color:var(--forest)!important}
+.comp-highlight td{color:var(--forest)!important}
+
+/* CONSULTANT BOX */
+.consultant-box{max-width:1080px;margin:0 auto;padding:0 40px 80px}
+.c-box{background:var(--forest);border-radius:20px;padding:48px;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
+.c-box h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);margin-bottom:10px}
+.c-box p{font-size:15px;color:var(--sage-light);line-height:1.65;max-width:480px;font-weight:300}
+.c-fee{background:rgba(250,246,238,0.07);border:1px solid rgba(201,168,76,0.15);border-radius:14px;padding:20px 28px;text-align:center;flex-shrink:0}
+.c-fee-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--cream);line-height:1}
+.c-fee-label{font-size:12px;color:var(--sage);margin-top:4px}
+.c-fee-sub{font-size:11px;color:var(--sage);opacity:0.6;margin-top:2px}
+
+/* FREE BANNER */
+.free-banner{background:var(--cream-mid);text-align:center;padding:56px 40px}
+.free-banner h2{font-family:'Playfair Display',serif;font-size:clamp(22px,2.5vw,32px);color:var(--forest);margin-bottom:12px}
+.free-banner p{font-size:16px;color:var(--bark);max-width:480px;margin:0 auto 28px;line-height:1.65;font-weight:300}
+.btn-forest{padding:16px 36px;border-radius:10px;background:var(--forest);color:var(--cream);font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;display:inline-block}
+.btn-forest:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(38,51,24,0.2)}
+
+/* CTA */
+.cta-band{background:linear-gradient(135deg,var(--forest),var(--forest-deep));padding:72px 40px;text-align:center}
+.cta-band h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);color:var(--cream);margin-bottom:12px}
+.cta-band p{font-size:16px;color:var(--sage-light);margin-bottom:32px;font-weight:300}
+.btn-gold{padding:18px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;display:inline-block}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.3)}
+
+/* FOOTER */
+footer{background:var(--charcoal);padding:48px 40px;text-align:center}
+.footer-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--cream);margin-bottom:8px}
+.footer-tagline{font-size:14px;color:var(--sage);font-style:italic;margin-bottom:4px;font-family:'Playfair Display',serif}
+.footer-desc{font-size:12px;color:rgba(143,166,139,0.35);margin-bottom:16px}
+.footer-contact a{font-size:13px;color:var(--gold);text-decoration:none}
+
+@media(max-width:768px){
+  .pricing-grid{grid-template-columns:1fr}
+  .pricing-card.featured{transform:none}
+  .c-box{flex-direction:column}
+  .pricing-wrap,.comparison,.consultant-box{padding-left:24px;padding-right:24px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">&#x2697; BenchLab</a>
+    <div class="nav-links">
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="pricing.html" class="nav-link active">Pricing</a>
+      <a href="stories.html" class="nav-link">Stories</a>
+      <a href="platform.html" class="nav-link">See the Platform</a>
+      <a href="index.html#cta" class="nav-cta">Get Early Access</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger">&#9776;</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <button onclick="document.getElementById('mobileMenu').classList.remove('open')" style="position:absolute;top:24px;right:32px;background:none;border:none;font-size:28px;color:var(--cream);cursor:pointer;">&times;</button>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="stories.html">Stories</a>
+    <a href="platform.html">See the Platform</a>
+    <a href="index.html#cta" class="mobile-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-eyebrow"><div class="page-hero-line"></div><span>Pricing</span><div class="page-hero-line"></div></div>
+  <h1>Less than the cost of <em>one agency placement.</em></h1>
+  <p>Year-round access to a verified, searchable talent pool purpose-built for your industry. Practitioners are always free.</p>
+</section>
+
+<!-- TOGGLE -->
+<div class="toggle-wrap">
+  <div class="toggle">
+    <button class="toggle-btn active" id="monthlyBtn" onclick="setAnnual(false)">Monthly</button>
+    <button class="toggle-btn" id="annualBtn" onclick="setAnnual(true)">Annual <span class="save-badge">save 20%</span></button>
+  </div>
+</div>
+
+<!-- PRICING CARDS -->
+<div class="pricing-wrap">
+  <div class="pricing-grid">
+    <!-- STARTER -->
+    <div class="pricing-card reveal">
+      <div class="tier-label" style="color:var(--sage);">Starter</div>
+      <div class="tier-price" id="starter-price">£79</div>
+      <div class="tier-period" id="starter-period">/month</div>
+      <div class="tier-annual" id="starter-annual">or £759/year (save 20%)</div>
+      <div class="tier-desc">For small manufacturers and artisan makers hiring occasionally.</div>
+      <a href="index.html#cta" class="tier-cta tier-cta-secondary">Get Started</a>
+      <div class="features">
+        <div class="feature included">Basic taxonomy search with filters</div>
+        <div class="feature included">15 messages per month</div>
+        <div class="feature included">1 active job post</div>
+        <div class="feature included">3 saved searches</div>
+        <div class="feature included">Consultant directory (browse)</div>
+        <div class="feature included">1 team seat</div>
+        <div class="feature included">Basic company profile</div>
+        <div class="feature excluded">Advanced match ranking</div>
+        <div class="feature excluded">Project briefs to consultants</div>
+        <div class="feature excluded">Priority support</div>
+      </div>
+    </div>
+    <!-- PROFESSIONAL -->
+    <div class="pricing-card featured reveal d1">
+      <div class="featured-badge">Most Popular</div>
+      <div class="tier-label" style="color:var(--gold);">Professional</div>
+      <div class="tier-price" id="pro-price">£199</div>
+      <div class="tier-period" id="pro-period">/month</div>
+      <div class="tier-annual" id="pro-annual">or £1,910/year (save 20%)</div>
+      <div class="tier-desc">For mid-size manufacturers and contract houses hiring regularly.</div>
+      <a href="index.html#cta" class="tier-cta tier-cta-primary">Get Started</a>
+      <div class="features">
+        <div class="feature included">Advanced search with match ranking</div>
+        <div class="feature included">50 messages per month</div>
+        <div class="feature included">5 active job posts</div>
+        <div class="feature included">Unlimited saved searches</div>
+        <div class="feature included">Full consultant access + briefs</div>
+        <div class="feature included">3 team seats</div>
+        <div class="feature included">Enhanced profile + verification badge</div>
+        <div class="feature included">Verification-level filtering</div>
+        <div class="feature included">Priority email support</div>
+        <div class="feature excluded">Dedicated account support</div>
+      </div>
+    </div>
+    <!-- ENTERPRISE -->
+    <div class="pricing-card reveal d2">
+      <div class="tier-label" style="color:var(--forest);">Enterprise</div>
+      <div class="tier-price" id="ent-price">£449</div>
+      <div class="tier-period" id="ent-period">/month</div>
+      <div class="tier-annual" id="ent-annual">or £4,310/year (save 20%)</div>
+      <div class="tier-desc">For large manufacturers and multi-site operations.</div>
+      <a href="index.html#cta" class="tier-cta tier-cta-secondary">Contact Us</a>
+      <div class="features">
+        <div class="feature included">Everything in Professional</div>
+        <div class="feature included">Unlimited messages</div>
+        <div class="feature included">Unlimited job posts</div>
+        <div class="feature included">Priority access to new profiles</div>
+        <div class="feature included">Priority consultant matching</div>
+        <div class="feature included">10 team seats</div>
+        <div class="feature included">Premium featured profile</div>
+        <div class="feature included">Dedicated account support</div>
+        <div class="feature included">Quarterly skills market report</div>
+        <div class="feature included">Volume engagement discounts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<section class="comparison reveal">
+  <h2>How does this compare?</h2>
+  <p>BenchLab costs less than one agency placement and gives you year-round access to verified, capability-matched talent.</p>
+  <table class="comp-table">
+    <thead><tr><th>Method</th><th>Cost Per Hire</th><th>Annual Cost (5 hires)</th><th>Industry-Specific?</th></tr></thead>
+    <tbody>
+      <tr><td>Recruitment Agency</td><td>£4,000–£10,000</td><td>£20,000–£50,000</td><td>Rarely</td></tr>
+      <tr><td>LinkedIn Recruiter</td><td>£8,000–£12,000/year/seat</td><td>£8,000–£12,000</td><td>No</td></tr>
+      <tr><td>Indeed / Reed</td><td>£200–£500 per listing + time</td><td>£1,000–£2,500 + HR time</td><td>No</td></tr>
+      <tr class="comp-highlight"><td><strong>BenchLab Professional</strong></td><td><strong>£2,388/year (all-inclusive)</strong></td><td><strong>£2,388</strong></td><td><strong>Yes — built for you</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CONSULTANT -->
+<div class="consultant-box reveal">
+  <div class="c-box">
+    <div>
+      <h2>Consultant Marketplace</h2>
+      <p>Access verified freelance specialists for project work, GMP audits, formulation development, regulatory support, and interim roles. Consultants list their profile for free and set their own rates. A service charge applies to confirmed engagements — charged to you, not the consultant.</p>
+    </div>
+    <div class="c-fee">
+      <div class="c-fee-num">12.5%</div>
+      <div class="c-fee-label">service charge on engagements</div>
+      <div class="c-fee-sub">vs 25–40% agency markup</div>
+    </div>
+  </div>
+</div>
+
+<!-- FREE BANNER -->
+<div class="free-banner reveal">
+  <h2>Practitioners are always free.</h2>
+  <p>Build your Craftsperson&rsquo;s Logbook, get verified, and be found by employers across the industry — at no cost. Always.</p>
+  <a href="platform.html" class="btn-forest">Build Your Logbook</a>
+</div>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2>Ready to get started?</h2>
+  <p>Register your interest and we&rsquo;ll be in touch when we launch.</p>
+  <a href="index.html#cta" class="btn-gold">Register Your Interest</a>
+</section>
+
+<footer>
+  <div class="footer-brand">&#x2697; BenchLab</div>
+  <div class="footer-tagline">What you can do matters more than what you say you can do.</div>
+  <div class="footer-desc">The verified skills platform for craft &amp; formulation industries</div>
+  <div class="footer-contact"><a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+let isAnnual=false;
+const prices={starter:{m:79,a:63},pro:{m:199,a:159},ent:{m:449,a:359}};
+
+function setAnnual(annual){
+  isAnnual=annual;
+  document.getElementById('monthlyBtn').classList.toggle('active',!annual);
+  document.getElementById('annualBtn').classList.toggle('active',annual);
+  document.getElementById('starter-price').textContent='£'+(annual?prices.starter.a:prices.starter.m);
+  document.getElementById('starter-period').textContent=annual?'/month (billed annually)':'/month';
+  document.getElementById('starter-annual').textContent=annual?'£759/year — save £189':'or £759/year (save 20%)';
+  document.getElementById('pro-price').textContent='£'+(annual?prices.pro.a:prices.pro.m);
+  document.getElementById('pro-period').textContent=annual?'/month (billed annually)':'/month';
+  document.getElementById('pro-annual').textContent=annual?'£1,910/year — save £478':'or £1,910/year (save 20%)';
+  document.getElementById('ent-price').textContent='£'+(annual?prices.ent.a:prices.ent.m);
+  document.getElementById('ent-period').textContent=annual?'/month (billed annually)':'/month';
+  document.getElementById('ent-annual').textContent=annual?'£4,310/year — save £1,078':'or £4,310/year (save 20%)';
+}
+</script>
+</body>
+</html>

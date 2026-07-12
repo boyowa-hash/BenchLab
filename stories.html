@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Success Stories — BenchLab</title>
+<meta name="description" content="How employers, practitioners, and consultants are using BenchLab to transform how the craft and formulation industries find and hire talent.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2697;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#263318;--forest-mid:#2C3E2D;--forest-deep:#1A2610;
+  --gold:#C9A84C;--gold-soft:#D4B86A;
+  --cream:#FAF6EE;--cream-mid:#F0EADB;--warm:#FDFCF8;
+  --bark:#5C4A3A;--bark-light:#8B7355;--charcoal:#2A2A28;
+  --sage:#8FA68B;--sage-light:#B5CBAE;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Libre Franklin',sans-serif;background:var(--cream);color:var(--charcoal);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.15s}.d2{transition-delay:.3s}.d3{transition-delay:.45s}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;transition:all 0.5s ease;padding:24px 0}
+nav.scrolled{background:rgba(250,246,238,0.94);backdrop-filter:blur(24px);padding:14px 0;border-bottom:1px solid rgba(44,62,45,0.06)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;transition:color 0.4s}
+nav.scrolled .logo{color:var(--forest)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:all 0.3s;color:rgba(250,246,238,0.7)}
+nav.scrolled .nav-link{color:var(--bark-light)}
+.nav-link:hover,.nav-link.active{color:var(--gold)}
+.nav-cta{padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s;background:var(--gold);color:var(--forest)}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+.nav-hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--cream);padding:4px 8px}
+nav.scrolled .nav-hamburger{color:var(--forest)}
+.nav-mobile{display:none;position:fixed;inset:0;background:var(--forest);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);text-decoration:none}
+.nav-mobile a:hover{color:var(--gold)}
+.nav-mobile .mobile-cta{padding:16px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-family:'Libre Franklin',sans-serif;font-size:16px;font-weight:700}
+@media(max-width:768px){.nav-links{display:none}.nav-hamburger{display:block}}
+
+/* PAGE HERO */
+.page-hero{background:var(--forest);padding:140px 40px 80px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,0.04),transparent)}
+.page-hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
+.page-hero-line{width:32px;height:1px;background:var(--gold)}
+.page-hero-eyebrow span{font-size:11px;color:var(--gold-soft);letter-spacing:3px;text-transform:uppercase;font-weight:500}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);color:var(--cream);font-weight:700;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+.page-hero h1 em{color:var(--gold);font-style:italic}
+.page-hero p{font-size:clamp(15px,1.8vw,18px);color:var(--sage-light);line-height:1.7;max-width:520px;margin:0 auto}
+
+/* FILTERS */
+.filters{display:flex;justify-content:center;gap:10px;padding:48px 40px 0;flex-wrap:wrap}
+.filter-btn{padding:10px 22px;border-radius:24px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.3s;border:1px solid rgba(44,62,45,0.12);background:var(--warm);color:var(--bark);font-family:'Libre Franklin',sans-serif}
+.filter-btn.active,.filter-btn:hover{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+
+/* STORIES */
+.stories-wrap{max-width:860px;margin:0 auto;padding:40px 40px 80px}
+.story{background:var(--warm);border-radius:20px;overflow:hidden;border:1px solid rgba(44,62,45,0.05);box-shadow:0 2px 24px rgba(44,62,45,0.04);margin-bottom:32px;transition:box-shadow 0.3s}
+.story:hover{box-shadow:0 8px 40px rgba(44,62,45,0.08)}
+.story-header{padding:24px 32px;display:flex;align-items:center;gap:18px}
+.story-avatar{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold);flex-shrink:0;background:rgba(201,168,76,0.12)}
+.story-meta{flex:1}
+.story-name{font-size:16px;font-weight:600;color:var(--cream)}
+.story-role{font-size:13px;color:var(--sage-light);margin-top:2px}
+.story-tag{padding:4px 14px;border-radius:16px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;background:rgba(201,168,76,0.15);color:var(--gold);white-space:nowrap}
+.story-headline{font-family:'Playfair Display',serif;font-size:19px;color:var(--forest);padding:0 32px 12px;line-height:1.4}
+.story-quote{font-size:14px;color:var(--bark);line-height:1.8;padding:0 32px 24px;font-style:italic}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--cream-mid);padding:0}
+.stat-cell{padding:18px 20px;text-align:center;border-right:1px solid rgba(44,62,45,0.06)}
+.stat-cell:last-child{border-right:none}
+.stat-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--forest);line-height:1}
+.stat-lbl{font-size:11px;color:var(--bark-light);margin-top:4px;font-weight:500}
+.stat-sub{font-size:10px;color:var(--sage);margin-top:2px}
+
+/* CTA */
+.cta-band{background:linear-gradient(135deg,var(--forest),var(--forest-deep));padding:72px 40px;text-align:center}
+.cta-band h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);color:var(--cream);margin-bottom:12px}
+.cta-band p{font-size:16px;color:var(--sage-light);margin-bottom:32px;font-weight:300}
+.btn-gold{padding:18px 40px;border-radius:10px;background:var(--gold);color:var(--forest);font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;display:inline-block;margin:0 8px}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.3)}
+.btn-outline{padding:18px 40px;border-radius:10px;background:transparent;color:var(--cream);font-size:15px;font-weight:400;text-decoration:none;transition:all 0.3s;border:1px solid rgba(250,246,238,0.2);display:inline-block;margin:0 8px}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* FOOTER */
+footer{background:var(--charcoal);padding:48px 40px;text-align:center}
+.footer-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--cream);margin-bottom:8px}
+.footer-tagline{font-size:14px;color:var(--sage);font-style:italic;margin-bottom:4px;font-family:'Playfair Display',serif}
+.footer-desc{font-size:12px;color:rgba(143,166,139,0.35);margin-bottom:16px}
+.footer-contact a{font-size:13px;color:var(--gold);text-decoration:none}
+
+@media(max-width:680px){
+  .story-stats{grid-template-columns:1fr}
+  .stat-cell{border-right:none;border-bottom:1px solid rgba(44,62,45,0.06)}
+  .stories-wrap{padding:32px 24px 60px}
+  .story-headline,.story-quote,.story-header{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">&#x2697; BenchLab</a>
+    <div class="nav-links">
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="stories.html" class="nav-link active">Stories</a>
+      <a href="platform.html" class="nav-link">See the Platform</a>
+      <a href="index.html#cta" class="nav-cta">Get Early Access</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger">&#9776;</button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <button onclick="document.getElementById('mobileMenu').classList.remove('open')" style="position:absolute;top:24px;right:32px;background:none;border:none;font-size:28px;color:var(--cream);cursor:pointer;">&times;</button>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="stories.html">Stories</a>
+    <a href="platform.html">See the Platform</a>
+    <a href="index.html#cta" class="mobile-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-eyebrow"><div class="page-hero-line"></div><span>Success Stories</span><div class="page-hero-line"></div></div>
+  <h1>What happens when skills <em>become visible.</em></h1>
+  <p>How employers, practitioners, and consultants are using BenchLab to transform how the craft and formulation industries find and hire talent.</p>
+</section>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filterStories('all',this)">All Stories</button>
+  <button class="filter-btn" onclick="filterStories('employer',this)">Employers</button>
+  <button class="filter-btn" onclick="filterStories('practitioner',this)">Practitioners</button>
+  <button class="filter-btn" onclick="filterStories('consultant',this)">Consultants</button>
+</div>
+
+<div class="stories-wrap">
+
+  <div class="story reveal" data-type="employer">
+    <div class="story-header" style="background:linear-gradient(135deg,var(--forest-mid),var(--forest-deep));">
+      <div class="story-avatar">DH</div>
+      <div class="story-meta">
+        <div class="story-name">David Hargreaves</div>
+        <div class="story-role">Operations Director &middot; Essence Contract Manufacturing &middot; Manchester</div>
+      </div>
+      <span class="story-tag">Employer</span>
+    </div>
+    <div class="story-headline">&ldquo;Found a GMP-trained QC technician in four days instead of three months.&rdquo;</div>
+    <div class="story-quote">We&rsquo;d been trying to fill a QC role for twelve weeks through Reed and an agency. The agency sent us three candidates &mdash; one had food manufacturing GMP experience, not cosmetics. The other two had never operated our testing equipment. Within four days of posting on BenchLab, we had a shortlist of five practitioners, all with verified EN 15493 and cosmetic GMP experience. The person we hired had employer-confirmed skills from a previous role. We couldn&rsquo;t have found them on any other platform.</div>
+    <div class="story-stats">
+      <div class="stat-cell"><div class="stat-val">4 days</div><div class="stat-lbl">Time to shortlist</div><div class="stat-sub">vs 12 weeks previously</div></div>
+      <div class="stat-cell"><div class="stat-val">£7,200</div><div class="stat-lbl">Cost saving</div><div class="stat-sub">vs agency placement fee</div></div>
+      <div class="stat-cell"><div class="stat-val">5 of 5</div><div class="stat-lbl">Candidate quality</div><div class="stat-sub">Verified matches</div></div>
+    </div>
+  </div>
+
+  <div class="story reveal d1" data-type="practitioner">
+    <div class="story-header" style="background:linear-gradient(135deg,#3A5240,var(--forest));">
+      <div class="story-avatar">SM</div>
+      <div class="story-meta">
+        <div class="story-name">Sarah Mitchell</div>
+        <div class="story-role">Senior Production Specialist &middot; West Midlands</div>
+      </div>
+      <span class="story-tag">Practitioner</span>
+    </div>
+    <div class="story-headline">&ldquo;My twelve years of bench experience finally became visible.&rdquo;</div>
+    <div class="story-quote">I&rsquo;ve been making candles for twelve years &mdash; cold-pour, hot-pour, fragrance blending, filling lines, burn testing. None of that shows up on a normal CV. It just says &ldquo;Production Operative.&rdquo; On BenchLab, I built my Logbook in about eight minutes and it captures everything I actually know. Two former managers verified my skills. Within a week I had three employers reach out &mdash; all of them understood exactly what I could do before they even spoke to me. I&rsquo;ve never had that experience on any other platform.</div>
+    <div class="story-stats">
+      <div class="stat-cell"><div class="stat-val">8 min</div><div class="stat-lbl">Profile build time</div><div class="stat-sub"></div></div>
+      <div class="stat-cell"><div class="stat-val">14</div><div class="stat-lbl">Skills verified</div><div class="stat-sub">By 2 former managers</div></div>
+      <div class="stat-cell"><div class="stat-val">3</div><div class="stat-lbl">Employer approaches</div><div class="stat-sub">Within first week</div></div>
+    </div>
+  </div>
+
+  <div class="story reveal d2" data-type="consultant">
+    <div class="story-header" style="background:linear-gradient(135deg,var(--bark),#3A2A20);">
+      <div class="story-avatar">JW</div>
+      <div class="story-meta">
+        <div class="story-name">James Whitfield</div>
+        <div class="story-role">Cosmetic Chemist &amp; Formulation Consultant &middot; London</div>
+      </div>
+      <span class="story-tag">Consultant</span>
+    </div>
+    <div class="story-headline">&ldquo;Went from invisible to fully booked in six weeks.&rdquo;</div>
+    <div class="story-quote">After thirty years in skincare formulation, I semi-retired and wanted to do project work. But I had no way to make myself visible to the brands that needed me. I wasn&rsquo;t on LinkedIn properly, and agencies don&rsquo;t really handle freelance chemists. I listed on BenchLab&rsquo;s consultant directory with my day rate and availability. Within six weeks I had three active projects &mdash; a startup skincare brand, a contract manufacturer needing stability testing support, and a regulatory compliance review. The platform essentially replaced my need to network.</div>
+    <div class="story-stats">
+      <div class="stat-cell"><div class="stat-val">9 days</div><div class="stat-lbl">Time to first engagement</div><div class="stat-sub"></div></div>
+      <div class="stat-cell"><div class="stat-val">3</div><div class="stat-lbl">Active projects</div><div class="stat-sub">Within 6 weeks</div></div>
+      <div class="stat-cell"><div class="stat-val">£650</div><div class="stat-lbl">Day rate achieved</div><div class="stat-sub">Full rate, no deduction</div></div>
+    </div>
+  </div>
+
+  <div class="story reveal d3" data-type="employer">
+    <div class="story-header" style="background:linear-gradient(135deg,var(--forest-mid),var(--forest-deep));">
+      <div class="story-avatar">AO</div>
+      <div class="story-meta">
+        <div class="story-name">Amara Osei</div>
+        <div class="story-role">Founder &amp; Creative Director &middot; Lumi&egrave;re Home Fragrances &middot; Bristol</div>
+      </div>
+      <span class="story-tag">Employer</span>
+    </div>
+    <div class="story-headline">&ldquo;As a small brand, I could never afford an agency. BenchLab changed that.&rdquo;</div>
+    <div class="story-quote">We&rsquo;re a five-person candle company scaling from artisan to commercial production. We needed someone who could operate a semi-automated filling line and understood fragrance loading for soy wax. An agency wanted £6,000 to find someone &mdash; that&rsquo;s a quarter of our quarterly revenue. BenchLab Starter costs us £79 a month and we found exactly the right person in two weeks. She had peer-verified filling line experience and three years with coconut-soy blends. Perfect fit.</div>
+    <div class="story-stats">
+      <div class="stat-cell"><div class="stat-val">£79</div><div class="stat-lbl">Monthly cost</div><div class="stat-sub">vs £6,000 agency fee</div></div>
+      <div class="stat-cell"><div class="stat-val">2 weeks</div><div class="stat-lbl">Time to hire</div><div class="stat-sub"></div></div>
+      <div class="stat-cell"><div class="stat-val">92%</div><div class="stat-lbl">Skills matched</div><div class="stat-sub">Verified capability match</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2>Ready to write your own story?</h2>
+  <p>Whether you&rsquo;re a practitioner, employer, or consultant &mdash; your story starts with a Logbook.</p>
+  <a href="platform.html" class="btn-gold">Explore the Platform</a>
+  <a href="index.html#cta" class="btn-outline">Register Interest</a>
+</section>
+
+<footer>
+  <div class="footer-brand">&#x2697; BenchLab</div>
+  <div class="footer-tagline">What you can do matters more than what you say you can do.</div>
+  <div class="footer-desc">The verified skills platform for craft &amp; formulation industries</div>
+  <div class="footer-contact"><a href="mailto:boyowa@thebenchlab.co.uk">boyowa@thebenchlab.co.uk</a></div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+function filterStories(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.story').forEach(s=>{
+    s.style.display = (type==='all'||s.dataset.type===type) ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>
